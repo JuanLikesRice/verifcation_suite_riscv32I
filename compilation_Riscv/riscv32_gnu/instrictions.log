@@ -1,0 +1,81 @@
+
+program.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000100 <write_led>:
+ 100:	fe010113          	addi	sp,sp,-32
+ 104:	00112e23          	sw	ra,28(sp)
+ 108:	00812c23          	sw	s0,24(sp)
+ 10c:	02010413          	addi	s0,sp,32
+ 110:	fea42623          	sw	a0,-20(s0)
+ 114:	200007b7          	lui	a5,0x20000
+ 118:	fec42703          	lw	a4,-20(s0)
+ 11c:	00e7a023          	sw	a4,0(a5) # 20000000 <_bss_end+0x1ffff980>
+ 120:	00000013          	nop
+ 124:	01c12083          	lw	ra,28(sp)
+ 128:	01812403          	lw	s0,24(sp)
+ 12c:	02010113          	addi	sp,sp,32
+ 130:	00008067          	ret
+
+00000134 <main>:
+ 134:	fe010113          	addi	sp,sp,-32
+ 138:	00112e23          	sw	ra,28(sp)
+ 13c:	00812c23          	sw	s0,24(sp)
+ 140:	02010413          	addi	s0,sp,32
+ 144:	00500793          	li	a5,5
+ 148:	fef42623          	sw	a5,-20(s0)
+ 14c:	00a00793          	li	a5,10
+ 150:	fef42423          	sw	a5,-24(s0)
+ 154:	fec42703          	lw	a4,-20(s0)
+ 158:	fe842783          	lw	a5,-24(s0)
+ 15c:	00f707b3          	add	a5,a4,a5
+ 160:	fef42223          	sw	a5,-28(s0)
+ 164:	fe442703          	lw	a4,-28(s0)
+ 168:	00f00793          	li	a5,15
+ 16c:	00f71863          	bne	a4,a5,17c <main+0x48>
+ 170:	00100513          	li	a0,1
+ 174:	f8dff0ef          	jal	100 <write_led>
+ 178:	00c0006f          	j	184 <main+0x50>
+ 17c:	00000513          	li	a0,0
+ 180:	f81ff0ef          	jal	100 <write_led>
+ 184:	0000006f          	j	184 <main+0x50>
+
+00000188 <_start>:
+ 188:	68000113          	li	sp,1664
+ 18c:	fa9ff0ef          	jal	134 <main>
+ 190:	0000006f          	j	190 <_start+0x8>
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347          	.insn	4, 0x3a434347
+   4:	2820                	.insn	2, 0x2820
+   6:	36343067          	.insn	4, 0x36343067
+   a:	3639                	.insn	2, 0x3639
+   c:	6664                	.insn	2, 0x6664
+   e:	3930                	.insn	2, 0x3930
+  10:	3336                	.insn	2, 0x3336
+  12:	2029                	.insn	2, 0x2029
+  14:	3431                	.insn	2, 0x3431
+  16:	322e                	.insn	2, 0x322e
+  18:	302e                	.insn	2, 0x302e
+	...
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1b41                	.insn	2, 0x1b41
+   2:	0000                	.insn	2, 0x
+   4:	7200                	.insn	2, 0x7200
+   6:	7369                	.insn	2, 0x7369
+   8:	01007663          	bgeu	zero,a6,14 <write_led-0xec>
+   c:	0011                	.insn	2, 0x0011
+   e:	0000                	.insn	2, 0x
+  10:	1004                	.insn	2, 0x1004
+  12:	7205                	.insn	2, 0x7205
+  14:	3376                	.insn	2, 0x3376
+  16:	6932                	.insn	2, 0x6932
+  18:	7032                	.insn	2, 0x7032
+  1a:	0031                	.insn	2, 0x0031
