@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1728768189" />
+    <testcase name="test_ifu_basic" classname="test_ifu" file="/mnt/c/Users/NASABoy/PycharmProjects/cocoTB1/test_ifu.py" lineno="10" time="0.0047414302825927734" sim_time_ns="70.001" ratio_time="14763.688555538794" />
+  </testsuite>
+</testsuites>
