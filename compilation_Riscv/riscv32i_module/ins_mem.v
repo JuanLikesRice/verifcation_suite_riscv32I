@@ -1,4 +1,4 @@
-module riscv_command_streamer #(parameter MEM_SIZE = 10000000)(
+module ins_mem #(parameter MEM_SIZE = 10000000)(
     input wire clk,
     input wire reset,
     output wire [31:0] instruction_o
@@ -6,7 +6,7 @@ module riscv_command_streamer #(parameter MEM_SIZE = 10000000)(
     reg [31:0] memory [0:MEM_SIZE-1]; 
     reg [31:0] pc;
     reg [31:0] instruction;
-
+    assign instruction_o = instruction;
     initial begin
         $readmemh("program.hex", memory);  // Load the program into memory
         pc = 32'h00000000;  // Initialize PC to zero at the beginning
@@ -22,6 +22,3 @@ module riscv_command_streamer #(parameter MEM_SIZE = 10000000)(
         end
     end
 endmodule
-
-
-

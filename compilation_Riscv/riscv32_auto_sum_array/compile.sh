@@ -18,7 +18,9 @@ cd "$COMPILATION_DIR" || exit
 # (Replace the following line with actual commands to be executed)
 echo "Running compilation commands..."
 
-riscv32-unknown-elf-gcc     -march=rv32i -mabi=ilp32 -nostdlib -o program.o -c program.c
+# riscv32-unknown-elf-gcc     -march=rv32i -mabi=ilp32 -nostdlib -o program.o -c program.c
+riscv32-unknown-elf-gcc -march=rv32i -mabi=ilp32 -nostdlib -ffreestanding -O2 -v -o program.o -c program.c
+
 riscv32-unknown-elf-as      -march=rv32i -o startup.o startup.S
 riscv32-unknown-elf-ld      -T link.ld -o program.elf program.o startup.o
 riscv32-unknown-elf-objcopy -O binary program.elf program.bin
