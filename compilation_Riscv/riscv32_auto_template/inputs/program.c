@@ -1,4 +1,4 @@
-#define IO_BASE 0x1A000000  // Memory-mapped I/O base address
+#define IO_BASE 0x00040000  // Memory-mapped I/O base address
 
 void write_to_io(int offset, int value) {
     volatile int* io_addr = (int*)(IO_BASE + offset);

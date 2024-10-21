@@ -41,6 +41,26 @@ module riscv32i
    );
 //    .(),
 //    .(),
+
+wire we_pi;
+
+wire [31:0] writeData_pi,operand1_po,operand2_po;
+
+ reg_file reg_file(
+.clk(clk),
+.reset(reset), 
+.reg1_pi(rs1_o), 
+.reg2_pi(rs2_o), 
+.destReg_pi(rd_o), 
+.we_pi(we_pi), 
+.writeData_pi(writeData_pi), 
+.operand1_po(operand1_po),
+.operand2_po(operand2_po)
+);
+
+
+
+
  always @(negedge clk) begin : checker
             $display("%t:   INST_typ_o:{%h},   fun3_o:{%h}, fun7_o:{%h},  opcode_o:{%h},          ",
             $time,          INST_typ_o,        fun3_o,      fun7_o,     opcode_o       
