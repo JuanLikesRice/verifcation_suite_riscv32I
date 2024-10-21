@@ -1,4 +1,4 @@
-#define PERIPHERAL_BASE 0x1A000000  // Base address for memory-mapped I/O
+#define PERIPHERAL_BASE 0x00040000  // Base address for memory-mapped I/O
 
 void write_to_peripheral(int value) {
     volatile int* periph_addr = (int*)(PERIPHERAL_BASE);
