@@ -2,15 +2,15 @@ module execute
    # (
     parameter   N_param = 32   ) (
     input  wire i_clk,
-    // input  wire i_en,
+    input  wire i_en,
     // input  wire [N_param-1:0]  instruction,
     // outputs to register file
-    // output wire  [4:0] rd_i,
-    // output wire  [4:0] rs1_i,
-    // output wire  [4:0] rs2_i,
-    // output wire  [2:0] fun3_i,
-    // output wire  [6:0] fun7_i,
-    // output wire [31:0] imm_i,
+    input wire  [4:0] rd_i,
+    input wire  [4:0] rs1_i,
+    input wire  [4:0] rs2_i,
+    input wire  [2:0] fun3_i,
+    input wire  [6:0] fun7_i,
+    input wire [31:0] imm_i,
     input wire [63:0] Single_Instruction_i
     // output wire [6:0] INST_typ_o,
     // output wire [6:0] opcode_o

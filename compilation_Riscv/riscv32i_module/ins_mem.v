@@ -10,7 +10,7 @@ module ins_mem #(parameter MEM_SIZE = 10000000)(
     reg [31:0] instruction;
     assign instruction_o = instruction;
     initial begin
-        $readmemh("sanity.hex", memory);  // Load the program into memory
+        $readmemh("program.hex", memory);  // Load the program into memory
         pc = 32'h00000000;  // Initialize PC to zero at the beginning
     end
     always @(posedge clk or posedge reset) begin
