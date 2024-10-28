@@ -89,7 +89,7 @@ end
 end
 
 {inst_LH    }:begin 
-    $write("inst_LB    ");
+    $write("inst_LH    ");
 end
 {inst_LW    }:begin 
     $write("inst_LW    ");
@@ -128,7 +128,7 @@ end
      end
 
 {inst_BGEU  }:begin
-    $write("inst_BGE");
+    $write("inst_BGEU");
      end
 {inst_JAL   }:begin
     $write("inst_JAL");

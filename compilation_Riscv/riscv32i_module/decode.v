@@ -281,10 +281,10 @@ always @(*) begin
                 case ({fun3})
                 {3'b000}: begin  //
                 if (instruction[20]==1'b1) begin 
-                Single_Instruction <= inst_ECALL;
+                Single_Instruction <= inst_EBREAK ;
 
                 end else begin
-                Single_Instruction <= inst_EBREAK;
+                Single_Instruction <= inst_ECALL;
 
                  end
                 end 
