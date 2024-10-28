@@ -1,4 +1,3 @@
-`timescale 1ns/1ns
 
 module reg_file(
 input wire clk,
@@ -13,6 +12,7 @@ output wire [31:0] operand2_po
 );
 
 reg [31:0] REG_FILE[0:31];  // 32 32-bit registers
+   //  param_module params ();
 
    /*
       Change the two assign statements below that were used to  read the source registers.
@@ -51,8 +51,8 @@ always @(posedge clk) begin
         end
 
 
-always @(negedge clk) begin
- $display("REGFILE:\tTime:%3d\tR0: %3d R1: %3d R2: %3d R3: %3d R4: %3d R5: %3d R6: %3d R7: %3d R8: %3d", $time, REG_FILE[0], REG_FILE[1], REG_FILE[2], REG_FILE[3], REG_FILE[4], REG_FILE[5], REG_FILE[6], REG_FILE[7],   REG_FILE[8]);
-end
+// always @(negedge clk) begin
+//  $display("REGFILE:\tTime:%3d\tR0: %3d R1: %3d R2: %3d R3: %3d R4: %3d R5: %3d R6: %3d R7: %3d R8: %3d", $time, REG_FILE[0], REG_FILE[1], REG_FILE[2], REG_FILE[3], REG_FILE[4], REG_FILE[5], REG_FILE[6], REG_FILE[7],   REG_FILE[8]);
+// end
 
 endmodule
