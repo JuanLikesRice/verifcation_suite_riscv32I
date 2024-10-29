@@ -11,7 +11,7 @@ output wire [31:0] operand1_po,
 output wire [31:0] operand2_po
 );
 
-reg [31:0] REG_FILE[0:31];  // 32 32-bit registers
+reg [31:0] REG_FILE[0:63];  // 32 32-bit registers
    //  param_module params ();
 
    /*
@@ -42,13 +42,13 @@ reg [31:0] REG_FILE[0:31];  // 32 32-bit registers
 
 integer i;
 always @(posedge clk) begin
-       if (reset)
+      if (reset)
        	  for (i=0; i < 32; i=i+1)
 	  	  REG_FILE[i] <= 32'b0;	
 	else
-	   if (we_pi)  
+	   if (we_pi && (destReg_pi!=0))  
 		   REG_FILE[destReg_pi] <= writeData_pi;
-        end
+      end
 
 
 // always @(negedge clk) begin

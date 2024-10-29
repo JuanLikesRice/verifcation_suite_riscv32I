@@ -14,6 +14,12 @@ parameter [6:0] U_Type_auipc   =   7'b0010111;
 parameter [6:0] I_Type_ECALL   =   7'b1110011;
 parameter [6:0] F_TYPE_FENCE   =   7'b0001111;
 parameter [31:0] NOOP          =   32'h00000013;
+
+
+parameter [3:0] ONE_OP   =   4'b0001;
+parameter [3:0] TWO_OP   =   4'b0010;
+
+
 // Encoding Type
 parameter [6:0] INST_typ_R          =   7'b0000001;
 parameter [6:0] INST_typ_I          =   7'b0000010;

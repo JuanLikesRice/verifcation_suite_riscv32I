@@ -15,7 +15,8 @@ module decode
     output wire [31:0] imm_o,
     output wire [63:0] Single_Instruction_o,
     output wire [6:0] INST_typ_o,
-    output wire [6:0] opcode_o
+    output wire [6:0] opcode_o,
+    output wire [3:0] operand_amt_o
     // outputs to ALU
 );
 
@@ -28,21 +29,25 @@ reg  [2:0] fun3;
 reg  [6:0] fun7;
 reg  [4:0] rd,rs1,rs2;
 reg [63:0] Single_Instruction; 
+reg  [3:0] operand_amt;
 //FPGA 
 initial begin 
-    imm     <=0;
-    INST_typ<=0;
-    fun3    <=0;
-    fun7    <=0;
-    rd      <=0;
-    rs1     <=0;
-    rs2     <=0;
+    imm         <=0;
+    INST_typ    <=0;
+    fun3        <=0;
+    fun7        <=0;
+    rd          <=0;
+    rs1         <=0;
+    rs2         <=0;
+    operand_amt <=0;
 end
 
+assign operand_amt_o        = operand_amt;
+assign opcode               = instruction[6:0];
+assign opcode_o             = instruction[6:0];
+assign Single_Instruction_o = Single_Instruction;
 
-assign opcode = instruction[6:0];
-assign opcode_o = instruction[6:0];
-assign Single_Instruction_o= Single_Instruction;
+
 always @(*) begin
     case (opcode)
         R_Type: begin
@@ -140,7 +145,7 @@ always @(*) begin
     case (INST_typ)
         INST_typ_R: begin
             case ({fun7,fun3})
-            {7'b0000000,3'b000}: begin  // ADDI
+            {7'b0000000,3'b000}: begin  // ADD
             Single_Instruction <= inst_ADD;
             end 
             {7'b0100000,3'b000}: begin  // SUB
