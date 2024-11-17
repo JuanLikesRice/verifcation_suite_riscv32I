@@ -34,20 +34,6 @@ wire [TDATA_WIDTH-1:0] s_axis_tdata_kept;
 reg XOR_reg;
 reg s_axis_tready_r, m_axis_tlast_r, m_axis_tvalid_r, OFF_cllk,  enable_next_cycle, reg_tlast;
 
-wire [7:0] byte_in[ TDATA_BYTES-1:0];
-wire [7:0] byte_out[TDATA_BYTES-1:0];
-
-wire                       hclk                ; // in
-wire                       hrstn               ; // in
-wire           [3:0]       cycle_cnt           ; // in
-wire           [1:0]       flush               ; // in
-wire                       flush_stall         ;// out
-
-
-
-//specdific to module
-
-
 initial begin 
 // tb_clk            <=0;
 s_axis_tready_r   <=0;
@@ -69,46 +55,19 @@ generate
 endgenerate
         
 
-    // add_upper_lower_half_clk #(
-    //     .N(TDATA_WIDTH)
-    // ) mini_DUT (
-    //     .clk(~tb_clk),
-    //     .rst(1'b0),
-    //     .in_signal( module_input_concat),
-    //     .out_signal(module_output_concat)
-    // );
+    add_upper_lower_half_clk #(
+        .N(TDATA_WIDTH)
+    ) mini_DUT (
+        .clk(~tb_clk),
+        .rst(1'b0),
+        .in_signal( module_input_concat),
+        .out_signal(module_output_concat)
+    );
     
-main_DUT exu_flush_inst(
-  .hclk               (hclk                             ),
-  .hrstn              (hrstn                            ),
-  .cycle_cnt          (cycle_cnt                        ),
-  .flush              (flush                            ),
-  .flush_stall        (flush_stall                      )
-);
 
-assign hclk            = ~tb_clk;
-assign hrstn           = byte_in[0][0];
-assign cycle_cnt       = byte_in[1][3:0];
-assign flush           = byte_in[2][1:0];
-
-assign byte_out[0]     = {7'b0,flush_stall};
-assign byte_out[1]     = {8'b0};
-assign byte_out[2]     = {8'b0};
-assign byte_out[3]     = {8'b0};
-assign byte_out[4]     = {8'b0};
-assign byte_out[5]     = {8'b0};
-assign byte_out[6]     = {8'b0};
-assign byte_out[7]     = {8'b0};
-
-
-
-    // assign module_input_concat  = {byte_in[7], byte_in[6], byte_in[5], byte_in[4], byte_in[3], byte_in[2], byte_in[1], byte_in[0]};
-    // assign {byte_out[7], byte_out[6], byte_out[5], byte_out[4], byte_out[3], byte_out[2], byte_out[1], byte_out[0]} = module_output_concat; 
-
-
-
-
-
+    wire [7:0] byte_in[ TDATA_BYTES-1:0]; // Input bytes to the submodule
+    wire [7:0] byte_out[TDATA_BYTES-1:0]; // Output bytes from the submodule
+    
     genvar K, L;
     generate
         for (K = 0; K < TDATA_BYTES; K = K + 1) begin : input_splice
@@ -116,12 +75,64 @@ assign byte_out[7]     = {8'b0};
         end
     endgenerate
 
+ 
+    assign module_input_concat  = {byte_in[7], byte_in[6], byte_in[5], byte_in[4], byte_in[3], byte_in[2], byte_in[1], byte_in[0]};
+    assign {byte_out[7], byte_out[6], byte_out[5], byte_out[4], byte_out[3], byte_out[2], byte_out[1], byte_out[0]} = module_output_concat; 
 
     generate
         for (L = 0; L < TDATA_BYTES; L = L + 1) begin : output_concat
             assign module_output[L*8 +: 8] = byte_out[L];
         end
     endgenerate
+
+
+    
+// endmodule
+
+// // Submodule to process bytes
+// module byte_processing_submodule #(
+//     parameter TDATA_BYTES = 8 // Number of bytes
+// ) (
+//     input wire [7:0] bytes_in[TDATA_BYTES-1:0], // Input bytes
+//     output wire [7:0] bytes_out[TDATA_BYTES-1:0] // Output bytes
+// );
+//     genvar i;
+//     generate
+//         for (i = 0; i < TDATA_BYTES; i = i + 1) begin : byte_process
+//             // Example byte processing logic: simple pass-through
+//             assign bytes_out[i] = bytes_in[i]; // Replace with actual logic
+//         end
+//     endgenerate
+// endmodule
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// module main_DUT (
+//     hclk                                        ,
+//     hrstn                                       ,
+//     cycle_cnt                                   ,
+//     flush                                       ,
+//     flush_stall                                                         
+// );
+// input                       hclk                ;
+// input                       hrstn               ;
+// input           [3:0]       cycle_cnt           ;
+// input           [1:0]       flush               ;
+// output reg                  flush_stall         ;
 
 
 

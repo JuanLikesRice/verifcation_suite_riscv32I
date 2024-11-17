@@ -16,7 +16,7 @@ YOSYS ?= /usr/local/bin/yosys 	# Changes based on WSL
 all: sim synth gatesim
 
 sim: ft_axi_fifo-sim
-	./$< +VCDFILE=sim.vcd +VCDLEVEL=0 | tee sim.log
+	./$< +VCDFILE=sim.vcd +VCDLEVEL=3 | tee sim.log
 
 ft_axi_fifo-sim: ${TESTBENCH} ${TOP_MODULE} ${DUT} | ${XILINX_CELLS_DIR}
 	${IVERILOG} -g2005-sv -s ft_axi_fifoTB -y ${XILINX_CELLS_DIR} -o $@ $^
