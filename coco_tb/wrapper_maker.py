@@ -56,7 +56,7 @@ def generate_wrapper(verilog_file, wrapper_file):
                 wfile.write(f"        .{outp.split(' ')[-1]}({outp.split(' ')[-1]}),\n")
         wfile.write(f"    );\n")
         wfile.write(f"    initial begin\n")
-        wfile.write("        $dumpfile(\".\\vcds\\{}.vcd\");\n".format(module_name))
+        wfile.write("        $dumpfile(\"./vcds/{}.vcd\");\n".format(module_name))
         wfile.write("        $dumpvars(0, {}_wrapper);\n".format(module_name))
         wfile.write(f"    end\n")
         wfile.write("endmodule\n")
