@@ -10,4 +10,6 @@ VERILOG_SOURCES += $(shell pwd)/DUT_Wrapper/$(DUTWAP)
 TOPLEVEL = $(basename $(DUTWAP))
 MODULE = $(basename $(TEST_PY))
 
+export PYTHONPATH := $(PYTHONPATH):./Testbench
+
 include $(shell cocotb-config --makefiles)/Makefile.sim
