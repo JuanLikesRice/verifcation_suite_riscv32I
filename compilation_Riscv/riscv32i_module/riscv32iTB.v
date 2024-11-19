@@ -1,6 +1,7 @@
 // This is a basic testbench for StreamingHistogram assignment.
 
 `timescale 1ps / 1ps
+`include "params.vh"
 
 module riscv32iTB
 #(
