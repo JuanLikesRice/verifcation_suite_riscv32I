@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1732069272" />
+    <testcase name="test_ifu_basic" classname="test_top_core" file="/Users/seanhamilton/Desktop/STUFF/RICE/GRAD/capstone/verifcation_suite_riscv32I/coco_tb/test_top_core.py" lineno="28" time="0.002711057662963867" sim_time_ns="240.001" ratio_time="88526.7042743822" />
+  </testsuite>
+</testsuites>
