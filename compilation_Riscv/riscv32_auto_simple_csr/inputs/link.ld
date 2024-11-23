@@ -7,7 +7,7 @@ MEMORY
     /* Define the memory regions according to the new map */
     instrram   : ORIGIN = 0x00000000, LENGTH = 131072  /* Instruction Memory: 128KB */
     rom        : ORIGIN = 0x00020000, LENGTH = 4096    /* ROM (Boot): 4KB */
-    peripheral : ORIGIN = 0x00040000, LENGTH = 126976  /* Peripherals: 124KB */
+    peripheral : ORIGIN = 0x00020000, LENGTH = 126976  /* Peripherals: 124KB */
     dataram    : ORIGIN = 0x00040000, LENGTH = 262144  /* Data Memory: 256KB */
 }
 
