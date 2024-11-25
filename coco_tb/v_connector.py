@@ -176,9 +176,17 @@ for input_signal_1 in formatted_input_ports[0]:
             connections_ooo.append(input_signal_1.removesuffix('_'+input_signal_1.split('_')[-1]))
 
 # Step 6 generate connection report
-star_len=32
-print("* * * * * * * * * * * * * * * * *")
+star_len=50
+for i in range(0, int(star_len/2)+1):
+    print("* ", end="")
+print("")
+top_module_name = ''
+for file_name in v_list:
+    top_module_name += (file_name.split('.')[0]).split('_')[0] + '_'
+top_module_name += 'top.v'
 print("*    Connection Report".ljust(star_len) + "*")
+print("*".ljust(star_len) + "*")
+print("*    Top Module: {}".format(top_module_name).ljust(star_len) + "*")
 print(("*    Total Connections: {}".format(len(connections_seq)+len(connections_ooo))).ljust(star_len) + "*", end="\n"+"*".ljust(star_len) + "*""\n")
 print("*    Seq Connections:".ljust(star_len) + "*",)
 for conn in connections_seq:
@@ -187,7 +195,9 @@ print("*".ljust(star_len) + "*")
 print("*    OOO Connections:".ljust(star_len) + "*",)
 for conn in connections_ooo:
     print(("*    "+conn).ljust(star_len) + "*")
-print("* * * * * * * * * * * * * * * * *")
+for i in range(0, int(star_len/2)+1):
+    print("* ", end="")
+print("\n")
 inputs = []
 outputs = []
 # Step 7 generate finnal top module
@@ -197,10 +207,5 @@ for file_name in v_list:
     input_tmp, output_tmp = read_wrapper("./DUT_Wrapper/{}".format(file_name))
     inputs.append(input_tmp)
     outputs.append(output_tmp)
-# Step 7.2 generate top module name
-top_module_name = ''
-for file_name in v_list:
-    top_module_name += (file_name.split('.')[0]).split('_')[0] + '_'
-top_module_name += 'top.v'
-# Step 7.3 write top module
+# Step 7.2 write top module
 write_wrapper(top_module_name, inputs, outputs, connections_seq, connections_ooo, v_list)
