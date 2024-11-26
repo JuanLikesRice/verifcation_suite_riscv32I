@@ -48,6 +48,10 @@ def read_wrapper(verilog_file):
             elif line.startswith("endmodule"):
                 in_module = False
 
+    # for vars in inputs:
+    #     if vars in outputs:
+    #         inputs.remove(vars)
+
     for i in range(len(inputs)):
         if inputs[i][-1] == ',':
             inputs[i] = inputs[i][0:-1]

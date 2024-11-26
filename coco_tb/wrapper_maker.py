@@ -62,6 +62,6 @@ def generate_wrapper(verilog_file, wrapper_file):
         wfile.write("endmodule\n")
 
 if len(sys.argv) > 1:
-    generate_wrapper('./DUT_top/{}.v'.format(sys.argv[1]), 'DUT_top_Wrapper/{}_wrapper.v'.format(sys.argv[1]))
+    generate_wrapper('./DUT/{}.v'.format(sys.argv[1]), 'DUT_Wrapper/{}_wrapper.v'.format(sys.argv[1]))
 else:
     generate_wrapper('./DUT/toggle_bit.v', 'DUT_Wrapper/toggle_bit_wrapper.v')
