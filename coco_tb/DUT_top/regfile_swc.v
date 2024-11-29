@@ -53,9 +53,11 @@ always @(posedge hclk or negedge hrstn) begin
                 regfile[reg_waddr] <= regfile[reg_waddr];
             else
                 regfile[reg_waddr] <= reg_wdata;
+                // $display("Time: %3d Regfile Data: %h Mem Address: %d, sent Data: %h \n", $time, regfile[reg_waddr], reg_waddr, reg_wdata);
         // This block doesn't seem necessary at all (Test for if it can be deleted)
         end else begin
 			regfile[reg_waddr] <= regfile[reg_waddr];
+            // $display("Time: %3d Regfile Data: %h Mem Address: %d, sent Data: %h \n", $time, regfile[2], 2, reg_wdata);
         end
     end
 end
@@ -96,5 +98,7 @@ always @(posedge hclk or negedge hrstn) begin
         end
     end
 end
+
+
 
 endmodule

@@ -13,6 +13,7 @@ module top_core_swc (
     output wire ifu_dec_stall,
     output wire pc_write,
     output wire [31:0] pc_wdata,
+    // output wire dec_or,
     // Outputs for EXU interactions
     output wire [4:0] exu_load_rd,
     output wire [31:0] exu_load_base_addr,

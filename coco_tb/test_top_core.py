@@ -51,6 +51,8 @@ async def test_core_basic(dut):
 
 
     dut.itcm_hrdata.value = 0b00000000000000001010000100000011
+    #Load operation
+    #offset: 000000000000, rs1: 00001, 010, rd: 00010, opcode:: 0000011
     dut.dtcm_hrdata.value = 0xDEADBEEF
     # update cycle_counter
     dut.cycle_cnt.value = 0
@@ -61,8 +63,14 @@ async def test_core_basic(dut):
     assert dut.ifu_pc.value == 0, "PC not reset to 0"
 
     # Test: Load instruction from memory
-    await Timer(60, units="ns")
+    # await Timer(40, units="ns")
     await wait_for_signal_change(dut.mau_load_data, dut.hclk)
+    dut.itcm_hrdata.value = 0b00000000000000010110001000110011
+    #ORI operation
+    #offset: 000000000000, rs1: 00010, 110, rd: 00100, opcode:: 0110011
     # print("reg_wdata.value: {}".format(dut.mau_load_data.value))
+    # await wait_for_signal_change(dut.reg_rdata_1, dut.hclk)
+    print(f"regfile values: {dut.dec_or.value})")
+    # await Timer(40, units="ns")
     assert dut.mau_load_data.value == 0xDEADBEEF, "Instruction output is incorrect"
-    await Timer(60, units="ns")
+    await Timer(80, units="ns")
