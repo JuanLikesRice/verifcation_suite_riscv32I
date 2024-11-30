@@ -48,10 +48,6 @@ def read_wrapper(verilog_file):
             elif line.startswith("endmodule"):
                 in_module = False
 
-    # for vars in inputs:
-    #     if vars in outputs:
-    #         inputs.remove(vars)
-
     for i in range(len(inputs)):
         if inputs[i][-1] == ',':
             inputs[i] = inputs[i][0:-1]
@@ -73,6 +69,10 @@ def write_wrapper(verilog_file, inputs, outputs, connection_seq, connection_ooo,
         # flatten the list
         inputs_flat = [item for sublist in inputs for item in sublist]
         outputs_flat = [item for sublist in outputs for item in sublist]
+        # if input signal is also in output signal, remove it from input signal
+        for vars in inputs_flat:
+            if vars in outputs_flat:
+                inputs_flat.remove(vars)
         # remove duplicates based on ooo connections
         for dup_signal in connection_ooo:
             if dup_signal in inputs_flat:
