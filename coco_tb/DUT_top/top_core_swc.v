@@ -13,7 +13,6 @@ module top_core_swc (
     output wire ifu_dec_stall,
     output wire pc_write,
     output wire [31:0] pc_wdata,
-    // output wire dec_or,
     // Outputs for EXU interactions
     output wire [4:0] exu_load_rd,
     output wire [31:0] exu_load_base_addr,
@@ -58,7 +57,9 @@ module top_core_swc (
     output wire [4:0] dec_rs1,
     output wire [4:0] dec_rs2,
     output wire [4:0] dec_rd,
-    output wire dec_lw
+    output wire dec_lw,
+    output wire [31:0] regfile [31:0],
+    output wire dec_or
 );
     // IFU output wires
     // wire [31:0] ifu_haddr, ifu_hwdata, ifu_pc, ifu_inst_out;
@@ -97,7 +98,7 @@ module top_core_swc (
     wire dec_lui, dec_auipc, dec_jal, dec_jalr, dec_beq, dec_bne, dec_blt, dec_bge, dec_bltu, dec_bgeu;
     wire dec_lb, dec_lh, dec_lbu, dec_lhu, dec_sb, dec_sh, dec_sw;
     wire dec_addi, dec_slti, dec_sltiu, dec_xori, dec_ori, dec_andi;
-    wire dec_slli, dec_srli, dec_srai, dec_sub, dec_sll, dec_slt, dec_sltu, dec_xor, dec_srl, dec_sra, dec_or, dec_and;
+    wire dec_slli, dec_srli, dec_srai, dec_sub, dec_sll, dec_slt, dec_sltu, dec_xor, dec_srl, dec_sra, dec_and;
     wire dec_fence, dec_fence_i, dec_ecall, dec_ebreak, dec_csrrw, dec_csrrs, dec_csrrc, dec_csrrwi, dec_csrrsi, dec_csrrci;
     wire dec_upper_en, dec_imm_en, dec_reg_en, dec_jump_en, dec_branch_en, dec_load_en, dec_store_en;
     // wire [4:0] dec_rs2, dec_rs1, dec_rd;
@@ -225,7 +226,8 @@ module top_core_swc (
         .reg_raddr_2(reg_raddr_2),
         .reg_ren_2(reg_ren_2),
         .reg_rdata_1(reg_rdata_1),
-        .reg_rdata_2(reg_rdata_2)
+        .reg_rdata_2(reg_rdata_2),
+        .regfile(regfile)
     );
 
 endmodule

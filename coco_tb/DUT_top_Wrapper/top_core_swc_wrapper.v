@@ -12,6 +12,7 @@ module top_core_swc_wrapper (
     output wire ifu_dec_stall,
     output wire pc_write,
     output wire [31:0] pc_wdata,
+    output wire dec_or,
     output wire [4:0] exu_load_rd,
     output wire [31:0] exu_load_base_addr,
     output wire [31:0] exu_load_offset,
@@ -53,7 +54,8 @@ module top_core_swc_wrapper (
     output wire [4:0] dec_rs1,
     output wire [4:0] dec_rs2,
     output wire [4:0] dec_rd,
-    output wire dec_lw
+    output wire dec_lw,
+    output wire [31:0] regfile [31:0]
 );
 
     top_core_swc dut (
@@ -70,6 +72,7 @@ module top_core_swc_wrapper (
         .ifu_dec_stall(ifu_dec_stall),
         .pc_write(pc_write),
         .pc_wdata(pc_wdata),
+        .dec_or(dec_or),
         .exu_load_rd(exu_load_rd),
         .exu_load_base_addr(exu_load_base_addr),
         .exu_load_offset(exu_load_offset),
@@ -111,7 +114,8 @@ module top_core_swc_wrapper (
         .dec_rs1(dec_rs1),
         .dec_rs2(dec_rs2),
         .dec_rd(dec_rd),
-        .dec_lw(dec_lw)
+        .dec_lw(dec_lw),
+        .[31:0]([31:0])
     );
     initial begin
         $dumpfile("./vcds/top_core_swc.vcd");

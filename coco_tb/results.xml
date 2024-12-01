@@ -1,8 +1,8 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1732579797" />
-    <testcase name="test_core_basic" classname="test_top_core" file="/Users/seanhamilton/Desktop/STUFF/RICE/GRAD/capstone/verifcation_suite_riscv32I/coco_tb/test_top_core.py" lineno="28" time="0.0026731491088867188" sim_time_ns="180.001" ratio_time="67336.68518587228">
-      <failure message="Test failed with RANDOM_SEED=1732579797" />
+    <property name="random_seed" value="1733093217" />
+    <testcase name="test_load_word" classname="test_regfile" file="/Users/seanhamilton/Desktop/STUFF/RICE/GRAD/capstone/verifcation_suite_riscv32I/coco_tb/test_regfile.py" lineno="21" time="0.001313924789428711" sim_time_ns="40.001" ratio_time="30443.903883868625">
+      <failure message="Test failed with RANDOM_SEED=1733093217" />
     </testcase>
   </testsuite>
 </testsuites>
