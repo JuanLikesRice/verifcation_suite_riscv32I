@@ -1,5 +1,115 @@
 import random
 
+def dec_sign_extend(num, bits):
+    if num >= 2**(bits-1):
+        return num - 2**bits
+    return num
+
+def dec_zero_extend(num, bits):
+    if num < 0:
+        return num + 2**bits
+    return num
+
+def result_gen(itype, ins_name, imm, rs2, rs1):
+    # TODO: figure out when to use dec_sign_extend, like for imm
+    if itype == 'R':
+        # add,sll,slt,sltu,xor,srl,or,and,sub,sra
+        if ins_name == "ADD":
+            return [1, rs1 + rs2]
+        if ins_name == "SLL":
+            return [1, rs1 << rs2]
+        if ins_name == "SLT":
+            rs1 = dec_sign_extend(rs1, 5)
+            rs2 = dec_sign_extend(rs2, 5)
+            return [1, 1] if rs1 < rs2 else [1, 0]
+        if ins_name == "SLTU":
+            return [1, 1] if rs1 < rs2 else [1, 0]
+        if ins_name == "XOR":
+            return [1, rs1 ^ rs2]
+        if ins_name == "SRL":
+            return [1, rs1 >> rs2]
+        if ins_name == "OR":
+            return [1, rs1 | rs2]
+        if ins_name == "AND":
+            return [1, rs1 & rs2]
+        if ins_name == "SUB":
+            return [1, rs1 + ~rs2 + 1]
+        if ins_name == "SRA":
+            rs1 = dec_sign_extend(rs1, 5)
+            return [1, rs1 >> rs2]
+    if itype == 'I':
+        # addi, slti, sltiu, xori, ori, andi
+        if ins_name == "ADDI":
+            return [1, rs1 + imm]
+        if ins_name == "SLTI":
+            rs1 = dec_sign_extend(rs1, 5)
+            # imm = dec_sign_extend(imm, 12)
+            return [1, 1] if rs1 < imm else [1, 0]
+        if ins_name == "SLTIU":
+            # imm = dec_sign_extend(imm, 12)
+            return [1, 1] if rs1 < imm else [1, 0]
+        if ins_name == "XORI":
+            return [1, rs1 ^ imm]
+        if ins_name == "ORI":
+            return [1, rs1 | imm]
+        if ins_name == "ANDI":
+            return [1, rs1 & imm]
+        if ins_name == "SLLI":
+            return [1, rs1 << imm]
+        if ins_name == "SRLI":
+            return [1, rs1 >> imm]
+        if ins_name == "SRAI":
+            rs1 = dec_sign_extend(rs1, 5)
+            return [1, rs1 >> imm]
+        if ins_name == "LB":
+            return [0, 0]
+        if ins_name == "LH":
+            return [0, 0]
+        if ins_name == "LW":
+            return [0, 0]
+        if ins_name == "LBU":
+            return [0, 0]
+        if ins_name == "LHU":
+            return [0, 0]
+        if ins_name == "JALR":
+            return [0, 0]
+    if itype == 'S':
+        # sb,sh,sw
+        if ins_name == "SB":
+            return [0, 0]
+        if ins_name == "SH":
+            return [0, 0]
+        if ins_name == "SW":
+            return [0, 0]
+    if itype == 'B':
+        # beq,bne,blt,bge,bltu,bgeu
+        if ins_name == "BEQ":
+            return [0, 0]
+        if ins_name == "BNE":
+            return [0, 0]
+        if ins_name == "BLT":
+            return [0, 0]
+        if ins_name == "BGE":
+            return [0, 0]
+        if ins_name == "BLTU":
+            return [0, 0]
+        if ins_name == "BGEU":
+            return [0, 0]
+    if itype == 'U':
+        # auipc, lui
+        if ins_name == "AUIPC":
+            return [1, imm << 12]
+        if ins_name == "LUI":
+            return [1, imm << 12]
+    if itype == 'J':
+        # jal
+        if ins_name == "JAL":
+            return [1, 0]
+    if itype == 'M':
+        return [0, 0]
+    if itype == 'P':
+        return [0, 0]
+
 def ins_gen(itype, boundary=0):
     ins_name_list = []
     ins_list = []
@@ -17,6 +127,7 @@ def ins_gen(itype, boundary=0):
         opcode = 0b0110011
         funct7_all = [0b0000000, 0b0100000]
         funct3_all = [0b000,0b001,0b010,0b011,0b100,0b101,0b110,0b111]
+        ins_name_list = ["ADD", "SLL", "SLT", "SLTU", "XOR", "SRL", "OR", "AND", "SUB", "SRA"]
         # boundary condition
         rs2 = random.randint(0, 2**5-1)
         rs1 = random.randint(0, 2**5-1)
@@ -31,6 +142,7 @@ def ins_gen(itype, boundary=0):
         # generating sra ins
         ins_temp = funct7_all[1] << 25 | rs2 << 20 | rs1 << 15 | 101 << 12 | rd << 7 | opcode
         ins_list.append(ins_temp)
+        assert(len(ins_list) == len(ins_name_list)), "[Error] Instruction list length not match"
     elif itype == 'I':
         opcode = [0b0010011, 0b0000011, 0b1100111]
         imm = random.randint(0, 2**12-1)
@@ -61,6 +173,8 @@ def ins_gen(itype, boundary=0):
         ins_list[6] = (ins_list[8] & (2 ** 25 - 1))
         ins_list[7] = (ins_list[8] & (2 ** 25 - 1))
         ins_list[8] = ((ins_list[8] & (2 ** 25 - 1)) | 0b0100000 << 25)
+        ins_name_list = ["ADDI", "SLTI", "SLTIU", "XORI", "ORI", "ANDI", "SLLI", "SRLI", "SRAI", "LB", "LH", "LW", "LBU", "LHU", "JALR"]
+        assert(len(ins_list) == len(ins_name_list)), "[Error] Instruction list length not match"
     elif itype == 'S':
         # sb,sh,sw
         opcode = 0b0100011
@@ -76,6 +190,8 @@ def ins_gen(itype, boundary=0):
             print(ins_temp)
             print("\n\n")
             ins_list.append(ins_temp)
+        ins_name_list = ["SB", "SH", "SW"]
+        assert(len(ins_list) == len(ins_name_list)), "[Error] Instruction list length not match"
     elif itype == 'B':
         # beq,bne,blt,bge,bltu,bgeu
         opcode = 0b1100011
@@ -90,6 +206,8 @@ def ins_gen(itype, boundary=0):
         for funct3 in funct3_all:
             ins_temp = (imm12|imm10_5) << 25 | rs2 << 20 | rs1 << 15 | funct3 << 12 | (imm4_1|imm11)<<7 | opcode
             ins_list.append(ins_temp)
+        ins_name_list = ["BEQ", "BNE", "BLT", "BGE", "BLTU", "BGEU"]
+        assert(len(ins_list) == len(ins_name_list)), "[Error] Instruction list length not match"
     elif itype == 'U':
         # auipc, lui
         opcode = [0b0010111, 0b0110111]
@@ -98,7 +216,8 @@ def ins_gen(itype, boundary=0):
         for unit in opcode:
             ins_temp = imm << 12 | rd << 7 | unit
             ins_list.append(ins_temp)
-        pass
+        ins_name_list = ["AUIPC", "LUI"]
+        assert(len(ins_list) == len(ins_name_list)), "[Error] Instruction list length not match"
     elif itype == 'J':
         # jal
         opcode = 0b1101111
@@ -110,6 +229,8 @@ def ins_gen(itype, boundary=0):
         rd = random.randint(0, 2**5-1)
         ins_temp = (imm20|imm10_1|imm11|imm19_12) << 12 | rd << 7 | opcode
         ins_list.append(ins_temp)
+        ins_name_list = ["JAL"]
+        assert(len(ins_list) == len(ins_name_list)), "[Error] Instruction list length not match"
     elif itype == 'M':
         # fence,fence.i
         opcode = 0b0001111
@@ -120,7 +241,8 @@ def ins_gen(itype, boundary=0):
         ins_list.append(ins_temp)
         #fence.i
         ins_list.append(0b00000000000000000001000000001111)
-        pass
+        ins_name_list = ["FENCE", "FENCE.I"]
+        assert(len(ins_list) == len(ins_name_list)), "[Error] Instruction list length not match"
     elif itype == 'P':
         # ecall,ebreak,csrrw,csrrs,csrrc,csrrwi,csrrsi,csrrci
         opcode = 0b1110011
@@ -137,11 +259,23 @@ def ins_gen(itype, boundary=0):
             else:
                 ins_temp = csr << 20 | rs1 << 15 | funct3 << 12 | rd << 7 | opcode
                 ins_list.append(ins_temp)
-    ins_pick =  ins_list[random.randint(0, len(ins_list)-1)]
-    return_list.append(ins_pick)
+        ins_name_list = ["ECALL", "EBREAK", "CSRRW", "CSRRS", "CSRRC", "CSRRWI", "CSRRSI", "CSRRCI"]
+        assert(len(ins_list) == len(ins_name_list)), "[Error] Instruction list length not match"
+    # # # # # # # #
+    # random pick #
+    # # # # # # # #
+    lucky_number = random.randint(0, len(ins_list)-1)
+    ins_name = ins_name_list[lucky_number]
+    ins_pick =  ins_list[lucky_number]
+    ins_result = result_gen(itype, ins_name, imm, rs2, rs1)
+    # add ins_name to the beginning of ins_result
+    ins_result.insert(0, ins_name)
+
     # # # # # # # #
     # return part #
     # # # # # # # #
+    return_list.append(ins_pick) # idx 0
+    return_list.append(ins_result) # idx 1
     if itype == 'R':
         return_list.append(imm)
         return_list.append(rs2)
@@ -177,4 +311,7 @@ def ins_gen(itype, boundary=0):
 # test part #
 # # # # # # #
 if __name__ == '__main__':
-    INS = ins_gen('S')
+    INS = ins_gen('R')
+    print(bin(INS[0])[2:].zfill(32))
+    print(INS[1])
+
