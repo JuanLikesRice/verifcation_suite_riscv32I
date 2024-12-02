@@ -92,24 +92,23 @@ async def test_R(dut):
     #WORKS
     if ins_name == "ADD":
         expected_res = [1, rs1 + rs2]
-    #TODO: SHIFTS BY LOWER 5 BITS OF rs2
+    #WORKS!!!
     if ins_name == "SLL":
-        expected_res = [1, rs1 << rs2]
+        expected_res = [1, (rs1 << (rs2&0x1f)) & 0xFFFFFFFF]
+    #WORKS!!!
     if ins_name == "SLT":
-        # rs1 = utilities.dec_sign_extend(rs1, 5)
-        # rs2 = utilities.dec_sign_extend(rs2, 5)
-        # TODO:
-        # THIS SHOULD BE SIGNED CHANGE LATER LOL
-        expected_res = [1, 1] if rs1 < rs2 else [1, 0]
+        rs1_s = utilities.twos_comp(rs1, 32)
+        rs2_s = utilities.twos_comp(rs2, 32)
+        expected_res = [1, 1] if rs1_s < rs2_s else [1, 0]
     #WORKS!!!
     if ins_name == "SLTU":
         expected_res = [1, 1] if rs1 < rs2 else [1, 0]
     #WORKS!!!
     if ins_name == "XOR":
         expected_res = [1, rs1 ^ rs2]
-    #TODO: SHIFTS BY LOWER 5 BITS OF rs2
+    #WORKS!!!
     if ins_name == "SRL":
-        expected_res = [1, rs1 >> rs2]
+        expected_res = [1, utilities.logical_right(rs1, rs2&0x1f)]
     #WORKS!!!
     if ins_name == "OR":
         expected_res = [1, rs1 | rs2]
@@ -120,11 +119,9 @@ async def test_R(dut):
     # Actual result is correct
     if ins_name == "SUB":
         expected_res = [1, rs1 + ~rs2 + 1]
-    #TODO: ARITMETIC SHIFTS BY LOWER 5 BITS OF rs2
-    #Also decodes incorrect register address
+    #WORKS!!!
     if ins_name == "SRA":
-        # rs1 = utilities.dec_sign_extend(rs1, 5)
-        expected_res = [1, rs1 >> rs2]
+        expected_res = [1, utilities.arithmetic_right(rs1, (rs2&0x1F))]
     print(f"expected_res: {hex(expected_res[1])}")
     print(f"rd index: {INS[r_rd_idx]}")
     await wait_for_signal_change(dut.dec_rd, dut.hclk)

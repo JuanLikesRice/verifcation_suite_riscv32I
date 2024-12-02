@@ -10,6 +10,25 @@ def dec_zero_extend(num, bits):
         return num + 2**bits
     return num
 
+def logical_right(val, n):
+    return val >>n if val >=0 else (val +0x100000000)>>n
+
+def arithmetic_right(val, n):
+    shifted = val
+    bits = 32
+    sign_bit = (val & (1<< (bits-1)) != 0)
+    for i in range(n):
+         shifted = shifted >> 1 | sign_bit << (bits-1)
+    return shifted
+
+def twos_comp(val, bits):
+    """compute the 2's complement of int value val"""
+    if bits == 0:
+        return 0
+    if (val & (1 << (bits - 1))) != 0: # if sign bit is 1
+        val = val - (1 << bits)        # compute negative value
+    return val
+
 def result_gen(itype, ins_name, imm, rs2, rs1):
     # TODO: figure out when to use dec_sign_extend, like for imm
     if itype == 'R':
