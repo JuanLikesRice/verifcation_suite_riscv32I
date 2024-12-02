@@ -8,6 +8,7 @@ def generate_wrapper(verilog_file, wrapper_file):
     module_name = ""
     inputs = []
     outputs = []
+    inouts = []
     in_module = False
 
     for line in lines:
@@ -18,6 +19,8 @@ def generate_wrapper(verilog_file, wrapper_file):
         elif in_module:
             if line.startswith("input"):
                 inputs.append(line.replace("input", "").strip().rstrip(";"))
+            elif line.startswith("inout"):
+                inouts.append(line.replace("inout", "").strip().rstrip(";"))
             elif line.startswith("output"):
                 outputs.append(line.replace("output", "").strip().rstrip(";"))
             elif line.startswith("endmodule"):
@@ -27,6 +30,10 @@ def generate_wrapper(verilog_file, wrapper_file):
         if inputs[i][-1] == ',':
             inputs[i] = inputs[i][0:-1]
         inputs[i] = ' '.join(inputs[i].strip().split())
+    for i in range(len(inouts)):
+        if inouts[i][-1] == ',':
+            inouts[i] = inouts[i][0:-1]
+        inouts[i] = ' '.join(inouts[i].strip().split())
     for i in range(len(outputs)):
         if outputs[i][-1] == ',':
             outputs[i] = outputs[i][0:-1]
@@ -36,6 +43,13 @@ def generate_wrapper(verilog_file, wrapper_file):
         wfile.write(f"module {module_name}_wrapper (\n")
         for inp in inputs:
             wfile.write(f"    input {inp},\n")
+        ino_i = 0
+        for ino in inouts:
+            ino_i = ino_i + 1
+            if ino_i == len(inouts) and len(outputs) == 0:
+                wfile.write(f"    inout {ino}\n")
+            else:
+                wfile.write(f"    inout {ino},\n")
         outp_i = 0
         for outp in outputs:
             outp_i = outp_i + 1
@@ -47,6 +61,13 @@ def generate_wrapper(verilog_file, wrapper_file):
         wfile.write(f"    {module_name} dut (\n")
         for inp in inputs:
             wfile.write(f"        .{inp.split(' ')[-1]}({inp.split(' ')[-1]}),\n")
+        ino_i = 0
+        for ino in inouts:
+            ino_i = ino_i + 1
+            if ino_i == len(inouts) and len(outputs) == 0:
+                wfile.write(f"        .{ino.split(' ')[-1]}({ino.split(' ')[-1]})\n")
+            else:
+                wfile.write(f"        .{ino.split(' ')[-1]}({ino.split(' ')[-1]}),\n")
         outp_i = 0
         for outp in outputs:
             outp_i = outp_i + 1
