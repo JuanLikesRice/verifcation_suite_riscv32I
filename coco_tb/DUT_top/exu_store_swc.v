@@ -52,14 +52,14 @@ reg                     [4:0]               mid_reg_raddr_1     ;
 reg                                         mid_reg_ren_1       ;
 reg                     [4:0]               mid_reg_raddr_2     ;
 reg                                         mid_reg_ren_2       ;
-//assign reg_raddr_1   = mid_reg_ren_1 ? mid_reg_raddr_1 : 'z     ;
-//assign reg_ren_1     = mid_reg_ren_1 ? mid_reg_ren_1   : 'z     ;
-//assign reg_raddr_2   = mid_reg_ren_2 ? mid_reg_raddr_2 : 'z     ;
-//assign reg_ren_2     = mid_reg_ren_2 ? mid_reg_ren_2   : 'z     ;
-assign reg_raddr_1   = mid_reg_ren_1 ? mid_reg_raddr_1 : 5'b0; // Using 0 instead of 'z
-assign reg_ren_1     = mid_reg_ren_1 ? mid_reg_ren_1   : 1'b0;
-assign reg_raddr_2   = mid_reg_ren_2 ? mid_reg_raddr_2 : 5'b0; 
-assign reg_ren_2     = mid_reg_ren_2 ? mid_reg_ren_2   : 1'b0; 
+assign reg_raddr_1   = mid_reg_ren_1 ? mid_reg_raddr_1 : 'z     ;
+assign reg_ren_1     = mid_reg_ren_1 ? mid_reg_ren_1   : 'z     ;
+assign reg_raddr_2   = mid_reg_ren_2 ? mid_reg_raddr_2 : 'z     ;
+assign reg_ren_2     = mid_reg_ren_2 ? mid_reg_ren_2   : 'z     ;
+// assign reg_raddr_1   = mid_reg_ren_1 ? mid_reg_raddr_1 : 5'b0; // Using 0 instead of 'z
+// assign reg_ren_1     = mid_reg_ren_1 ? mid_reg_ren_1   : 1'b0;
+// assign reg_raddr_2   = mid_reg_ren_2 ? mid_reg_raddr_2 : 5'b0; 
+// assign reg_ren_2     = mid_reg_ren_2 ? mid_reg_ren_2   : 1'b0; 
 // load the base address
 always@(posedge hclk or negedge hrstn) begin
     if(!hrstn) begin //If hrstn is not true

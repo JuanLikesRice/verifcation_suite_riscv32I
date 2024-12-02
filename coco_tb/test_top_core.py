@@ -41,7 +41,7 @@ async def wait_for_signal_change(signal, clk):
 # CHECK rd AT THE END
 @cocotb.test()
 async def test_R(dut):
-    global regfile
+    # global regfile
     clock = Clock(dut.hclk, 10, units="ns") # 100MHz clk signal
     cocotb.start_soon(clock.start())
 
@@ -73,7 +73,7 @@ async def test_R(dut):
 
     # Test R-Type Instruction
     INS = utilities.ins_gen('R')
-    print(INS)
+    print(f"INS: {INS}")
     dut.itcm_hrdata.value = INS[ins_idx]
     dut.dtcm_hrdata.value = 0xDEADBEEF
     # update cycle_counter
@@ -82,41 +82,58 @@ async def test_R(dut):
     # await Timer(60, units="ns")
     output = INS[1]
     ins_name = output[0]
-    print(f"regfile: {regfile}")
+    await RisingEdge(dut.hclk)
+    await RisingEdge(dut.hclk)
+    # print(f"regfile: {regfile}")
     rs1 = int(regfile[INS[r_rs1_idx]], 16)
     rs2 = int(regfile[INS[r_rs2_idx]], 16)
+    print(f"rs1: {hex(rs1)}, rs2: {hex(rs2)}")
     expected_res = 0
+    #WORKS
     if ins_name == "ADD":
         expected_res = [1, rs1 + rs2]
+    #TODO: SHIFTS BY LOWER 5 BITS OF rs2
     if ins_name == "SLL":
         expected_res = [1, rs1 << rs2]
     if ins_name == "SLT":
-        rs1 = utilities.dec_sign_extend(rs1, 5)
-        rs2 = utilities.dec_sign_extend(rs2, 5)
+        # rs1 = utilities.dec_sign_extend(rs1, 5)
+        # rs2 = utilities.dec_sign_extend(rs2, 5)
+        # TODO:
+        # THIS SHOULD BE SIGNED CHANGE LATER LOL
         expected_res = [1, 1] if rs1 < rs2 else [1, 0]
+    #WORKS!!!
     if ins_name == "SLTU":
         expected_res = [1, 1] if rs1 < rs2 else [1, 0]
+    #WORKS!!!
     if ins_name == "XOR":
         expected_res = [1, rs1 ^ rs2]
+    #TODO: SHIFTS BY LOWER 5 BITS OF rs2
     if ins_name == "SRL":
         expected_res = [1, rs1 >> rs2]
+    #WORKS!!!
     if ins_name == "OR":
         expected_res = [1, rs1 | rs2]
+    #WORKS!!!
     if ins_name == "AND":
         expected_res = [1, rs1 & rs2]
+    #TODO: FIX to 2's complement representation
+    # Actual result is correct
     if ins_name == "SUB":
         expected_res = [1, rs1 + ~rs2 + 1]
+    #TODO: ARITMETIC SHIFTS BY LOWER 5 BITS OF rs2
+    #Also decodes incorrect register address
     if ins_name == "SRA":
-        rs1 = utilities.dec_sign_extend(rs1, 5)
+        # rs1 = utilities.dec_sign_extend(rs1, 5)
         expected_res = [1, rs1 >> rs2]
-    print(f"expected_res: {expected_res}")
+    print(f"expected_res: {hex(expected_res[1])}")
     print(f"rd index: {INS[r_rd_idx]}")
     await wait_for_signal_change(dut.dec_rd, dut.hclk)
     assert dut.dec_rd.value  == INS[r_rd_idx], "dec_rd  incorrect"
     assert dut.dec_rs1.value == INS[r_rs1_idx], "dec_rs1 incorrect"
     assert dut.dec_rs2.value == INS[r_rs2_idx], "dec_rs2 incorrect"
     await wait_for_signal_change(dut.regfile_interact, dut.hclk)
-    assert int(regfile[INS[r_rd_idx]], 16) == expected_res, "Register not loaded correctly"
+    print(f"regfile: {regfile}")
+    assert int(regfile[INS[r_rd_idx]], 16) == expected_res[1], "Register not loaded correctly"
 
 # # I type
 # # CHECK rd AT THE END

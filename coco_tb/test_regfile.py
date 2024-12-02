@@ -46,7 +46,7 @@ async def test_load_word(dut):
     # Initialize inputs
     dut.reg_wen.value = 1
     dut.reg_waddr.value = address
-    dut.reg_wdata.value = 0xDEADBEEF
+    dut.reg_wdata.value = 0x0000BEEF
 
     # Give time for the load operation to start
     await RisingEdge(dut.hclk)

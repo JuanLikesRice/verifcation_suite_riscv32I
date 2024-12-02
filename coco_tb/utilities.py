@@ -265,6 +265,7 @@ def ins_gen(itype, boundary=0):
     # random pick #
     # # # # # # # #
     lucky_number = random.randint(0, len(ins_list)-1)
+    # lucky_number = 9
     ins_name = ins_name_list[lucky_number]
     ins_pick =  ins_list[lucky_number]
     ins_result = result_gen(itype, ins_name, imm, rs2, rs1)
