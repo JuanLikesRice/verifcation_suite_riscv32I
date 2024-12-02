@@ -61,11 +61,11 @@ always @(posedge hclk or negedge hrstn) begin
             else
                 regfile[reg_waddr] <= reg_wdata;
                 regfile_interact[reg_waddr*32 +: 32] <= reg_wdata;
-                $display("Time: %3d Regfile Data: %h Mem Address: %d, sent Data: %h \n", $time, regfile[reg_waddr], reg_waddr, reg_wdata);
+                // $display("Time: %3d Regfile Data: %h Mem Address: %d, sent Data: %h \n", $time, regfile[reg_waddr], reg_waddr, reg_wdata);
         // This block doesn't seem necessary at all (Test for if it can be deleted)
         end else begin
 			regfile[reg_waddr] <= regfile[reg_waddr];
-            $display("Time: %3d Regfile Data: %h Mem Address: %d, sent Data: %h \n", $time, regfile[2], 2, reg_wdata);
+            // $display("Time: %3d Regfile Data: %h Mem Address: %d, sent Data: %h \n", $time, regfile[2], 2, reg_wdata);
         end
     end
 

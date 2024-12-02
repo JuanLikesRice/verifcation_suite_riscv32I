@@ -3,10 +3,19 @@ from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ReadOnly
 import random
 
+# regfile = 0
+
 async def cycle_counter(dut):
     while True:
         await RisingEdge(dut.hclk)
         dut.cycle_cnt.value = (dut.cycle_cnt.value % 4) + 1
+
+async def regfile_reader(dut):
+    global regfile
+    while True:
+        await RisingEdge(dut.hclk)
+        regfile = [hex(dut.regfile_interact.value[i:i+31]) for i in range(0, len(dut.regfile_interact.value), 32)]
+        regfile = regfile[::-1]
 
 @cocotb.coroutine
 async def wait_for_signal_change(signal, clk):
@@ -25,9 +34,11 @@ async def test_load_word(dut):
 
     # sys reset
     dut.hrstn.value = 0
+    # cocotb.start_soon(regfile_reader(dut))
     await Timer(10, units="ns")
     dut.hrstn.value = 1
 
+    cocotb.start_soon(regfile_reader(dut))
     # cycle_counter++
     # dut.cycle_cnt.value = 0
     # cocotb.start_soon(cycle_counter(dut))
@@ -63,7 +74,7 @@ async def test_load_word(dut):
     # await Timer(10, units="ns")
     start = address * 32 + 1
     end = start + 32
-    regfile_full = dut.regfile_interact.value
+    # regfile_full = dut.regfile_interact.value
     # print(f"reg_file type: {type(reg_file)}")
     # # print(f"reg_file pre hex: {reg_file}")
     # gaming = reg_file[len(reg_file)-end:len(reg_file)-start]
@@ -73,11 +84,11 @@ async def test_load_word(dut):
     # print(f"regfile index: {hex(reg_file)[2:10]}")
     # print(f"regfile length: {len(reg_file)}")
 
-    regfile = [hex(regfile_full[i:i+31]) for i in range(0, len(regfile_full), 32)]
+    # regfile = [hex(regfile_full[i:i+31]) for i in range(0, len(regfile_full), 32)]
     print(f"regfile length: {len(regfile)}")
-    regfile = regfile[::-1]
+    # regfile = regfile[::-1]
     print(f"regfile: {regfile}")
-    assert regfile == 0xDEADBEEF, f"Expected regfile to be 0xDEADBEEF, got {hex(reg_file[5])}"
+    assert int(regfile[5], 16) == 0xDEADBEEF, f"Expected regfile to be 0xDEADBEEF, got {regfile[5]}"
     # assert dut.mau_load_en.value == dut.exu_load_en.value, "mau_load_en should be high after a load"
     # assert dut.mau_load_rd.value == dut.exu_load_rd.value
 

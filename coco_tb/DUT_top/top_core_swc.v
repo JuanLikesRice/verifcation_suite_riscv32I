@@ -58,8 +58,8 @@ module top_core_swc (
     output wire [4:0] dec_rs2,
     output wire [4:0] dec_rd,
     output wire dec_lw,
-    output wire [31:0] regfile [31:0],
-    output wire dec_or
+    output wire dec_or,
+    output wire [1023:0] regfile_interact
 );
     // IFU output wires
     // wire [31:0] ifu_haddr, ifu_hwdata, ifu_pc, ifu_inst_out;
@@ -227,7 +227,7 @@ module top_core_swc (
         .reg_ren_2(reg_ren_2),
         .reg_rdata_1(reg_rdata_1),
         .reg_rdata_2(reg_rdata_2),
-        .regfile(regfile)
+        .regfile_interact(regfile_interact)
     );
 
 endmodule

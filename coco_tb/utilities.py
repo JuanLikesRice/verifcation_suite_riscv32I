@@ -131,7 +131,7 @@ def ins_gen(itype, boundary=0):
         # boundary condition
         rs2 = random.randint(0, 2**5-1)
         rs1 = random.randint(0, 2**5-1)
-        rd  = random.randint(0, 2**5-1)
+        rd  = random.randint(1, 2**5-1)
         # generating instruction list
         for funct3 in funct3_all:
             ins_temp = funct7_all[0] << 25 | rs2 << 20 | rs1 << 15 | funct3 << 12 | rd << 7 | opcode

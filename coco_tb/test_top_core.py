@@ -1,11 +1,22 @@
 import cocotb
+import utilities
+from parameters import *
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
+
+# regfile = 0
 
 async def cycle_counter(dut):
     while True:
         await RisingEdge(dut.hclk)
         dut.cycle_cnt.value = (dut.cycle_cnt.value % 4) + 1
+
+async def regfile_reader(dut):
+    global regfile
+    while True:
+        await RisingEdge(dut.hclk)
+        regfile = [hex(dut.regfile_interact.value[i:i+31]) for i in range(0, len(dut.regfile_interact.value), 32)]
+        regfile = regfile[::-1]
 
 @cocotb.coroutine
 async def wait_for_signal_change(signal, clk):
@@ -25,18 +36,29 @@ async def wait_for_signal_change(signal, clk):
     # input wire [31:0] dtcm_hrdata, // Actual info to load/store
     # input wire [3:0] cycle_cnt,
 
-@cocotb.test()
-async def test_core_basic(dut):
-    """Test basic functionality of the core"""
 
-    # 100MHz clock signal
-    clock = Clock(dut.hclk, 10, units="ns")  # 10ns period (100MHz)
+# R type
+# CHECK rd AT THE END
+@cocotb.test()
+async def test_R(dut):
+    global regfile
+    clock = Clock(dut.hclk, 10, units="ns") # 100MHz clk signal
     cocotb.start_soon(clock.start())
+
+    # # sys reset
+    # dut.hrstn.value = 0
+    # await Timer(10, units="ns")
+    # dut.hrstn.value = 1
+
+    # # cycle_counter++
+    # dut.cycle_cnt.value = 0
+    # cocotb.start_soon(cycle_counter(dut))
 
     # Reset the DUT
     dut.hrstn.value = 0
     await Timer(10, units="ns")
     dut.hrstn.value = 1
+    cocotb.start_soon(regfile_reader(dut))
 
     # Initialize signals
     dut.cycle_cnt.value = 0
@@ -49,28 +71,229 @@ async def test_core_basic(dut):
     dut.itcm_hready.value = 1
     dut.dtcm_hready.value = 1
 
-
-    dut.itcm_hrdata.value = 0b00000000000000001010000100000011
-    #Load operation
-    #offset: 000000000000, rs1: 00001, 010, rd: 00010, opcode:: 0000011
+    # Test R-Type Instruction
+    INS = utilities.ins_gen('R')
+    print(INS)
+    dut.itcm_hrdata.value = INS[ins_idx]
     dut.dtcm_hrdata.value = 0xDEADBEEF
     # update cycle_counter
     dut.cycle_cnt.value = 0
     cocotb.start_soon(cycle_counter(dut))
+    # await Timer(60, units="ns")
+    output = INS[1]
+    ins_name = output[0]
+    print(f"regfile: {regfile}")
+    rs1 = int(regfile[INS[r_rs1_idx]], 16)
+    rs2 = int(regfile[INS[r_rs2_idx]], 16)
+    expected_res = 0
+    if ins_name == "ADD":
+        expected_res = [1, rs1 + rs2]
+    if ins_name == "SLL":
+        expected_res = [1, rs1 << rs2]
+    if ins_name == "SLT":
+        rs1 = utilities.dec_sign_extend(rs1, 5)
+        rs2 = utilities.dec_sign_extend(rs2, 5)
+        expected_res = [1, 1] if rs1 < rs2 else [1, 0]
+    if ins_name == "SLTU":
+        expected_res = [1, 1] if rs1 < rs2 else [1, 0]
+    if ins_name == "XOR":
+        expected_res = [1, rs1 ^ rs2]
+    if ins_name == "SRL":
+        expected_res = [1, rs1 >> rs2]
+    if ins_name == "OR":
+        expected_res = [1, rs1 | rs2]
+    if ins_name == "AND":
+        expected_res = [1, rs1 & rs2]
+    if ins_name == "SUB":
+        expected_res = [1, rs1 + ~rs2 + 1]
+    if ins_name == "SRA":
+        rs1 = utilities.dec_sign_extend(rs1, 5)
+        expected_res = [1, rs1 >> rs2]
+    print(f"expected_res: {expected_res}")
+    print(f"rd index: {INS[r_rd_idx]}")
+    await wait_for_signal_change(dut.dec_rd, dut.hclk)
+    assert dut.dec_rd.value  == INS[r_rd_idx], "dec_rd  incorrect"
+    assert dut.dec_rs1.value == INS[r_rs1_idx], "dec_rs1 incorrect"
+    assert dut.dec_rs2.value == INS[r_rs2_idx], "dec_rs2 incorrect"
+    await wait_for_signal_change(dut.regfile_interact, dut.hclk)
+    assert int(regfile[INS[r_rd_idx]], 16) == expected_res, "Register not loaded correctly"
 
-    # Test: Reset should initialize pc to 0
-    await RisingEdge(dut.hclk)
-    assert dut.ifu_pc.value == 0, "PC not reset to 0"
+# # I type
+# # CHECK rd AT THE END
+# @cocotb.test()
+# async def test_I(dut):
+#     clock = Clock(dut.hclk, 10, units="ns") # 100MHz
+#     cocotb.start_soon(clock.start())
 
-    # Test: Load instruction from memory
-    # await Timer(40, units="ns")
-    await wait_for_signal_change(dut.mau_load_data, dut.hclk)
-    dut.itcm_hrdata.value = 0b00000000000000010110001000110011
-    #ORI operation
-    #offset: 000000000000, rs1: 00010, 110, rd: 00100, opcode:: 0110011
-    # print("reg_wdata.value: {}".format(dut.mau_load_data.value))
-    # await wait_for_signal_change(dut.reg_rdata_1, dut.hclk)
-    print(f"regfile values: {dut.dec_or.value})")
-    # await Timer(40, units="ns")
-    assert dut.mau_load_data.value == 0xDEADBEEF, "Instruction output is incorrect"
-    await Timer(80, units="ns")
+#     # reset
+#     dut.hrstn.value = 0
+#     await Timer(10, units="ns")
+#     dut.hrstn.value = 1
+
+#     # cycle_counter++
+#     dut.cycle_cnt.value = 0
+#     cocotb.start_soon(cycle_counter(dut))
+
+#     # Test R-Type Instruction
+#     INS = utilities.ins_gen('I')
+#     dut.inst_in.value = INS[ins_idx]
+#     await Timer(60, units="ns")
+#     assert dut.dec_rd.value  == INS[i_rd_idx],  "dec_rd  incorrect"
+#     assert dut.dec_rs1.value == INS[i_rs1_idx], "dec_rs1 incorrect"
+
+# # S type
+# # This stores to memory lol idk what to check
+# @cocotb.test()
+# async def test_S(dut):
+#     # 100MHz clk signal
+#     clock = Clock(dut.hclk, 10, units="ns")
+#     cocotb.start_soon(clock.start())
+
+#     # reset signal
+#     dut.hrstn.value = 0
+#     await Timer(10, units="ns")
+#     dut.hrstn.value = 1
+
+#     # update cycle_counter
+#     dut.cycle_cnt.value = 0
+#     cocotb.start_soon(cycle_counter(dut))
+
+#     # Test S-Type Instruction
+#     INS = utilities.ins_gen('S')
+#     dut.inst_in.value = INS[ins_idx]
+#     await Timer(60, units="ns")
+#     assert dut.dec_rs1.value == INS[s_rs1_idx], "dec_rs1 incorrect"
+#     assert dut.dec_rs2.value == INS[s_rs2_idx], "dec_rs2 incorrect"
+
+# # B type
+# # LOOK AT pc_write AND pc_wdata flag to check if branch is taken
+# #
+# @cocotb.test()
+# async def test_B(dut):
+#     # 100MHz clk signal
+#     clock = Clock(dut.hclk, 10, units="ns")
+#     cocotb.start_soon(clock.start())
+
+#     # reset signal
+#     dut.hrstn.value = 0
+#     await Timer(10, units="ns")
+#     dut.hrstn.value = 1
+
+#     # update cycle_counter
+#     dut.cycle_cnt.value = 0
+#     cocotb.start_soon(cycle_counter(dut))
+
+#     # Test B-Type Instruction
+#     INS = utilities.ins_gen('B')
+#     dut.inst_in.value = INS[ins_idx]
+#     await Timer(60, units="ns")
+#     assert dut.dec_rs1.value == INS[b_rs1_idx], "dec_rs1 incorrect"
+#     assert dut.dec_rs2.value == INS[b_rs2_idx], "dec_rs2 incorrect"
+
+# # U type
+# # CHECK rd AT THE END FOR UPPER IMMEDIATE ADDING AND LOADING
+# @cocotb.test()
+# async def test_U(dut):
+#     # 100MHz clk signal
+#     clock = Clock(dut.hclk, 10, units="ns")
+#     cocotb.start_soon(clock.start())
+
+#     # reset signal
+#     dut.hrstn.value = 0
+#     await Timer(10, units="ns")
+#     dut.hrstn.value = 1
+
+#     # update cycle_counter
+#     dut.cycle_cnt.value = 0
+#     cocotb.start_soon(cycle_counter(dut))
+
+#     # Test U-Type Instruction
+#     INS = utilities.ins_gen('U')
+#     dut.inst_in.value = INS[ins_idx]
+#     await Timer(60, units="ns")
+#     assert dut.dec_rd.value == INS[u_rd_idx], "dec_rd incorrect"
+
+# # J type
+# # CHECK rd AT THE END FOR RETURN ADDRESS
+
+# @cocotb.test()
+# async def test_J(dut):
+#     # 100MHz clk signal
+#     clock = Clock(dut.hclk, 10, units="ns")
+#     cocotb.start_soon(clock.start())
+
+#     # reset signal
+#     dut.hrstn.value = 0
+#     await Timer(10, units="ns")
+#     dut.hrstn.value = 1
+
+#     # update cycle_counter
+#     dut.cycle_cnt.value = 0
+#     cocotb.start_soon(cycle_counter(dut))
+
+#     # Test J-Type Instruction
+#     INS = utilities.ins_gen('J')
+#     dut.inst_in.value = INS[ins_idx]
+#     await Timer(60, units="ns")
+#     assert dut.dec_rd.value == INS[j_rd_idx], "dec_rd incorrect"
+
+
+
+# @cocotb.test()
+# async def test_core_basic(dut):
+#     """Test basic functionality of the core"""
+
+#     # 100MHz clock signal
+#     clock = Clock(dut.hclk, 10, units="ns")  # 10ns period (100MHz)
+#     cocotb.start_soon(clock.start())
+
+#     # Reset the DUT
+#     dut.hrstn.value = 0
+#     await Timer(10, units="ns")
+#     dut.hrstn.value = 1
+#     cocotb.start_soon(regfile_reader(dut))
+
+#     # Initialize signals
+#     dut.cycle_cnt.value = 0
+#     # Trash signals
+#     dut.itcm_hresp.value = 0
+#     dut.dtcm_hresp.value = 0
+
+#     # Don't change signals
+#     dut.itcm_ready.value = 0
+#     dut.itcm_hready.value = 1
+#     dut.dtcm_hready.value = 1
+
+
+#     dut.itcm_hrdata.value = 0b00000000000000001010000100000011
+#     #Load operation
+#     #offset: 000000000000, rs1: 00001, 010, rd: 00010, opcode:: 0000011
+#     dut.dtcm_hrdata.value = 0xDEADBEEF
+#     # update cycle_counter
+#     dut.cycle_cnt.value = 0
+#     cocotb.start_soon(cycle_counter(dut))
+
+#     # Test: Reset should initialize pc to 0
+#     await RisingEdge(dut.hclk)
+#     assert dut.ifu_pc.value == 0, "PC not reset to 0"
+
+#     # Test: Load instruction from memory
+#     # await Timer(40, units="ns")
+#     await Timer(130, units="ns")
+    
+#     dut.itcm_hrdata.value = 0b00000000000000010110001000110011
+#     #ORI operation
+#     #offset: 000000000000, rs1: 00010, 110, rd: 00100, opcode:: 0110011
+#     # print("reg_wdata.value: {}".format(dut.mau_load_data.value))
+#     # await wait_for_signal_change(dut.reg_rdata_1, dut.hclk)
+
+#     await wait_for_signal_change(dut.mau_load_data, dut.hclk)
+#     print(f"regfile values: {dut.dec_or.value})")
+#     # await Timer(40, units="ns")
+#     assert dut.mau_load_data.value == 0xDEADBEEF, "Instruction output is incorrect"
+
+#     await wait_for_signal_change(dut.regfile_interact, dut.hclk)
+
+#     assert int(regfile[2], 16) == 0xDEADBEEF, "Register 5 not loaded correctly"
+
+#     await Timer(80, units="ns")
