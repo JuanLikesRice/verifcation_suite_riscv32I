@@ -21,6 +21,13 @@ def arithmetic_right(val, n):
          shifted = shifted >> 1 | sign_bit << (bits-1)
     return shifted
 
+def sign_extend(dut, val, curr_bits, out_bits):
+    sign_bit = (val & (1<< (curr_bits-1)) != 0)
+    if (sign_bit == 0):
+        return val
+    else:
+        return ((1<<out_bits) - 1) ^ ((1 << curr_bits) - 1) | val
+    
 def twos_comp(val, bits):
     """compute the 2's complement of int value val"""
     if bits == 0:
@@ -189,7 +196,7 @@ def ins_gen(itype, boundary=0):
                     assert("Error")
                 ins_list.append(ins_temp)
         # for slli, srli, srai
-        ins_list[6] = (ins_list[8] & (2 ** 25 - 1))
+        # ins_list[6] = (ins_list[8] & (2 ** 25 - 1))
         ins_list[7] = (ins_list[8] & (2 ** 25 - 1))
         ins_list[8] = ((ins_list[8] & (2 ** 25 - 1)) | 0b0100000 << 25)
         ins_name_list = ["ADDI", "SLTI", "SLTIU", "XORI", "ORI", "ANDI", "SLLI", "SRLI", "SRAI", "LB", "LH", "LW", "LBU", "LHU", "JALR"]
