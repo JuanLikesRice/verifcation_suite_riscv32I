@@ -1,4 +1,4 @@
-module ex_imm_en (
+module exu_imm_swc (
     hclk                                        ,
     hrstn                                       ,
     cycle_cnt                                   ,
