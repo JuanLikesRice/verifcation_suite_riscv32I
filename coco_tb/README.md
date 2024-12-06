@@ -5,7 +5,6 @@
 ## Contents  
 - CocoTB resources  
 - Environment setup
-- CocoTB sample usage  
 - Single file verification  
 - Multiple file verification  
   
@@ -63,11 +62,6 @@ A screenshot for your reference:
  4. use "ctrl+X" to exit and save the modification.
  
 Congratulations! You have finish all the cocotb setup, don't forget to use it in your vistual studio code!
- 
-## CocoTB sample usage  
-- pass  
-- pass  
-  
   
 ## Single file verification  
 ### Work flow diagram  
