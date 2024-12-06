@@ -1,4 +1,4 @@
-module exu_upper_en (
+module exu_upper_swc (
     hclk                                        ,
     hrstn                                       ,
     cycle_cnt                                   ,
@@ -11,7 +11,7 @@ module exu_upper_en (
     reg_waddr                                   ,
     reg_wen                                     ,
     reg_wdata                                   ,
-    exu_stall//, dbg_mid_reg_waddr, dbg_mid_reg_wen, dbg_mid_reg_wdata                                    
+    exu_stall                                 
 );
 
 // general signals
@@ -36,10 +36,6 @@ input                       exu_stall           ;
 reg             [4:0]       mid_reg_waddr       ;
 reg                         mid_reg_wen         ;
 reg             [31:0]      mid_reg_wdata       ;
-
-/* output reg [4:0]  dbg_mid_reg_waddr;  // Debug signal
-output reg        dbg_mid_reg_wen;  // Debug signal
-output reg [31:0] dbg_mid_reg_wdata;   // Debug signal */
 
 assign reg_waddr = mid_reg_wen ? mid_reg_waddr : 'z;
 assign reg_wen   = mid_reg_wen ? mid_reg_wen   : 'z;

@@ -46,7 +46,7 @@ integer i;
 // regfile
 always @(posedge hclk or negedge hrstn) begin
     if(!hrstn) begin
-        $readmemh("program.hex", regfile); 
+        $readmemh("program.hex", regfile, 0, 31); 
         for (i = 0; i < 32; i = i + 1) begin
             // regfile[i] <= 0;
             // $display("regfile[%0d] = %h", i, regfile[i]);
