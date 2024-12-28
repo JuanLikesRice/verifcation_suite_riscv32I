@@ -7,14 +7,14 @@ SYNTH_TIMEOUT ?= 600
 XILINX_CELLS_URL ?= https://github.com/Xilinx/XilinxUnisimLibrary.git
 XILINX_CELLS_DIR ?= XilinxUnisimLibrary/verilog/src
 IVERILOG ?= /usr/bin/iverilog
-YOSYS ?= /usr/bin/yosys
+YOSYS ?= /usr/local/bin/yosys
 
 all: sim synth gatesim
 
 sim: riscv32i-sim
 	./$< +VCDFILE=sim.vcd +VCDLEVEL=0 | tee sim.log
 
-riscv32i-sim: riscv32iTB.v ${DUT} ins_mem.v decode.v regfile.v excute.v | ${XILINX_CELLS_DIR}
+riscv32i-sim: riscv32iTB.v ${DUT} ins_mem.v decode.v regfile.v excute.v pc.v | ${XILINX_CELLS_DIR}
 	${IVERILOG} -g2005-sv -s riscv32iTB -y ${XILINX_CELLS_DIR} -o $@ $^
 
 synth: riscv32i.netlist.v

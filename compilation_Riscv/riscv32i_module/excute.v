@@ -241,6 +241,8 @@ end
 
 
 always @(negedge i_clk) begin 
+
+#1
 case(Single_Instruction_i)
 
 {inst_UNKNOWN   }:begin 

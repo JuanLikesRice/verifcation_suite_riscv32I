@@ -1,29 +1,38 @@
 module ins_mem #(parameter MEM_SIZE = 10000000)(
-    input wire clk,
-    input wire reset,
+    input  wire        clk,
+    input  wire        reset,
+    input  wire [31:0] pc_i,
     output wire [31:0] pc_o,
     output wire [31:0] instruction_o
 );
     // param_module params ();
 
-    reg [31:0] memory [0:MEM_SIZE-1]; 
-    reg [31:0] pc;
-    reg [31:0] instruction;
-    assign pc_o = pc;
+    reg  [31:0] memory [0:MEM_SIZE-1]; 
+    reg  [31:0] instruction,pc_reg;
+    wire [31:0] pc;
+
+    assign pc   = pc_i;
+
+    // assign pc_o = pc_reg;
+    assign pc_o = pc_reg;
     assign instruction_o = instruction;
-    initial begin
-        // $readmemh("sanity.hex", memory);  // Load the program into memory
-        $readmemh("program.hex", memory);  // Load the program into memory
-        pc = 32'h00000000;  // Initialize PC to zero at the beginning
+    initial begin        // $readmemh("sanity.hex", memory);  // Load the program into memory
+        $readmemh("program.hex", memory);  
+        pc_reg = 32'h00000000;  
     end
-    always @(posedge clk or posedge reset) begin
+    // always @(posedge clk or posedge reset) begin
+    always @(posedge clk) begin
         if (reset) begin
-            pc <= 32'h00000000;  // Reset PC to 0 on reset
+            pc_reg      <= 32'hFFFFFFFF;  // Reset PC to 0
+            instruction <= 32'h00000013; // noOP  
+
         end else begin
-            instruction = memory[pc >> 2];  // Divide PC by 4 to get word index (assuming 4-byte instructions)
+    
+            instruction = memory[pc >> 2];  
+            pc_reg <= pc;
             // instruction = memory[pc];  // Divide PC by 4 to get word index (assuming 4-byte instructions)
             // $display("PC: %h, Instruction: %h, word in processor %h", pc, instruction,pc >> 2);
-            pc <= pc + 4;  // Assuming 32-bit (4-byte) instruc,tions
+            // pc <= pc + 4;  // Assuming 32-bit (4-byte) instruc,tions
         end
     end
 endmodule

@@ -22,10 +22,29 @@ module riscv32i
 
     // param_module params ();
 
+    reg halt_i, isTakenBranch_i;
+    reg [31:0] targetPC_i;
+
+initial begin 
+    halt_i          <= 0;
+    targetPC_i      <= 0;
+    isTakenBranch_i <= 0; 
+end
+
+    pc pc  (
+        .clk_i(clk),
+        .reset_i(reset),
+        .halt_i(halt_i),
+        .isTakenBranch_i(isTakenBranch_i),
+        .targetPC_i(targetPC_i),
+        .pc_o(pc_i)
+    );
+
 
     ins_mem ins_mem(
         .clk(clk),
         .reset(reset),
+        .pc_i(pc_i),
         .pc_o(pc_o),
         .instruction_o(instruction)
     );
@@ -49,7 +68,7 @@ module riscv32i
 //    .(),
 
 wire we_pi;
-wire [31:0] pc_o;
+wire [31:0] pc_o,pc_i;
 wire [31:0] writeData_pi,operand1_po,operand2_po;
 
  reg_file reg_file(
@@ -63,9 +82,6 @@ wire [31:0] writeData_pi,operand1_po,operand2_po;
 .operand1_po(operand1_po),
 .operand2_po(operand2_po)
 );
-
-
-
 
 execute  #(.N_param(32)) execute 
     (.i_clk(clk),    

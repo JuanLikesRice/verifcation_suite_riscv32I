@@ -48,6 +48,16 @@ module riscv32iTB
         #5000;
     end
 
+    initial begin : init
+        //logic [32*8-1:0] vcdfile;
+        string vcdfile;
+        int vcdlevel;
+        if ($value$plusargs("VCDFILE=%s",vcdfile))
+            $dumpfile(vcdfile);
+        if ($value$plusargs("VCDLEVEL=%d",vcdlevel))
+            $dumpvars(vcdlevel);
+            end
+
 
     initial begin : stim
         $display("%t: starting stream stimulus", $time);
@@ -66,9 +76,11 @@ module riscv32iTB
     // Simulation control
     initial begin
         tb_reset = 1;  // Start with reset asserted
-        #10000 tb_reset = 0;  // Release reset after 10 time units
-        // Run the simulation for 200 time units
-        #500000 $finish;
+        repeat (5) @(posedge tb_clk);
+        tb_reset = 0;  // Release reset after 10 time units
+        repeat (50) @(posedge tb_clk);
+
+        $finish;
     end
 
 //  always @(negedge tb_clk) begin : checker
