@@ -12,11 +12,11 @@ module decode
     output wire  [4:0] rs2_o,
     output wire  [2:0] fun3_o,
     output wire  [6:0] fun7_o,
-    output wire [31:0] imm_o,
-    output wire [63:0] Single_Instruction_o,
-    output wire [6:0] INST_typ_o,
-    output wire [6:0] opcode_o,
-    output wire [3:0] operand_amt_o
+    output wire  [31:0] imm_o,
+    output wire  [63:0] Single_Instruction_o,
+    output wire  [6:0] INST_typ_o,
+    output wire  [6:0] opcode_o,
+    output wire   [3:0] operand_amt_o
     // outputs to ALU
 );
 
