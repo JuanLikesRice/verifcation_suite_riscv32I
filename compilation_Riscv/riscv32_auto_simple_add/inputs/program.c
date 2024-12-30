@@ -1,4 +1,4 @@
-#define IO_BASE 0x00040000  // Base address for memory-mapped I/O
+#define IO_BASE 0x00000600  // Base address for memory-mapped I/O
 #define SUCCESS_CODE 0x1    // Code for test pass
 #define FAILURE_CODE 0x0    // Code for test fail
 

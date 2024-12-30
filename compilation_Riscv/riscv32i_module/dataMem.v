@@ -1,4 +1,4 @@
-module dataMem #(  parameter mem_size = 131072 ) (
+module dataMem #(  parameter mem_size = 4096 ) (
 input wire clk,
 input wire reset, 
 // input wire load, 
@@ -44,7 +44,7 @@ output wire  [31:0] loadData_w
 // );
 
     reg  [31:0] DMEM [0:mem_size-1];
-    wire [16:0] word_address;
+    wire [11:0] word_address;
     wire [ 1:0] byte_address;
     reg  [ 3:0] load_wire;
     reg  [ 3:0] store_wire;
@@ -52,7 +52,7 @@ output wire  [31:0] loadData_w
     reg [31:0] loadData;           // Data to be loaded
 
 
-    assign word_address = address[16:2];  
+    assign word_address = address[11:2];  
     assign byte_address = address[ 1:0];
     assign raw_word = DMEM[word_address];
     assign loadData_w = loadData;

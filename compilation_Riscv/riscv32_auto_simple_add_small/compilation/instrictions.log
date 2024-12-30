@@ -10,11 +10,11 @@ Disassembly of section .text:
    8:	02812423          	sw	s0,40(sp)
    c:	03010413          	addi	s0,sp,48
   10:	fca42e23          	sw	a0,-36(s0)
-  14:	60000793          	li	a5,1536
+  14:	000407b7          	lui	a5,0x40
   18:	fef42623          	sw	a5,-20(s0)
   1c:	fdc42703          	lw	a4,-36(s0)
   20:	fec42783          	lw	a5,-20(s0)
-  24:	00e7a023          	sw	a4,0(a5)
+  24:	00e7a023          	sw	a4,0(a5) # 40000 <_sdata>
   28:	00000013          	nop
   2c:	02c12083          	lw	ra,44(sp)
   30:	02812403          	lw	s0,40(sp)
@@ -81,10 +81,16 @@ Disassembly of section .text:
  11c:	00008067          	ret
 
 00000120 <_start>:
- 120:	00001117          	auipc	sp,0x1
- 124:	ee010113          	addi	sp,sp,-288 # 1000 <_stack_start>
+ 120:	00040117          	auipc	sp,0x40
+ 124:	ee010113          	addi	sp,sp,-288 # 40000 <_sdata>
  128:	f15ff0ef          	jal	3c <main>
  12c:	ff5ff06f          	j	120 <_start>
+
+Disassembly of section .data:
+
+00040000 <_sdata>:
+   40000:	0000                	.insn	2, 0x
+   40002:	0008                	.insn	2, 0x0008
 
 Disassembly of section .comment:
 

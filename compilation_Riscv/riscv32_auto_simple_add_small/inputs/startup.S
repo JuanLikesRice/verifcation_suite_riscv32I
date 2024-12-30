@@ -9,5 +9,5 @@ _start:
 
 .section .data                 # Define .data section for initialized variables
 .align 2
-# _stack_start:
-#    .word 0x00001000           # Stack starts at the end of Data Memory (address defined in link.ld)
+_stack_start:
+    .word 0x00080000           # Stack starts at the end of Data Memory (address defined in link.ld)

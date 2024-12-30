@@ -174,7 +174,7 @@ execute  #(.N_param(32)) execute
    );
 
 
-dataMem  #(.mem_size(131072)) dataMem 
+dataMem  #(.mem_size(4096)) dataMem 
   (
 .clk(clk),
 .reset(reset),
