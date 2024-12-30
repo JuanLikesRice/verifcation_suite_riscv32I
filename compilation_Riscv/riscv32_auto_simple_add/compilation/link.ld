@@ -11,7 +11,7 @@ MEMORY
 }
 
 /* Stack information */
-_min_stack  =  0x400;          /* Minimum stack size: 4KB */
+_min_stack  = 0x400;          /* Minimum stack size: 4KB */
 _stack_len  =  1024;            /* Total stack size (words) */
 _stack_start = ORIGIN(dataram) + LENGTH(dataram);  /* Stack starts at the end of Data RAM */
 
