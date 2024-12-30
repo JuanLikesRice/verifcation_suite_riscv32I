@@ -14,8 +14,8 @@ module execute
     input wire  [31:0] operand2_pi,
     input wire  [31:0] imm_i,
     input wire  [31:0] pc_i,
-    output wire [31:0] result_o,
-    output wire [31:0] result_secondary_o,
+    output wire [31:0] alu_result_1,
+    output wire [31:0] alu_result_2,
 
 
     input wire [63:0] Single_Instruction_i
@@ -27,8 +27,8 @@ module execute
 
 reg  [32:0] result;
 reg  [32:0] result_secondary;
-assign result_o           = result[31:0];
-assign result_secondary_o = result_secondary[31:0];
+assign alu_result_1           = result[31:0];
+assign alu_result_2 = result_secondary[31:0];
 initial begin 
 result <=0;
 end 

@@ -1,5 +1,4 @@
-`define PC_reg             31:00   //[31:00]
-`define instruct           63:32   //[31:00]
+
 // `define write_reg_en_reg   64      //[1]
 // `define control_reg        69:65   //[04:00]
 // `define dest_reg           74:70   //[04:00]
@@ -11,19 +10,24 @@
 // `define halt_reg           241     //[1]
 
 
-
-`define rd                  87:83 //[ 4:0]
-`define fun3                90:88 //[ 2:0]
-`define fun7                97:91 //[ 6:0]
-`define INST_typ           104:98 //[ 6:0]
-`define opcode             111:105 //[ 6:0]
+// `define rd                  87:83 //[ 4:0]
+// `define fun3                90:88 //[ 2:0]
+// `define fun7                97:91 //[ 6:0]
+// `define INST_typ           104:98 //[ 6:0]
+// `define opcode             111:105 //[ 6:0]
+`define PC_reg              31:00   //[31:00]
+`define instruct            63:32   //[31:00]
+`define alu_res1            95:34   //[31:00]
+// `define alu_res1            95:34   //[31:00]
+`define rd                 111:107 //[ 4:0]
 `define operand_amt        115:112 //[ 3:0]
 `define opRs1_reg          120:116 //[4:0]
 `define opRs2_reg          127:121 //[4:0]
 `define op1_reg            159:128 //[31:00]
 `define op2_reg            191:160 //[31:00]
 `define immediate          223:192 //[31:0]
-`define Single_Instruction 287:224 //[63:00]     
+`define alu_res2           255:224 //[31:0]
+`define Single_Instruction 319:256 //[63:00]     
 
 
 module riscv32i 
@@ -53,7 +57,7 @@ module riscv32i
     reg halt_i, isTakenBranch_i;
     reg [31:0] targetPC_i;
 
-    reg [287:0] pipeReg0, pipeReg1, pipeReg2, pipeReg3;
+    reg [319:0] pipeReg0, pipeReg1, pipeReg2, pipeReg3;
 
     //branch_taken
 
@@ -88,9 +92,6 @@ end
     wire [31:0] pc_o,pc_i;
     wire [31:0] writeData_pi,operand1_po,operand2_po;
 
-    assign we_pi = 0;
-    assign pc_stage_0          = pipeReg0[`PC_reg];
-    assign instruction_stage_0 = pipeReg0[`instruct];
 
 wire [31:0] pc_stage_1;
 wire [31:0] instruction_stage_1;
@@ -106,6 +107,26 @@ wire [31:0] operand1_stage1;
 wire [31:0] operand2_stage1;
 wire [31:0] imm_stage1;
 wire [63:0] Single_Instruction_stage1;
+wire [31:0] alu_result_1;
+wire [31:0] alu_result_2;
+
+
+
+wire [ 4:0] rd_stage2;
+wire [ 2:0] fun3_stage2;
+wire [ 6:0] fun7_stage2;
+wire [ 6:0] INST_typ_stage2;
+wire [ 6:0] opcode_stage2;
+wire [ 4:0] rs1_stage2;
+wire [ 4:0] rs2_stage2;
+wire [31:0] operand1_stage2;
+wire [31:0] operand2_stage2;
+wire [31:0] imm_stage2;
+wire [63:0] Single_Instruction_stage2;
+wire [31:0] alu_result_1_stage2;
+wire [31:0] alu_result_2_stage2;
+wire [31:0] loaded_data;
+
 
 
     decode #(.N_param(N_param)) decode_debug
@@ -147,16 +168,35 @@ execute  #(.N_param(32)) execute
      .rd_i(rd_stage1),
      .rs1_i(rs1_stage1), 
      .rs2_i(rs2_stage1), 
-     .imm_i(imm_stage1)
+     .imm_i(imm_stage1),
+     .alu_result_1(alu_result_1),
+     .alu_result_2(alu_result_2)
    );
+
+
+dataMem  #(.mem_size(131072)) dataMem 
+  (
+.clk(clk),
+.reset(reset),
+// .load(),
+// .store(),
+.Single_Instruction(Single_Instruction_stage2),
+.address(alu_result_1_stage2),
+.storeData(operand2_stage2),
+.loadData_w(loaded_data)
+);
+
+
+
+
+assign we_pi = 0;
+assign pc_stage_0          =        pipeReg0[`PC_reg];
+assign instruction_stage_0 =        pipeReg0[`instruct];
+
 
 assign pc_stage_1 =                 pipeReg1[`PC_reg];
 assign instruction_stage_1 =        pipeReg1[`instruct];
 assign rd_stage1 =                  pipeReg1[`rd];
-assign fun3_stage1 =                pipeReg1[`fun3];
-assign fun7_stage1 =                pipeReg1[`fun7];
-assign INST_typ_stage1 =            pipeReg1[`INST_typ];
-assign opcode_stage1 =              pipeReg1[`opcode];
 assign rs1_stage1 =                 pipeReg1[`opRs1_reg];
 assign rs2_stage1 =                 pipeReg1[`opRs2_reg];
 assign operand1_stage1 =            pipeReg1[`op1_reg];
@@ -165,16 +205,35 @@ assign imm_stage1 =                 pipeReg1[`immediate];
 assign Single_Instruction_stage1 =  pipeReg1[`Single_Instruction];
 
 
+
+
+assign pc_stage_2 =                 pipeReg2[`PC_reg];
+assign instruction_stage_2 =        pipeReg2[`instruct];
+assign rd_stage2 =                  pipeReg2[`rd];
+assign rs1_stage2 =                 pipeReg2[`opRs1_reg];
+assign rs2_stage2 =                 pipeReg2[`opRs2_reg];
+assign operand1_stage2 =            pipeReg2[`op1_reg];
+assign operand2_stage2 =            pipeReg2[`op2_reg];
+assign imm_stage2 =                 pipeReg2[`immediate];
+assign Single_Instruction_stage2 =  pipeReg2[`Single_Instruction];
+assign alu_result_1_stage2 =        pipeReg2[`alu_res1          ];
+assign alu_result_2_stage2 =        pipeReg2[`alu_res2          ];
+    
+
+
+
+
+ // assign fun3_stage1 =                pipeReg1[`fun3]; // assign fun7_stage1 =                pipeReg1[`fun7]; // assign INST_typ_stage1 =            pipeReg1[`INST_typ]; // assign opcode_stage1 =              pipeReg1[`opcode];
 always @(posedge clk)begin
 if (reset) begin 
-    pipeReg0 <= 288'b0;
-    pipeReg1 <= 288'b0;
-    pipeReg2 <= 288'b0;
-	pipeReg3 <= 288'b0;
+    pipeReg0 <= 320'b0;
+    pipeReg1 <= 320'b0;
+    pipeReg2 <= 320'b0;
+	pipeReg3 <= 320'b0;
 end else if (branch_taken) begin 
-    pipeReg1 <= 288'b0;
-    pipeReg2 <= 288'b0;
-	pipeReg3 <= 288'b0;
+    pipeReg1 <= 320'b0;
+    pipeReg2 <= 320'b0;
+	pipeReg3 <= 320'b0;
 end
 else begin
 
@@ -187,26 +246,34 @@ else begin
     pipeReg1[`PC_reg]             <= pc_stage_0;
     pipeReg1[`instruct]           <= instruction_stage_0;
     pipeReg1[`rd                ] <= rd_o;//  87:83 //[ 4:0]
-    pipeReg1[`fun3              ] <= fun3_o;//  90:88 //[ 2:0]
-    pipeReg1[`fun7              ] <= fun7_o;//  97:91 //[ 6:0]
-    pipeReg1[`INST_typ          ] <= INST_typ_o;// 104:98 //[ 6:0]
-    pipeReg1[`opcode            ] <= opcode_o;// 111:105 //[ 6:0]
-    pipeReg1[`opRs1_reg         ] <= rs1_o;// 120:116 //[4:0]
     pipeReg1[`opRs2_reg         ] <= rs2_o;// 127:121 //[4:0]
     pipeReg1[`op1_reg           ] <= operand1_po;// 159:128 //[31:00]
     pipeReg1[`op2_reg           ] <= operand2_po;// 191:160 //[31:00]
     pipeReg1[`immediate         ] <= imm_o;// 223:192 //[31:0]
-    pipeReg1[`Single_Instruction] <= Single_Instruction_o;// 287:224 //[63:00]     
-    
-
-
-
-
-    // pipeReg1[`operand_amt       ] <= ;// 115:112 //[ 3:0]
-    
+    pipeReg1[`Single_Instruction] <= Single_Instruction_o;
+    // 287:224 //[63:00]     
+    // pipeReg1[`fun3              ] <= fun3_o;//  90:88 //[ 2:0]    // pipeReg1[`fun7              ] <= fun7_o;//  97:91 //[ 6:0]    // pipeReg1[`INST_typ          ] <= INST_typ_o;// 104:98 //[ 6:0]    // pipeReg1[`opcode            ] <= opcode_o;// 111:105 //[ 6:0]    // pipeReg1[`opRs1_reg         ] <= rs1_o;// 120:116 //[4:0]
+    // pipeReg1[`operand_amt       ] <= ;// 115:112 //[ 3:0]    
     // <-- stage 1 //
 
 
+    // stage 2 --> //
+    pipeReg2[`PC_reg]             <= pc_stage_1;
+    pipeReg2[`instruct]           <= instruction_stage_1;
+    pipeReg2[`rd                ] <= rd_stage1;//  87:83 //[ 4:0]
+    pipeReg2[`opRs1_reg         ] <= rs1_stage1;// 120:116 //[4:0]
+    pipeReg2[`opRs2_reg         ] <= rs2_stage1;// 127:121 //[4:0]
+    pipeReg2[`op1_reg           ] <= operand1_stage1;// 159:128 //[31:00]
+    pipeReg2[`op2_reg           ] <= operand2_stage1;// 191:160 //[31:00]
+    pipeReg2[`immediate         ] <= imm_stage1;// 223:192 //[31:0]
+    pipeReg2[`Single_Instruction] <= Single_Instruction_stage1;// 287:224 //[63:00]     
+    pipeReg2[`alu_res1          ] <= alu_result_1;// 223:192 //[31:0]
+    pipeReg2[`alu_res2          ] <= alu_result_2;// 223:192 //[31:0]
+    
+
+    // pipeReg2[`fun3              ] <= fun3_o;//  90:88 //[ 2:0]    // pipeReg2[`fun7              ] <= fun7_o;//  97:91 //[ 6:0]    // pipeReg2[`INST_typ          ] <= INST_typ_o;// 104:98 //[ 6:0]    // pipeReg2[`opcode            ] <= opcode_o;// 111:105 //[ 6:0]
+    // pipeReg1[`operand_amt       ] <= ;// 115:112 //[ 3:0]    
+    // <-- stage 2 //
 
 end 
 end
