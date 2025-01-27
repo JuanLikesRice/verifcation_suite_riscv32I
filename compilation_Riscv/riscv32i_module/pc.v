@@ -1,18 +1,18 @@
-`timescale 1ns/1ns
-
 module pc(
 input wire clk_i,
 input wire reset_i,
 input wire halt_i,
-input wire isTakenBranch_i, 
+input wire jump_inst_wire, 
+input wire branch_inst_wire, 
 input wire [31:0] targetPC_i,
 output wire[31:0] pc_o
 );
 
 reg  [31:0] PC;
 wire [31:0] nextPC;
-
-  assign nextPC = isTakenBranch_i ?  targetPC_i  : PC + 4;
+wire change_PC_condition;
+assign change_PC_condition = jump_inst_wire | branch_inst_wire;
+  assign nextPC = change_PC_condition ?  targetPC_i  : PC + 4;
 //   assign nextPC =  PC + 4;
   assign pc_o = PC;
 
@@ -21,7 +21,7 @@ wire [31:0] nextPC;
   	 if (reset_i)
 	    PC  <= 32'h120;
 	 else 
- 	    if (isTakenBranch_i | ~halt_i)  begin
+ 	    if (change_PC_condition | ~halt_i)  begin
             PC <= nextPC;
 	end
   end

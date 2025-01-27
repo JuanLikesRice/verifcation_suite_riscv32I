@@ -218,7 +218,7 @@ dataMem
         repeat (1) @(posedge clk);
 
         Single_Instruction = inst_LH;
-        address = 32'h00000006; // Address of the 2nd word, halfword 1
+        address = 32'h00000006*4; // Address of the 2nd word, halfword 1
         repeat (1) @(posedge clk);
         $display("LH: Address=0x%h, LoadData=0x%h", address, loadData_w);
 

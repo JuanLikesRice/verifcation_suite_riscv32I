@@ -1,7 +1,7 @@
 // 0x00000000
 ffff0000
-ffff0001
-ffff0002
+bbcc00aa
+deadbeef
 ffff0003
 ffff0004
 ffff0005

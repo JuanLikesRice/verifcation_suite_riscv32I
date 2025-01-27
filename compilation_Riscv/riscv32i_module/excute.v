@@ -17,6 +17,8 @@ module execute
     output wire [31:0] alu_result_1,
     output wire [31:0] alu_result_2,
 
+    output wire  branch_inst_wire, 
+    output wire  jump_inst_wire,
 
     input wire [63:0] Single_Instruction_i
     // output wire [6:0] INST_typ_o,
@@ -36,203 +38,304 @@ wire signed [31:0] operand1_pi_signed = operand1_pi;
 wire signed [31:0] operand2_pi_signed = operand2_pi; 
 wire signed [31:0] imm_i_signed       = imm_i; 
 
+reg  branch_inst, jump_inst;
+// wire branch_inst_wire, jump_inst_wire;
+
 always @(*) begin 
 case(Single_Instruction_i)
 {inst_UNKNOWN   }:begin 
 result <=0;
 result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_ADD   }:begin 
 result <= operand1_pi + operand2_pi;
 result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SUB   }:begin 
     result <= operand1_pi + operand2_pi;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_XOR   }:begin 
     result <= operand1_pi ^ operand2_pi;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_OR    }:begin 
     result <= operand1_pi | operand2_pi;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_AND    }:begin 
     result <= operand1_pi & operand2_pi;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SLL   }:begin 
     result <= (operand1_pi << (operand2_pi));
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SRL   }:begin 
     result <= (operand1_pi >> (operand2_pi));
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SRA   }:begin 
     result <= (operand1_pi >>> (operand2_pi));
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SLT   }:begin 
     result <= (operand1_pi        < operand2_pi       ) ? 1'b1 : 1'b0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SLTU  }:begin 
     result <= (operand1_pi_signed < operand2_pi_signed) ? 1'b1 : 1'b0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_ADDI  }:begin 
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_XORI  }:begin 
     result <= operand1_pi ^ imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_ORI  }:begin 
     result <= operand1_pi | imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_ANDI  }:begin 
     result <= operand1_pi & imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SLLI  }:begin 
     result <= operand1_pi << imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SRLI  }:begin 
     result <= operand1_pi >> imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SRAI    }:begin 
     result <= operand1_pi >>> imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SLTI  }:begin 
     result <= (operand1_pi        < operand2_pi       ) ? 1'b1 : 1'b0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SLTIU }:begin 
     result <= (operand1_pi_signed < imm_i_signed      ) ? 1'b1 : 1'b0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_LB    }:begin 
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_LH    }:begin 
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_LW    }:begin 
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_LBU   }:begin 
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_LHU   }:begin 
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SB    }:begin
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SH    }:begin
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_SW    }:begin
     result <= operand1_pi + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_BEQ   }:begin
     result <= {31'b0,(operand1_pi == operand2_pi)};
     result_secondary <=pc_i + imm_i;
+    branch_inst <=1'b1;
+    jump_inst <=0;
 end
 {inst_BNE   }:begin
     result <= {31'b0,(operand1_pi != operand2_pi)};
     result_secondary <=pc_i + imm_i;
+    branch_inst <=1'b1;
+    jump_inst <=0;
 end
 {inst_BLT   }:begin
     result <= {31'b0,(operand1_pi <  operand2_pi)};
     result_secondary <=pc_i + imm_i;
+    branch_inst <=1'b1;
+    jump_inst <=0;
 end
 {inst_BGE   }:begin
     result <= {31'b0,(operand1_pi >= operand2_pi)};
     result_secondary <=pc_i + imm_i;
+    branch_inst <=1'b1;
+    jump_inst <=0;
 end
 {inst_BLTU  }:begin
     result <= {31'b0,(operand1_pi <  operand2_pi)};
     result_secondary <=pc_i + imm_i;
+    branch_inst <=1'b1;
+    jump_inst <=0;
 end
 {inst_BGEU  }:begin
     result <= {31'b0,(operand1_pi >= operand2_pi)};
     result_secondary <= pc_i + imm_i;
+    branch_inst <=1'b1;
+    jump_inst <=0;
 end
 {inst_JAL   }:begin
     result <= pc_i + 4;
     result_secondary <= pc_i + imm_i;
+    branch_inst <=0;
+    jump_inst <=1'b1;
 end
 {inst_JALR  }:begin
     result <= pc_i + 4;
     result_secondary <= operand1_pi + imm_i;
+    branch_inst <=0;
+    jump_inst <=1'b1;
 end
 {inst_LUI   }:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_AUIPC }:begin
     result           <=pc_i + imm_i;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
      end
 {inst_ECALL }:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_EBREAK}:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_FENCE }:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_FENCEI}:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_CSRRW }:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_CSRRS }:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_CSRRC }:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_CSRRWI}:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_CSRRSI}:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 {inst_CSRRCI}:begin
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 default: begin 
     result           <=0;
     result_secondary <=0;
+    branch_inst <=0;
+    jump_inst <=0;
 end
 endcase
 end
