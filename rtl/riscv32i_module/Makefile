@@ -12,10 +12,11 @@ YOSYS ?= /usr/local/bin/yosys
 all: sim synth gatesim
 
 sim: riscv32i-sim
-	./$< +VCDFILE=sim.vcd +VCDLEVEL=0 | tee sim.log
+	./$< +VCDFILE=sim.vcd +VCDLEVEL=5 &> sim.log
 
-riscv32i-sim: riscv32iTB.v ${DUT} ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v | ${XILINX_CELLS_DIR}
-	${IVERILOG} -g2005-sv -s riscv32iTB -y ${XILINX_CELLS_DIR} -o $@ $^
+
+riscv32i-sim: riscv32iTB.v ${DUT} ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v | ${XILINX_CELLS_DIR}
+	${IVERILOG} -g2001 -s riscv32iTB -y ${XILINX_CELLS_DIR} -o $@ $^
 
 synth: riscv32i.netlist.v
 
@@ -26,13 +27,18 @@ ${XILINX_CELLS_DIR}:
 	git clone ${XILINX_CELLS_URL}
 
 gatesim: ./riscv32i-gatesim
-	./$< +VCDFILE=gatesim.vcd +VCDLEVEL=3 | tee gatesim.log
+	./$< +VCDFILE=gatesim.vcd +VCDLEVEL=5 | tee gatesim.log
 
 riscv32i-gatesim: riscv32iTB.v riscv32i.netlist.v | ${XILINX_CELLS_DIR}
 	${IVERILOG} -g2005-sv -s riscv32iTB -DGATESIM -y ${XILINX_CELLS_DIR} -y ${XILINX_CELLS_DIR}/unisims -o $@ $^
 
+
+clear:
+	$(RM) riscv32i-sim 
+	
+
 clean:
-	$(RM) riscv32i-sim sim.log sim.vcd
+	$(RM) riscv32i-sim sim.log
 	$(RM) riscv32i-gatesim gatesim.log gatesim.vcd
 	$(RM) riscv32i.netlist.v synth.log
 	
