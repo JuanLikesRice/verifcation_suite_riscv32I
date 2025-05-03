@@ -1,51 +1,108 @@
-#define IO_BASE 0x00000600  // Base address for memory-mapped I/O
-#define SUCCESS_CODE 0x1    // Code for test pass
-#define FAILURE_CODE 0x0    // Code for test fail
+// #define PERIPHERAL_BASE   0x000007D0  // Base address for success/failure codes
+// #define PERIPHERAL_RESULT 0x000007D4  // Base address for matrix sum result
+#define PERIPHERAL_BASE           0x00000600  
+#define PERIPHERAL_RESULT         0x00000604
+// #define PERIPHERAL_SUM_immediate  0x00000608
 
-// Define types
-typedef unsigned int uint32_t;
 
-// Function to write a result to a memory-mapped I/O address for test status
-void write_to_io(int result) {
-    volatile uint32_t *io_addr = (uint32_t *)(IO_BASE);
-    *io_addr = result;  // Write the test result to the I/O address
+
+// Function to write values to memory-mapped I/O
+void write_to_peripheral(int address, int value) {
+    volatile int* periph_addr = (int*)(address);
+    *periph_addr = value;
+}
+
+// Function to perform matrix multiplication (memory and computation intensive)
+void matrix_multiply(int size, int A[][size], int B[][size], int C[][size]) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            C[i][j] = 0;
+            for (int k = 0; k < size; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
 }
 
 int main() {
-    // Test variables
-    int a = 5;
-    int b = 10;
-    int sum = 0;
+    int size =  4;  //  4x 4 matrices for testing
+    int A[ 4][ 4], B[ 4][ 4], C[ 4][ 4];
 
-    // Perform an addition test
-    sum = a + b;
-    if (sum != 15) {
-        write_to_io(FAILURE_CODE);  // Test failed, write failure code
-        return 1;                    // Exit early on failure
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            A[i][j] = i + j;
+            B[i][j] = i * j;
+        }    }
+
+    matrix_multiply(size, A, B, C);
+
+    // Sum elements of result matrix C
+    int matrix_sum = 0;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            matrix_sum += C[i][j];
+        }
     }
 
-    // Test conditional branching
-    if (sum == 15) {
-        write_to_io(SUCCESS_CODE);  // Test passed, write success code
-    } else {
-        write_to_io(FAILURE_CODE);  // Test failed, write failure code
-        return 1;                    // Exit early on failure
-    }
+    write_to_peripheral(PERIPHERAL_RESULT, matrix_sum);  // Send result to peripheral
+    write_to_peripheral(PERIPHERAL_BASE,  0xDEADBEEF);  // Success code
 
-    // Loop test with addition
-    int total = 0;
-    for (int i = 0; i < 5; i++) {
-        total += i;
-    }
+    // if (matrix_sum ==  4 4 4) {  // Known expected result for this matrix setup
+    //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);  // Success code
+    // } else {
+    //     write_to_peripheral(PERIPHERAL_BASE, 0xBADF00D);   // Failure code
+    // }
 
-    // Verify the loop addition result
-    if (total != 10) {  // 0+1+2+3+4 = 10
-        write_to_io(FAILURE_CODE);
-        return 1;
-    }
-
-    // Final success
-    write_to_io(SUCCESS_CODE);  // All tests passed
-
+    while (1) {}  // Halt
     return 0;
 }
+
+
+// #define   PERIPHERAL_BASE 0x00000600  // Base address for success/failure codes
+// #define PERIPHERAL_RESULT 0x00000604  // Base address for factorial result
+
+// void write_to_peripheral(int address, int value) {
+//     volatile int* periph_addr = (int*)(address);
+//     *periph_addr = value;}
+
+// int factorial(int n) {
+//     if (n <= 1) return 1;
+//     return n * factorial(n - 1);}
+
+// // int fibonacci(int n) {
+// //     if (n <= 1) {
+// //         return n;  
+// //     } else {
+// //         return fibonacci(n - 1) + fibonacci(n -  4);  // Recursive case
+// //     }
+// // }
+
+
+// int main() {
+//     // int result = fibonacci(1 4);
+//     int result = factorial(1 4);
+//     write_to_peripheral(PERIPHERAL_BASE, result);  
+//     // if (result == 676 4) {
+//     //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);
+//     // } else {
+//     //     write_to_peripheral(PERIPHERAL_BASE, 0xBADF00D);
+//     // }
+
+
+
+//     // int    result;
+//     // int    A =  4 4;
+//     // int    B = 47 4;
+//     // result = A * B;
+//     // write_to_peripheral(PERIPHERAL_RESULT, 0xBADF00D);
+    
+//     // if (result ==  44700) {
+//     //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);
+//     // } else {
+//     //     write_to_peripheral(PERIPHERAL_BASE, 0xBADF00D);
+//     // }
+
+
+//     while (1) {}  // Halt
+//     return 0;
+// }
