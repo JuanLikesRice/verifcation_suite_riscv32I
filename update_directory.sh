@@ -9,7 +9,7 @@ cd -
 # rm rtl/riscv32i_module/assembly_code/program_disassembly.txt
 # rm rtl/riscv32i_module/program.hex 
 
-[ -f rtl/riscv32i_module/assembly_code/compilation.lo ] && rm rtl/riscv32i_module/assembly_code/compilation.log            
+[ -f rtl/riscv32i_module/assembly_code/compilation.log ] && rm rtl/riscv32i_module/assembly_code/compilation.log            
 [ -f rtl/riscv32i_module/assembly_code/instrictions.log ] && rm rtl/riscv32i_module/assembly_code/instrictions.log
 [ -f rtl/riscv32i_module/assembly_code/program.hex ] && rm rtl/riscv32i_module/assembly_code/program.hex
 [ -f rtl/riscv32i_module/assembly_code/program.c ] && rm rtl/riscv32i_module/assembly_code/program.c

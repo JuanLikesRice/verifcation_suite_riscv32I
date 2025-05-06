@@ -10,6 +10,13 @@ module core_controller_fsm (
     input  wire        fetch_ready,        // Fetch FSM ready
     input  wire        start_program,      // Trigger to begin program
 
+
+
+    //data mem ports
+    output wire             data_mem_stop_request_overide,
+    input  wire             data_mem_reset_able,
+
+
     output wire [2:0]  state_out,          // Debug state output
     output wire        global_reset,       // Reset signal to pipeline
     output wire        pc_override,        // PC override during jumps/interrupts

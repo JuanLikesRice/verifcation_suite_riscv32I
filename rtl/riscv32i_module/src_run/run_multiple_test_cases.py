@@ -22,7 +22,7 @@ def clear_output_files(test_case):
 
 
 
-def run_test_case(test_case):
+def run_test_case(test_case,recompile=False):
     """
     Check if the test case directory exists; if it does, run run_single_test_case.py for that test case.
     """
@@ -37,6 +37,8 @@ def run_test_case(test_case):
 
 
     command = f"python src_run/run_single_test_case.py {test_case}"
+    if recompile:
+        command = f"python src_run/run_single_test_case_recompile.py {test_case}"
     print(f"Running: {command}")
     result = subprocess.run(command, shell=True)
     if result.returncode != 0:
@@ -95,6 +97,7 @@ def check_simulation_result(test_case):
 #             return f"Test case {test_case}: FAILED (Pass string not found)"
 
 def main():
+    recompile = True
     num_test_cases = 18
     # Determine test cases: if provided via command-line, use them; otherwise, use default list.
     if len(sys.argv) > 1:
@@ -105,7 +108,7 @@ def main():
     
     # Run each test case.
     for tc in test_cases:
-        run_test_case(tc)
+        run_test_case(tc,recompile=recompile)
     
     print("\n--- Test Results Summary ---")
     # After running all test cases, check sim.log for each.

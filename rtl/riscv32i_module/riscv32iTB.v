@@ -6,7 +6,7 @@ module riscv32iTB
     parameter memory_offset_param = 32'h00000600,
     parameter success_code = 32'hDEADBEEF,
     parameter cycles_timeout = 20000,
-    parameter initial_pc    = 32'h000003F8
+    parameter initial_pc    = 32'h000000A4
 )
 (
 

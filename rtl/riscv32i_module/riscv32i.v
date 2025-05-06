@@ -95,17 +95,15 @@ assign enable_design = enable_design_reg & ~stop_design;
 always @(posedge clk) begin
   	if (reset) begin
 
-        cycle_to_end        <= 32'h0;
+      cycle_to_end        <= 32'h0;
 	    Cycle_count         <= 32'h0;
 	    enable_design_reg   <=  1'b0;
-        stop_design         <=  1'b0;
+      stop_design         <=  1'b0;
 
     end else begin  
     if (start_design) begin 
-        // cycle_to_end        <= 32'h0;
 	    Cycle_count         <= 32'h0;
 	    enable_design_reg   <=  1'b1;
-        // stop_design         <=  1'b0;
     end else if (enable_design_reg) begin
         Cycle_count         <= Cycle_count + 1;
 	    enable_design_reg   <= enable_design_reg;
@@ -143,15 +141,6 @@ wire Dmem_clk, Imem_clk;
         .initial_pc_i(initial_pc_i),
         .final_value(final_value),
         
-        // .data_mem_clkb(data_mem_clkb),
-        // .data_mem_enb(data_mem_enb),
-        // .data_mem_rstb(data_mem_rstb),
-        // .data_mem_web(data_mem_web),
-        // .data_mem_addrb(data_mem_addrb),
-        // .data_mem_dinb(data_mem_dinb),
-        // .data_mem_rstb_busy(data_mem_rstb_busy),
-        // .data_mem_doutb(data_mem_doutb),
-        
 
       .Dmem_clk(            Dmem_clk),
       .Dmem_data_req_o(     Dmem_data_req_o),
@@ -163,15 +152,6 @@ wire Dmem_clk, Imem_clk;
       .Dmem_data_rvalid_i(  Dmem_data_rvalid_i),
       .Dmem_data_gnt_i(     Dmem_data_gnt_i),
 
-
-        // .ins_mem_clkb(ins_mem_clkb),
-        // .ins_mem_enb(ins_mem_enb),
-        // .ins_mem_rstb(ins_mem_rstb),
-        // .ins_mem_web(ins_mem_web),
-        // .ins_mem_addrb(ins_mem_addrb),
-        // .ins_mem_dinb(ins_mem_dinb),
-        // .ins_mem_rstb_busy(ins_mem_rstb_busy),
-        // .ins_mem_doutb(ins_mem_doutb)
 
 
         // Memory interface signals
