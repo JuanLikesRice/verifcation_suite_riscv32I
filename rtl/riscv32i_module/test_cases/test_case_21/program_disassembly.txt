@@ -130,10 +130,10 @@ Disassembly of section .data:
  1e8:	07112623          	sw	a7,108(sp)
  1ec:	06312823          	sw	gp,112(sp)
  1f0:	06412a23          	sw	tp,116(sp)
- 1f4:	60000293          	li	t0,1536
- 1f8:	deadc337          	lui	t1,0xdeadc
- 1fc:	eef30313          	addi	t1,t1,-273 # 0xdeadbeef
- 200:	0062a023          	sw	t1,0(t0)
+ 1f4:	deadc7b7          	lui	a5,0xdeadc
+ 1f8:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
+ 1fc:	60000513          	li	a0,1536
+ 200:	e01ff0ef          	jal	0x0
  204:	07012183          	lw	gp,112(sp)
  208:	07412203          	lw	tp,116(sp)
  20c:	05012503          	lw	a0,80(sp)

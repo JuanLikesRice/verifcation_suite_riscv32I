@@ -619,6 +619,15 @@ end
 {`inst_CSRRCI}:begin 
     $write("inst_CSRRCI   ");
      end
+{`inst_MRET}:begin 
+    $write("inst_MRET ");
+     end
+{`inst_SRET}:begin 
+    $write("inst_SRET ");
+     end
+{`inst_WFI}:begin 
+    $write("inst_WFI ");
+     end
 default: begin 
     $write("not_encoded instruction   ");
 end

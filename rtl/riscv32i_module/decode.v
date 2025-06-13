@@ -290,13 +290,27 @@ always @(*) begin
         `INST_typ_I_ECALL: begin 
                 case ({fun3})
                 {3'b000}: begin  //
-                if (instruction[20]==1'b1) begin 
+            
+                case (imm[11:0])
+                {12'b00000000001}: begin  // EBREAK
                 Single_Instruction <= `inst_EBREAK ;
-
-                end else begin
+                end 
+                {12'h302}: begin  // MRET
+                Single_Instruction <= `inst_MRET;
+                end 
+                {12'h102}: begin  // 
+                Single_Instruction <= `inst_SRET;
+                end 
+                {12'h105}: begin  // 
+                Single_Instruction <= `inst_WFI;
+                end
+                {12'h000}: begin  // 
                 Single_Instruction <= `inst_ECALL;
+                end
+                endcase
+   
 
-                 end
+                //  end
                 end 
                 {3'b001}: begin  //
                 Single_Instruction <= `inst_CSRRW;

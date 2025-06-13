@@ -4,14 +4,14 @@ __DYNAMIC = 0;
 MEMORY
 {
     /* Define the memory regions according to the new map */
-    instrram   : ORIGIN = 0x00000000, LENGTH = 1280  /* Instruction Memory: 128KB */
-    rom        : ORIGIN = 0x00000500, LENGTH =  256    /* ROM (Boot): 4KB */
-    peripheral : ORIGIN = 0x00000600, LENGTH =  512  /* Peripherals: 124KB */
-    dataram    : ORIGIN = 0x00000800, LENGTH = 2048  /* Data Memory: 256KB */
+    instrram   : ORIGIN = 0x00000000, LENGTH = 1280  /* Instruction Memory:     1280 B */
+    rom        : ORIGIN = 0x00000500, LENGTH =  256  /* ROM (Boot):              256 B */
+    peripheral : ORIGIN = 0x00000600, LENGTH =  512  /* Peripherals:             512 B */
+    dataram    : ORIGIN = 0x00000800, LENGTH = 2048  /* Data Memory:            2048 B */
 }
 
 /* Stack information */
-_min_stack  = 0x400;          /* Minimum stack size: 4KB */
+_min_stack  = 0x400;          /* Minimum stack size: 1024 B */
 _stack_len  =  1024;            /* Total stack size (words) */
 _stack_start = ORIGIN(dataram) + LENGTH(dataram);  /* Stack starts at the end of Data RAM */
 

@@ -105,14 +105,19 @@ void __attribute__((naked)) trap_handler(void) {
         "sw a7, 108(sp)\n\t"
         "sw gp, 112(sp)\n\t"
         "sw tp, 116(sp)\n\t"
+        );
 
-        // Set a flag to indicate interrupt fired
-        "li   t0, 1536\n\t"                  // PERIPHERAL_SUCCESS
-        "lui  t1, 0xDEADC\n\t"
-        "addi t1, t1, -273\n\t"             // t1 = 0xDEADBEEF
-        "sw   t1, 0(t0)\n\t"
 
-        // Restore all registers
+        write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
+
+        // "li   t0, 1536\n\t"                  // PERIPHERAL_SUCCESS
+        // "lui  t1, 0xDEADC\n\t"
+        // "addi t1, t1, -273\n\t"             // t1 = 0xDEADBEEF
+        // "sw   t1, 0(t0)\n\t"
+
+
+        asm volatile(        // // Set a flag to indicate interrupt fired
+
         "lw gp,  112(sp)\n\t"
         "lw tp,  116(sp)\n\t"
         "lw a0,   80(sp)\n\t"

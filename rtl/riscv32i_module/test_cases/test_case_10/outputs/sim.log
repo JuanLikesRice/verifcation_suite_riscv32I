@@ -2539,6 +2539,26 @@ CSRs*:
 DATA_MEM:     D00000000:   deadbeef,   D000009b8:   deadbeef,   D000009bc:   00000600,   D000009cc:   00000600,   D000009d8:   00001000,   D000009dc:   000000e8,   D000009e0:   f0000000,   D000009e4:   fffffc18,   D000009e8:   3c000000,   D000009ec:   ffffff06,   D000009fc:   000000f8,
 DATA_MEM*:    D00000000: -559038737,   D000009b8: -559038737,   D000009bc:      1536,   D000009cc:      1536,   D000009d8:      4096,   D000009dc:       232,   D000009e0: -268435456,   D000009e4:     -1000,   D000009e8: 1006632960,   D000009ec:      -250,   D000009fc:       248,
 
+----------------------------------------------------------------------------------START
+ 
+Cycle_count   102,
+        pc_o  000000f4,
+PipeReg0  PC: 000000f0: I:{00000013}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
+PipeReg1  PC: 000000ec: I:{00001117}    inst_AUIPC  rd_i_a    2 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00001000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
+EXEC      PC: 000000ec: I:{00001117}    inst_AUIPC  rd_i_a    2 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {0000010ec} imm_i 00001000
+PipeReg2  PC: 000000e8: I:{0000006f}    inst_JAL    rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {000000ec} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2    232,  rd_data       0,  data_mem_     0, 
+PipeReg3  PC: 00000000: I:{00000013}    inst_ADDI   rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
+PC_module: JUMP!   Next cycle, New PC: 000000e8, Destroyed PC 000000f8
+
+REGFILE:      R   1:  000000e8,   R   2:  00000fe0,   R   8:  00001000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
+REGFILE*:     R   1:       232,   R   2:      4064,   R   8:      4096,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
+
+CSRs:   
+CSRs*:  
+
+DATA_MEM:     D00000000:   deadbeef,   D000009b8:   deadbeef,   D000009bc:   00000600,   D000009cc:   00000600,   D000009d8:   00001000,   D000009dc:   000000e8,   D000009e0:   f0000000,   D000009e4:   fffffc18,   D000009e8:   3c000000,   D000009ec:   ffffff06,   D000009fc:   000000f8,
+DATA_MEM*:    D00000000: -559038737,   D000009b8: -559038737,   D000009bc:      1536,   D000009cc:      1536,   D000009d8:      4096,   D000009dc:       232,   D000009e0: -268435456,   D000009e4:     -1000,   D000009e8: 1006632960,   D000009ec:      -250,   D000009fc:       248,
+
 
 
 ----TB FINISH:Test Passed----
@@ -2556,5 +2576,5 @@ TEST FINISHED by success write :deadbeef
 
 
 
-             1275000: STOP_sim signal received
-riscv32iTB.v:165: $finish called at 1275000 (1ps)
+             1285000: STOP_sim signal received
+riscv32iTB.v:165: $finish called at 1285000 (1ps)

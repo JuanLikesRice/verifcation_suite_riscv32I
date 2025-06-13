@@ -78,8 +78,7 @@ pulse_generator uut (
     .out(control_signals_in)
 );
 
-assign STOP_sim = stop_design;
-// assign  Cycle_count       = GPIO0_R0_CH2;
+assign STOP_sim           = stop_design;
 assign  memory_offset     = GPIO0_R0_CH2;
 assign  initial_pc_i      = GPIO0_R1_CH1;
 assign  success_code      = GPIO0_R1_CH2;
@@ -90,25 +89,23 @@ assign reset           = control_signals_in[1];
 assign enable_design = enable_design_reg & ~stop_design;
 
 
-
+wire finished_program;
 
 always @(posedge clk) begin
   	if (reset) begin
-
       cycle_to_end        <= 32'h0;
 	    Cycle_count         <= 32'h0;
 	    enable_design_reg   <=  1'b0;
       stop_design         <=  1'b0;
-
     end else begin  
     if (start_design) begin 
 	    Cycle_count         <= 32'h0;
 	    enable_design_reg   <=  1'b1;
     end else if (enable_design_reg) begin
         Cycle_count         <= Cycle_count + 1;
-	    enable_design_reg   <= enable_design_reg;
+	      enable_design_reg   <= enable_design_reg;
     end      
-    if (final_value == success_code)begin 
+    if (finished_program)begin 
         cycle_to_end <= cycle_to_end + 1;
         stop_design  <= 1'b0;
     end
@@ -120,26 +117,28 @@ always @(posedge clk) begin
     $display("\n\n\n\n----TB FINISH:Test Passed----\n\n\n\n\nTEST FINISHED by success write :%h \n\n\n\n\n",success_code);
     
     //MARKER AUTOMATED HERE END
-
-    end   
- 
+end 
 end
 end 
 
 
-wire Dmem_clk, Imem_clk;
+    wire Dmem_clk, Imem_clk;
     // Instantiation of riscv32i_main
     riscv32i_main #(
         .N_param(32)
     ) u_riscv32i_main (
-        .clk(clk),
-        .reset(reset),
-        .enable_design(enable_design_reg),
+        .clk(             clk),
+        .reset(           reset),
+        .Cycle_count(     Cycle_count),
 
-        .Cycle_count(Cycle_count),
-        .memory_offset(memory_offset),
-        .initial_pc_i(initial_pc_i),
-        .final_value(final_value),
+        // four GPIO IPUTS
+        .control_signal(    control_signals_in),
+        .memory_offset(     memory_offset),
+        .initial_pc_i(      initial_pc_i),
+        .success_code(      success_code),
+      
+        .finished_program(  finished_program),
+        // .final_value(     final_value),
         
 
       .Dmem_clk(            Dmem_clk),
@@ -233,24 +232,17 @@ module riscv32i_main
    ) (
     input  wire clk,
     input  wire reset,
-    input wire enable_design,
 
     input  wire [31:0] Cycle_count,
-    input  wire [31:0] memory_offset,
-    input  wire [31:0] initial_pc_i,
-    output wire [31:0] final_value,
 
+    input  wire [31:0]  control_signal,
+    input  wire [31:0]  memory_offset,
+    input  wire [31:0]  initial_pc_i,
+    // output wire [31:0]  final_value,
+    input  wire [31:0]  success_code,
+    output wire         finished_program,
 
-    // // BRAM ports for Data Mem
-    // output wire        data_mem_clkb,
-    // output wire        data_mem_enb,
-    // output wire        data_mem_rstb,
-    // output wire [3:0 ] data_mem_web,
-    // output wire [31:0] data_mem_addrb,
-    // output wire [31:0] data_mem_dinb,
-    // input  wire        data_mem_rstb_busy,
-    // input  wire [31:0] data_mem_doutb,
-
+    // // BRAM ports for Data Mem// output wire        data_mem_clkb,// output wire        data_mem_enb,// output wire        data_mem_rstb,// output wire [3:0 ] data_mem_web,// output wire [31:0] data_mem_addrb,// output wire [31:0] data_mem_dinb,// input  wire        data_mem_rstb_busy,// input  wire [31:0] data_mem_doutb,
 
     // Memory interface signals
     output  wire          Dmem_clk,
@@ -264,15 +256,7 @@ module riscv32i_main
     input  wire           Dmem_data_gnt_i,
 
 
-    // //bram  Ins_mem
-    // output wire        ins_mem_clkb,
-    // output wire        ins_mem_enb,
-    // output wire        ins_mem_rstb,
-    // output wire [3:0 ] ins_mem_web,
-    // output wire [31:0] ins_mem_addrb,
-    // output wire [31:0] ins_mem_dinb,
-    // input  wire        ins_mem_rstb_busy,
-    // input  wire [31:0] ins_mem_doutb
+    // //bram  Ins_mem// output wire        ins_mem_clkb,// output wire        ins_mem_enb,// output wire        ins_mem_rstb,// output wire [3:0 ] ins_mem_web,// output wire [31:0] ins_mem_addrb,// output wire [31:0] ins_mem_dinb,// input  wire        ins_mem_rstb_busy,// input  wire [31:0] ins_mem_doutb
 
     input  wire           Imem_clk,
     output wire           ins_data_req_o,
@@ -283,8 +267,6 @@ module riscv32i_main
     input  wire  [31:0]   ins_data_rdata_i,
     input  wire           ins_data_rvalid_i,
     input  wire           ins_data_gnt_i
-
-
 
 );
 
@@ -310,10 +292,46 @@ module riscv32i_main
     wire [511:0] pipeReg1_wire, pipeReg2_wire, pipeReg3_wire;
 
     wire pc_valid;
-
+    wire [31:0]  final_value;
 initial begin 
     halt_i          <= 0;
 end
+
+
+  wire enable_design;
+
+    core_controller_fsm core_controller_fsm (
+        .clk(                     clk),
+        .control_signal(          control_signal),
+
+        .initate_irq(             initate_irq),
+        .end_condition(           end_condition),
+        .all_ready(               all_ready),
+        .ready_for_irq_handler(   ready_for_irq_handler),
+        .irq_service_done(        irq_service_done),
+        .irq_req_i(               irq_req_i),
+        .irq_addr_i(              irq_addr_i),
+
+        .program_finished(        finished_program),
+        .irq_grant_o(             irq_grant_o),
+        .override_all_stop(       override_all_stop),
+        .enable_design(           enable_design)
+    );
+
+
+
+wire initate_irq,end_condition,all_ready,ready_for_irq_handler,irq_service_done,irq_req_i;
+wire [31:0] irq_addr_i;
+wire irq_grant_o, override_all_stop;
+
+assign  initate_irq             = 1'b0;  
+assign  end_condition           = (final_value == success_code);  
+assign  all_ready               = 1'b0;  
+assign  ready_for_irq_handler   = 1'b0;  
+assign  irq_service_done        = 1'b0;  
+assign  irq_req_i               = 1'b0;  
+assign  irq_addr_i              = 32'h0;
+
 
     pc pc  (
         .clk_i(clk),
@@ -345,6 +363,9 @@ end
     //     .ins_mem_rstb_busy(  ins_mem_rstb_busy),
     //     .ins_mem_doutb(      ins_mem_doutb)
     // );
+
+
+    
     wire pc_i_valid = 1'b1;
     wire stall_i;
     wire STALL_IF_not_ready_w,STALL_ID_not_ready_w;

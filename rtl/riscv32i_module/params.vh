@@ -45,7 +45,6 @@
 `define ONE_OP      4'b0001
 `define TWO_OP      4'b0010
 
-
 // Encoding Type
 `define INST_typ_R             7'b0000001
 `define INST_typ_I             7'b0000010
@@ -59,63 +58,88 @@
 
 // Instructions
 `define inst_UNKNOWN    64'h0000_0000_0000_0000
-`define inst_ADD    64'h0000_0000_0000_0001
-`define inst_SUB    64'h0000_0000_0000_0002
-`define inst_XOR    64'h0000_0000_0000_0004
-`define inst_OR     64'h0000_0000_0000_0008
+`define inst_ADD        64'h0000_0000_0000_0001
+`define inst_SUB        64'h0000_0000_0000_0002
+`define inst_XOR        64'h0000_0000_0000_0004
+`define inst_OR         64'h0000_0000_0000_0008
 
-`define inst_AND    64'h0000_0000_0000_0010
-`define inst_SLL    64'h0000_0000_0000_0020
-`define inst_SRL    64'h0000_0000_0000_0040
-`define inst_SRA    64'h0000_0000_0000_0080
+`define inst_AND        64'h0000_0000_0000_0010
+`define inst_SLL        64'h0000_0000_0000_0020
+`define inst_SRL        64'h0000_0000_0000_0040
+`define inst_SRA        64'h0000_0000_0000_0080
 
-`define inst_SLT    64'h0000_0000_0000_0100
-`define inst_SLTU   64'h0000_0000_0000_0200
-`define inst_ADDI   64'h0000_0000_0000_0400
-`define inst_XORI   64'h0000_0000_0000_0800
+`define inst_SLT        64'h0000_0000_0000_0100
+`define inst_SLTU       64'h0000_0000_0000_0200
+`define inst_ADDI       64'h0000_0000_0000_0400
+`define inst_XORI       64'h0000_0000_0000_0800
 
-`define inst_ORI    64'h0000_0000_0000_1000
-`define inst_ANDI   64'h0000_0000_0000_2000
-`define inst_SLLI   64'h0000_0000_0000_4000
-`define inst_SRLI   64'h0000_0000_0000_8000
+`define inst_ORI        64'h0000_0000_0000_1000
+`define inst_ANDI       64'h0000_0000_0000_2000
+`define inst_SLLI       64'h0000_0000_0000_4000
+`define inst_SRLI       64'h0000_0000_0000_8000
 
-`define inst_SRAI   64'h0000_0000_0001_0000
-`define inst_SLTI   64'h0000_0000_0002_0000
-`define inst_SLTIU  64'h0000_0000_0004_0000
-`define inst_LB     64'h0000_0000_0008_0000
+`define inst_SRAI       64'h0000_0000_0001_0000
+`define inst_SLTI       64'h0000_0000_0002_0000
+`define inst_SLTIU      64'h0000_0000_0004_0000
+`define inst_LB         64'h0000_0000_0008_0000
 
-`define inst_LH     64'h0000_0000_0010_0000
-`define inst_LW     64'h0000_0000_0020_0000
-`define inst_LBU    64'h0000_0000_0040_0000
-`define inst_LHU    64'h0000_0000_0080_0000
+`define inst_LH         64'h0000_0000_0010_0000
+`define inst_LW         64'h0000_0000_0020_0000
+`define inst_LBU        64'h0000_0000_0040_0000
+`define inst_LHU        64'h0000_0000_0080_0000
 
-`define inst_SB     64'h0000_0000_0100_0000
-`define inst_SH     64'h0000_0000_0200_0000
-`define inst_SW     64'h0000_0000_0400_0000
-`define inst_BEQ    64'h0000_0000_0800_0000
+`define inst_SB         64'h0000_0000_0100_0000
+`define inst_SH         64'h0000_0000_0200_0000
+`define inst_SW         64'h0000_0000_0400_0000
+`define inst_BEQ        64'h0000_0000_0800_0000
 
-`define inst_BNE    64'h0000_0000_1000_0000
-`define inst_BLT    64'h0000_0000_2000_0000
-`define inst_BGE    64'h0000_0000_4000_0000
-`define inst_BLTU   64'h0000_0000_8000_0000
+`define inst_BNE        64'h0000_0000_1000_0000
+`define inst_BLT        64'h0000_0000_2000_0000
+`define inst_BGE        64'h0000_0000_4000_0000
+`define inst_BLTU       64'h0000_0000_8000_0000
 
-`define inst_BGEU   64'h0000_0001_0000_0000
-`define inst_JAL    64'h0000_0002_0000_0000
-`define inst_JALR   64'h0000_0004_0000_0000
-`define inst_LUI    64'h0000_0008_0000_0000
+`define inst_BGEU       64'h0000_0001_0000_0000
+`define inst_JAL        64'h0000_0002_0000_0000
+`define inst_JALR       64'h0000_0004_0000_0000
+`define inst_LUI        64'h0000_0008_0000_0000
 
-`define inst_AUIPC  64'h0000_0010_0000_0000
-`define inst_ECALL  64'h0000_0020_0000_0000
-`define inst_EBREAK 64'h0000_0040_0000_0000
-`define inst_FENCE  64'h0000_0080_0000_0000
+`define inst_AUIPC      64'h0000_0010_0000_0000
+`define inst_ECALL      64'h0000_0020_0000_0000
+`define inst_EBREAK     64'h0000_0040_0000_0000
+`define inst_FENCE      64'h0000_0080_0000_0000
 
-`define inst_FENCEI 64'h0000_0100_0000_0000
-`define inst_CSRRW  64'h0000_0200_0000_0000
-`define inst_CSRRS  64'h0000_0400_0000_0000
-`define inst_CSRRC  64'h0000_0800_0000_0000
-`define inst_CSRRWI 64'h0000_1000_0000_0000
-`define inst_CSRRSI 64'h0000_2000_0000_0000
-`define inst_CSRRCI 64'h0000_4000_0000_0000
+`define inst_FENCEI     64'h0000_0100_0000_0000
+`define inst_CSRRW      64'h0000_0200_0000_0000
+`define inst_CSRRS      64'h0000_0400_0000_0000
+`define inst_CSRRC      64'h0000_0800_0000_0000
+`define inst_CSRRWI     64'h0000_1000_0000_0000
+`define inst_CSRRSI     64'h0000_2000_0000_0000
+`define inst_CSRRCI     64'h0000_4000_0000_0000
+
+
+`define inst_MRET       64'h0000_8000_0000_0000
+`define inst_SRET       64'h0001_0000_0000_0000
+`define inst_WFI        64'h0002_0000_0000_0000
+
+
+
+`define CSR_MSTATUS 12'h300  
+// Machine Status Register (mstatus)
+`define CSR_MIE     12'h304  
+// Machine Interrupt-Enable (mie)
+`define CSR_MTVEC   12'h305  
+// Machine Trap-Vector Base Address (mtvec)
+`define CSR_MSCRATCH 12'h340 
+`define CSR_MEPC    12'h341  
+// Machine Exception Program Counter (mepc)
+`define CSR_MCAUSE  12'h342  
+// Machine Cause Register (mcause)
+`define CSR_MTVAL   12'h343  
+// Machine Trap Value (mtval)
+`define CSR_MIP     12'h344  
+// Machine Interrupt-Pending (mip)
+
+
 
 `endif
 
