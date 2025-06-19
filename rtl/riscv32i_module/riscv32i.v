@@ -23,6 +23,17 @@ module riscv32i
     input  wire         data_mem_rstb_busy,
     input  wire [31:0]  data_mem_doutb,
 
+    // BRAM ports for peripheral Mem
+    output wire         peripheral_mem_clkb,
+    output wire         peripheral_mem_enb,
+    output wire         peripheral_mem_rstb,
+    output wire [3:0]   peripheral_mem_web,
+    output wire [31:0]  peripheral_mem_addrb,
+    output wire [31:0]  peripheral_mem_dinb,
+    input  wire         peripheral_mem_rstb_busy,
+    input  wire [31:0]  peripheral_mem_doutb,
+
+
     // // BRAM ports for Ins Mem
 
     output wire         ins_mem_clkb,
@@ -69,6 +80,16 @@ wire [31:0]       Dmem_data_wdata_o;
 wire   [31:0]     Dmem_data_rdata_i;
 wire              Dmem_data_rvalid_i;
 wire              Dmem_data_gnt_i;
+
+
+wire              Pmem_data_req_o;
+wire [31:0]       Pmem_data_addr_o;
+wire              Pmem_data_we_o;
+wire [ 3:0]       Pmem_data_be_o;
+wire [31:0]       Pmem_data_wdata_o;
+wire   [31:0]     Pmem_data_rdata_i;
+wire              Pmem_data_rvalid_i;
+wire              Pmem_data_gnt_i;
 
 
 
@@ -122,7 +143,7 @@ end
 end 
 
 
-    wire Dmem_clk, Imem_clk;
+    wire Dmem_clk, Imem_clk, Pmem_clk;
     // Instantiation of riscv32i_main
     riscv32i_main #(
         .N_param(32)
@@ -151,6 +172,17 @@ end
       .Dmem_data_rvalid_i(  Dmem_data_rvalid_i),
       .Dmem_data_gnt_i(     Dmem_data_gnt_i),
 
+
+
+      .Pmem_clk(            Pmem_clk),
+      .Pmem_data_req_o(     Pmem_data_req_o),
+      .Pmem_data_addr_o(    Pmem_data_addr_o),
+      .Pmem_data_we_o(      Pmem_data_we_o),
+      .Pmem_data_be_o(      Pmem_data_be_o),
+      .Pmem_data_wdata_o(   Pmem_data_wdata_o),
+      .Pmem_data_rdata_i(   Pmem_data_rdata_i),
+      .Pmem_data_rvalid_i(  Pmem_data_rvalid_i),
+      .Pmem_data_gnt_i(     Pmem_data_gnt_i),
 
 
         // Memory interface signals
@@ -193,6 +225,33 @@ end
     );
     
 
+    peripheral_mem_bram_wrapper  peripheral_mem_bram_wrapper (
+        .clk               (    clk),
+        .reset             (    reset),
+
+        .ins_data_req_o    (    Pmem_data_req_o),
+        .ins_data_addr_o   (    Pmem_data_addr_o),
+        .ins_data_we_o     (    Pmem_data_we_o),
+        .ins_data_be_o     (    Pmem_data_be_o),
+        .ins_data_wdata_o  (    Pmem_data_wdata_o),
+        .ins_data_rdata_i  (    Pmem_data_rdata_i),
+        .ins_data_rvalid_i (    Pmem_data_rvalid_i),
+        .ins_data_gnt_i    (    Pmem_data_gnt_i),
+
+
+        // .data_clk(Imem_clk),
+        .ins_mem_clkb (       peripheral_mem_clkb),
+        .ins_mem_enb (        peripheral_mem_enb),
+        .ins_mem_rstb (       peripheral_mem_rstb),
+        .ins_mem_web (        peripheral_mem_web),
+        .ins_mem_addrb (      peripheral_mem_addrb),
+        .ins_mem_dinb (       peripheral_mem_dinb),
+        .ins_mem_rstb_busy (  peripheral_mem_rstb_busy),
+        .ins_mem_doutb (      peripheral_mem_doutb)
+
+    );
+
+
 
     inst_mem_bram_wrapper  inst_mem_bram_wrapper (
         .clk               (clk),
@@ -205,8 +264,6 @@ end
         .ins_data_rdata_i  (ins_data_rdata_i),
         .ins_data_rvalid_i (ins_data_rvalid_i),
         .ins_data_gnt_i    (ins_data_gnt_i),
-
-
         // .data_clk(Imem_clk),
         .ins_mem_clkb (ins_mem_clkb),
         .ins_mem_enb (ins_mem_enb),
@@ -216,7 +273,6 @@ end
         .ins_mem_dinb (ins_mem_dinb),
         .ins_mem_rstb_busy (ins_mem_rstb_busy),
         .ins_mem_doutb (ins_mem_doutb)
-
     );
     
 
@@ -254,6 +310,31 @@ module riscv32i_main
     input  wire  [31:0]   Dmem_data_rdata_i,
     input  wire           Dmem_data_rvalid_i,
     input  wire           Dmem_data_gnt_i,
+
+
+    // output  wire          Pmem_clk,
+    // output wire           Pmem_data_req_o,
+    // output wire [31:0]    Pmem_data_addr_o,
+    // output wire           Pmem_data_we_o,
+    // output wire  [3:0]    Pmem_data_be_o,
+    // output wire [31:0]    Pmem_data_wdata_o,
+    // input  wire  [31:0]   Pmem_data_rdata_i,
+    // input  wire           Pmem_data_rvalid_i,
+    // input  wire           Pmem_data_gnt_i,
+
+
+
+// peripheral interface signals
+    output  wire          Pmem_clk,
+    output wire           Pmem_data_req_o,
+    output wire [31:0]    Pmem_data_addr_o,
+    output wire           Pmem_data_we_o,
+    output wire  [3:0]    Pmem_data_be_o,
+    output wire [31:0]    Pmem_data_wdata_o,
+    input  wire  [31:0]   Pmem_data_rdata_i,
+    input  wire           Pmem_data_rvalid_i,
+    input  wire           Pmem_data_gnt_i,
+
 
 
     // //bram  Ins_mem// output wire        ins_mem_clkb,// output wire        ins_mem_enb,// output wire        ins_mem_rstb,// output wire [3:0 ] ins_mem_web,// output wire [31:0] ins_mem_addrb,// output wire [31:0] ins_mem_dinb,// input  wire        ins_mem_rstb_busy,// input  wire [31:0] ins_mem_doutb
@@ -632,6 +713,85 @@ execute  #(.N_param(32)) execute
 
 
 
+
+// assign  Pmem_clk          =   Dmem_clk;
+// assign  Pmem_data_req_o   =   in_range_peripheral ? Dmem_data_req_o_intermediate  : 0 ;
+// assign  Pmem_data_addr_o  =   Dmem_data_addr_o;
+// assign  Pmem_data_we_o    =   Dmem_data_we_o;
+// assign  Pmem_data_be_o    =   Dmem_data_be_o;
+// assign  Pmem_data_wdata_o =   Dmem_data_wdata_o;
+
+
+
+// .data_clk(                  Dmem_clk),
+// .data_req_o(                Dmem_data_req_o_intermediate),
+// .data_addr_o(               Dmem_data_addr_o),
+// .data_we_o(                 Dmem_data_we_o),
+// .data_be_o(                 Dmem_data_be_o),
+// .data_wdata_o(              Dmem_data_wdata_o),
+// .data_rdata_i(              Dmem_data_rdata_i),
+// .data_rvalid_i(             Dmem_data_rvalid_i),
+// .data_gnt_i(                Dmem_data_gnt_i)
+
+wire           data_clk;
+wire           data_req_o;
+wire [31:0]    data_addr_o;
+wire           data_we_o;
+wire  [3:0]    data_be_o;
+wire [31:0]    data_wdata_o;
+wire  [31:0]   data_rdata_i;
+wire           data_rvalid_i;
+wire           data_gnt_i;
+
+// assign data_clk        = in_range_peripheral  ? Dmem_clk                      : Pmem_clk              ;
+// assign data_req_o      = in_range_peripheral  ? Dmem_data_req_o               : Pmem_data_req_o        ;
+// assign data_addr_o     = in_range_peripheral  ? Dmem_data_addr_o              : Pmem_data_addr_o      ;
+// assign data_we_o       = in_range_peripheral  ? Dmem_data_we_o                : Pmem_data_we_o        ;
+// assign data_be_o       = in_range_peripheral  ? Dmem_data_be_o                : Pmem_data_be_o        ;
+// assign data_wdata_o    = in_range_peripheral  ? Dmem_data_wdata_o             : Pmem_data_wdata_o     ;
+
+
+
+wire in_range_peripheral;
+wire data_req_o_intermediate;
+// assign Dmem_data_req_o = in_range_peripheral ?  1'b0 : Dmem_data_req_o_intermediate;
+// assign  Dmem_data_req_o   =    Dmem_data_req_o_intermediate;
+assign  Dmem_data_req_o   =   in_range_peripheral ? 1'b0                     : data_req_o_intermediate;
+assign  Pmem_data_req_o   =   in_range_peripheral ? data_req_o_intermediate  : 1'b0 ;
+
+
+assign Dmem_clk          = data_clk            ; 
+// assign Dmem_data_req_o   = data_req_o          ; 
+assign Dmem_data_addr_o  = data_addr_o         ; 
+assign Dmem_data_we_o    = data_we_o           ; 
+assign Dmem_data_be_o    = data_be_o           ; 
+assign Dmem_data_wdata_o = data_wdata_o        ; 
+
+assign Pmem_clk          =  data_clk           ;
+// assign Pmem_data_req_o   =  data_req_o         ;
+assign Pmem_data_addr_o  =  data_addr_o        ;
+assign Pmem_data_we_o    =  data_we_o          ;
+assign Pmem_data_be_o    =  data_be_o          ;
+assign Pmem_data_wdata_o =  data_wdata_o       ;
+
+
+
+assign data_rdata_i     = in_range_peripheral  ? Pmem_data_rdata_i             : Dmem_data_rdata_i     ;
+assign data_rvalid_i    = in_range_peripheral  ? Pmem_data_rvalid_i            : Dmem_data_rvalid_i    ;
+assign data_gnt_i       = in_range_peripheral  ? Pmem_data_gnt_i               : Dmem_data_gnt_i       ;
+
+
+    // output  wire          Pmem_clk,
+    // output wire           Pmem_data_req_o,
+    // output wire [31:0]    Pmem_data_addr_o,
+    // output wire           Pmem_data_we_o,
+    // output wire  [3:0]    Pmem_data_be_o,
+    // output wire [31:0]    Pmem_data_wdata_o,
+    // input  wire  [31:0]   Pmem_data_rdata_i,
+    // input  wire           Pmem_data_rvalid_i,
+    // input  wire           Pmem_data_gnt_i,
+
+
 dataMem dataMem 
   (
 .final_value(               final_value),
@@ -648,18 +808,20 @@ dataMem dataMem
 
 .stop_request_overide(      stop_request_overide_datamem),
 .reset_able(                reset_able_datamem),
+.in_range_peripheral(       in_range_peripheral),
 
 
-.data_clk(                  Dmem_clk),
-.data_req_o(                Dmem_data_req_o),
-.data_addr_o(               Dmem_data_addr_o),
-.data_we_o(                 Dmem_data_we_o),
-.data_be_o(                 Dmem_data_be_o),
-.data_wdata_o(              Dmem_data_wdata_o),
-.data_rdata_i(              Dmem_data_rdata_i),
-.data_rvalid_i(             Dmem_data_rvalid_i),
-.data_gnt_i(                Dmem_data_gnt_i)
-
+//
+.data_clk(         data_clk                     ),
+.data_req_o(       data_req_o_intermediate ),
+.data_addr_o(      data_addr_o             ),
+.data_we_o(        data_we_o               ),
+.data_be_o(        data_be_o               ),
+.data_wdata_o(     data_wdata_o            ),
+.data_rdata_i(     data_rdata_i            ),
+.data_rvalid_i(    data_rvalid_i           ),
+.data_gnt_i(       data_gnt_i              )
+//
 
 
 );
@@ -983,8 +1145,8 @@ module data_mem_bram_wrapper #(  parameter MEM_DEPTH = 1096 ) (
     wire rstb_busy;
     assign ins_data_gnt_i     = ins_data_req_o;
     assign ins_data_rvalid_i  = rvalid_reg;
-    // assign ins_data_gnt_i     = rvalid_reg_1;
-    // assign ins_data_rvalid_i  = rvalid_reg_2;
+    // assign ins_data_gnt_i     = rvalid_reg;
+    // assign ins_data_rvalid_i  = rvalid_reg_7;
     // assign  bram_web = 4'b0;
 
 
@@ -1015,6 +1177,75 @@ end
         end
     end
 endmodule
+
+
+
+  //    peripheral
+module  peripheral_mem_bram_wrapper #(  parameter MEM_DEPTH = 1096 ) (
+    input  wire         clk,
+    input  wire         reset,
+    
+
+    // BRAM interface Signals
+
+    output wire        ins_mem_clkb,
+    output wire        ins_mem_enb,
+    output wire        ins_mem_rstb,
+    output wire [3:0 ] ins_mem_web,
+    output wire [31:0] ins_mem_addrb,
+    output wire [31:0] ins_mem_dinb,
+    input  wire        ins_mem_rstb_busy,
+    input  wire [31:0] ins_mem_doutb,
+
+
+    // core Memory interface
+    input  wire         ins_data_req_o,     
+    input  wire [31:0]  ins_data_addr_o,    
+    input  wire         ins_data_we_o,      
+    input  wire [3:0]   ins_data_be_o,      
+    input  wire [31:0]  ins_data_wdata_o,
+    output wire [31:0]  ins_data_rdata_i,   
+    output wire         ins_data_rvalid_i,  
+    output wire         ins_data_gnt_i      
+);
+
+    reg rvalid_reg,rvalid_reg_1,rvalid_reg_2,rvalid_reg_3,rvalid_reg_4,rvalid_reg_5,rvalid_reg_6,rvalid_reg_7;
+    wire rstb_busy;
+    assign ins_data_gnt_i     = ins_data_req_o;
+    // assign ins_data_rvalid_i  = rvalid_reg;
+    // assign ins_data_gnt_i     = rvalid_reg;
+    assign ins_data_rvalid_i  = rvalid_reg_7;
+    // assign  bram_web = 4'b0;
+
+
+  assign ins_mem_clkb      = clk;
+  assign ins_mem_enb       = ins_data_req_o;
+
+  // assign enb = data_req_o;
+  assign ins_mem_web = ins_data_we_o ? ins_data_be_o: 4'b0;
+
+  assign ins_mem_rstb      = 1'b0;
+  // assign ins_mem_web       = 4'b0000;
+  assign ins_mem_addrb     = ins_data_addr_o;
+  assign ins_mem_dinb      = ins_data_wdata_o;
+  // assign ins_mem_rstb_busy = rstb_busy;
+  assign ins_data_rdata_i = ins_mem_doutb;
+
+  reg [31:0] cycle_taken;
+initial begin
+    cycle_taken <= 0;
+end
+
+    always @(posedge clk) begin
+        if (reset) begin
+        rvalid_reg <= 1'b0; rvalid_reg_1 <= 1'b0;  rvalid_reg_2 <= 1'b0;     rvalid_reg_3 <= 1'b0; rvalid_reg_4 <= 1'b0;  rvalid_reg_5 <= 1'b0; rvalid_reg_6 <= 1'b0;  rvalid_reg_7 <= 1'b0;
+        end
+        else begin
+          rvalid_reg   <= ins_data_req_o; rvalid_reg_1 <= rvalid_reg;  rvalid_reg_2 <= rvalid_reg_1; rvalid_reg_3 <= rvalid_reg_2;  rvalid_reg_4 <= rvalid_reg_3; rvalid_reg_5 <= rvalid_reg_4;  rvalid_reg_6 <= rvalid_reg_5; rvalid_reg_7 <= rvalid_reg_6;
+        end
+    end
+endmodule
+
 
 
 module inst_mem_bram_wrapper #(  parameter MEM_DEPTH = 1096 ) (

@@ -70,7 +70,7 @@ Disassembly of section .data:
   f8:	60000513          	li	a0,1536
   fc:	f05ff0ef          	jal	0x0
  100:	0000006f          	j	0x100
- 104:	00001117          	auipc	sp,0x1
- 108:	efc10113          	addi	sp,sp,-260 # 0x1000
+ 104:	00002117          	auipc	sp,0x2
+ 108:	efc10113          	addi	sp,sp,-260 # 0x2000
  10c:	fb5ff0ef          	jal	0xc0
  110:	ff5ff06f          	j	0x104

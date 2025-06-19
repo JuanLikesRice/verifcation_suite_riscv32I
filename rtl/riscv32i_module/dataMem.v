@@ -1,12 +1,3 @@
-
-// `define SET_MEM_REQ(i_stallreq, i_state, i_mem_re, i_mem_we, i_mem_addr_o, i_mem_data_o) \
-// 	stallreq   = i_stallreq; \
-// 	state      = i_state; \
-// 	mem_re     = i_mem_re; \
-// 	mem_we     = i_mem_we; \
-// 	mem_addr_o = i_mem_addr_o; \
-// 	mem_data_o = i_mem_data_o;
-
 module dataMem (
 input wire clk,
 input wire reset, 
@@ -23,6 +14,9 @@ output wire     [31:0]  loadData_w,
 output wire     [31:0]  final_value, // debug port not in actual FPGA
 output wire             stall_mem_not_avalible,
 output wire             load_into_reg,
+output wire in_range_peripheral,
+
+
 
 // Memory interface
 output wire           data_clk,
@@ -120,6 +114,18 @@ assign raw_data_byte_LHU = ((byte_address == 2'b00) ? raw_bram_data_word[15:0]  
                             (byte_address == 2'b01) ? raw_bram_data_word[23:8]   : 
                             (byte_address == 2'b10) ? raw_bram_data_word[31:16]  : 
                             16'b0); 
+
+
+
+
+   addr_range_matcher #(
+        .ADDR_MIN(32'h00000600),
+        .ADDR_MAX(32'h00000800)
+    ) uut (
+        .addr_in(   address_i),
+        .in_range(  in_range_peripheral)
+    );
+
 
 always @(*) begin
   if (load_data_valid) begin  
@@ -354,7 +360,7 @@ module end_write (
     if (rstb) begin
       doutb_reg <= 32'b0;
       DMEM <= 32'h00000000;
-    end else if ((enb==1'b1) &&( word_address == 29'b0)) begin
+    end else if ((enb==1'b1) &&( word_address == 29'h180)) begin
       if (web != 4'b0000) begin
         if (web[0]) begin DMEM[ 7: 0]  <=  data_wdata_o[ 7: 0];   end 
         if (web[1]) begin DMEM[15: 8]  <=  data_wdata_o[15: 8];   end 
@@ -375,3 +381,15 @@ module end_write (
 endmodule
 
 
+
+module addr_range_matcher #(
+    parameter [31:0] ADDR_MIN = 32'h00000600,
+    parameter [31:0] ADDR_MAX = 32'h00000800
+)(
+    input  wire [31:0] addr_in,
+    output wire        in_range
+);
+
+    assign in_range = (addr_in >= ADDR_MIN) && (addr_in < ADDR_MAX);
+
+endmodule

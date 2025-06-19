@@ -33,7 +33,7 @@ Disassembly of section .text:
   5c:	60400513          	li	a0,1540
   60:	fa1ff0ef          	jal	0 <write_mmio>
   64:	0badf7b7          	lui	a5,0xbadf
-  68:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbade00d>
+  68:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbadd00d>
   6c:	60000513          	li	a0,1536
   70:	f91ff0ef          	jal	0 <write_mmio>
   74:	0000006f          	j	74 <fail+0x34>
@@ -46,34 +46,34 @@ Disassembly of section .text:
   88:	000017b7          	lui	a5,0x1
   8c:	fef42623          	sw	a5,-20(s0)
   90:	fec42783          	lw	a5,-20(s0)
-  94:	00478793          	addi	a5,a5,4 # 1004 <_stack_start+0x4>
+  94:	00478793          	addi	a5,a5,4 # 1004 <_end+0x4>
   98:	fef42423          	sw	a5,-24(s0)
   9c:	fe842703          	lw	a4,-24(s0)
   a0:	000017b7          	lui	a5,0x1
-  a4:	00478793          	addi	a5,a5,4 # 1004 <_stack_start+0x4>
+  a4:	00478793          	addi	a5,a5,4 # 1004 <_end+0x4>
   a8:	00f70663          	beq	a4,a5,b4 <main+0x3c>
   ac:	02200513          	li	a0,34
   b0:	f91ff0ef          	jal	40 <fail>
   b4:	000027b7          	lui	a5,0x2
   b8:	fef42223          	sw	a5,-28(s0)
   bc:	fe442783          	lw	a5,-28(s0)
-  c0:	00878793          	addi	a5,a5,8 # 2008 <_stack_start+0x1008>
+  c0:	00878793          	addi	a5,a5,8 # 2008 <_stack_start+0x8>
   c4:	fef42023          	sw	a5,-32(s0)
   c8:	fe042703          	lw	a4,-32(s0)
   cc:	000027b7          	lui	a5,0x2
-  d0:	00878793          	addi	a5,a5,8 # 2008 <_stack_start+0x1008>
+  d0:	00878793          	addi	a5,a5,8 # 2008 <_stack_start+0x8>
   d4:	00f70663          	beq	a4,a5,e0 <main+0x68>
   d8:	02300513          	li	a0,35
   dc:	f65ff0ef          	jal	40 <fail>
   e0:	deadc7b7          	lui	a5,0xdeadc
-  e4:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+  e4:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead9eef>
   e8:	60000513          	li	a0,1536
   ec:	f15ff0ef          	jal	0 <write_mmio>
   f0:	0000006f          	j	f0 <main+0x78>
 
 000000f4 <_start>:
-  f4:	00001117          	auipc	sp,0x1
-  f8:	f0c10113          	addi	sp,sp,-244 # 1000 <_stack_start>
+  f4:	00002117          	auipc	sp,0x2
+  f8:	f0c10113          	addi	sp,sp,-244 # 2000 <_stack_start>
   fc:	f7dff0ef          	jal	78 <main>
  100:	ff5ff06f          	j	f4 <_start>
 

@@ -96,7 +96,7 @@ Disassembly of section .data:
  160:	60000513          	li	a0,1536
  164:	e9dff0ef          	jal	0x0
  168:	0000006f          	j	0x168
- 16c:	00001117          	auipc	sp,0x1
- 170:	e9410113          	addi	sp,sp,-364 # 0x1000
+ 16c:	00002117          	auipc	sp,0x2
+ 170:	e9410113          	addi	sp,sp,-364 # 0x2000
  174:	fcdff0ef          	jal	0x140
  178:	ff5ff06f          	j	0x16c

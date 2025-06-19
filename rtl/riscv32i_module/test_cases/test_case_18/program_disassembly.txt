@@ -259,8 +259,8 @@ Disassembly of section .data:
  3ec:	60000513          	li	a0,1536
  3f0:	c11ff0ef          	jal	0x0
  3f4:	0000006f          	j	0x3f4
- 3f8:	00001117          	auipc	sp,0x1
- 3fc:	c0810113          	addi	sp,sp,-1016 # 0x1000
+ 3f8:	00002117          	auipc	sp,0x2
+ 3fc:	c0810113          	addi	sp,sp,-1016 # 0x2000
  400:	e95ff0ef          	jal	0x294
  404:	ff5ff06f          	j	0x3f8
  408:	00050613          	mv	a2,a0

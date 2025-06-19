@@ -28,7 +28,7 @@ Disassembly of section .text:
   48:	00812c23          	sw	s0,24(sp)
   4c:	02010413          	addi	s0,sp,32
   50:	deadc7b7          	lui	a5,0xdeadc
-  54:	eef78793          	addi	a5,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+  54:	eef78793          	addi	a5,a5,-273 # deadbeef <_stack_start+0xdead9eef>
   58:	fef42023          	sw	a5,-32(s0)
   5c:	60800793          	li	a5,1544
   60:	fef42423          	sw	a5,-24(s0)
@@ -57,7 +57,7 @@ Disassembly of section .text:
   bc:	60400513          	li	a0,1540
   c0:	f41ff0ef          	jal	0 <write_mmio>
   c4:	0badf7b7          	lui	a5,0xbadf
-  c8:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbade00d>
+  c8:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbadd00d>
   cc:	60000513          	li	a0,1536
   d0:	f31ff0ef          	jal	0 <write_mmio>
   d4:	0000006f          	j	d4 <main+0x94>
@@ -92,22 +92,22 @@ Disassembly of section .text:
  148:	fef42223          	sw	a5,-28(s0)
  14c:	fe442703          	lw	a4,-28(s0)
  150:	deadc7b7          	lui	a5,0xdeadc
- 154:	eef78793          	addi	a5,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+ 154:	eef78793          	addi	a5,a5,-273 # deadbeef <_stack_start+0xdead9eef>
  158:	00f71c63          	bne	a4,a5,170 <main+0x130>
  15c:	deadc7b7          	lui	a5,0xdeadc
- 160:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+ 160:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead9eef>
  164:	60000513          	li	a0,1536
  168:	e99ff0ef          	jal	0 <write_mmio>
  16c:	0140006f          	j	180 <main+0x140>
  170:	0badf7b7          	lui	a5,0xbadf
- 174:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbade00d>
+ 174:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbadd00d>
  178:	60000513          	li	a0,1536
  17c:	e85ff0ef          	jal	0 <write_mmio>
  180:	0000006f          	j	180 <main+0x140>
 
 00000184 <_start>:
- 184:	00001117          	auipc	sp,0x1
- 188:	e7c10113          	addi	sp,sp,-388 # 1000 <_stack_start>
+ 184:	00002117          	auipc	sp,0x2
+ 188:	e7c10113          	addi	sp,sp,-388 # 2000 <_stack_start>
  18c:	eb5ff0ef          	jal	40 <main>
  190:	ff5ff06f          	j	184 <_start>
 

@@ -69,19 +69,19 @@ Disassembly of section .text:
   ec:	1d100793          	li	a5,465
   f0:	00f71c63          	bne	a4,a5,108 <main+0xc8>
   f4:	deadc7b7          	lui	a5,0xdeadc
-  f8:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+  f8:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead9eef>
   fc:	60000513          	li	a0,1536
  100:	f01ff0ef          	jal	0 <write_to_peripheral>
  104:	0140006f          	j	118 <main+0xd8>
  108:	0badf7b7          	lui	a5,0xbadf
- 10c:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbade00d>
+ 10c:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbadd00d>
  110:	60000513          	li	a0,1536
  114:	eedff0ef          	jal	0 <write_to_peripheral>
  118:	0000006f          	j	118 <main+0xd8>
 
 0000011c <_start>:
- 11c:	00001117          	auipc	sp,0x1
- 120:	ee410113          	addi	sp,sp,-284 # 1000 <_stack_start>
+ 11c:	00002117          	auipc	sp,0x2
+ 120:	ee410113          	addi	sp,sp,-284 # 2000 <_stack_start>
  124:	f1dff0ef          	jal	40 <main>
  128:	ff5ff06f          	j	11c <_start>
 

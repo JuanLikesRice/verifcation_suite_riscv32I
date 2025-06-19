@@ -259,14 +259,14 @@ Disassembly of section .text:
  3dc:	60400513          	li	a0,1540
  3e0:	c21ff0ef          	jal	0 <write_to_peripheral>
  3e4:	deadc7b7          	lui	a5,0xdeadc
- 3e8:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+ 3e8:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead9eef>
  3ec:	60000513          	li	a0,1536
  3f0:	c11ff0ef          	jal	0 <write_to_peripheral>
  3f4:	0000006f          	j	3f4 <main+0x160>
 
 000003f8 <_start>:
- 3f8:	00001117          	auipc	sp,0x1
- 3fc:	c0810113          	addi	sp,sp,-1016 # 1000 <_stack_start>
+ 3f8:	00002117          	auipc	sp,0x2
+ 3fc:	c0810113          	addi	sp,sp,-1016 # 2000 <_stack_start>
  400:	e95ff0ef          	jal	294 <main>
  404:	ff5ff06f          	j	3f8 <_start>
 
@@ -382,7 +382,7 @@ Disassembly of section .debug_line_str:
   12:	2d766373          	.insn	4, 0x2d766373
   16:	2d756e67          	.insn	4, 0x2d756e67
   1a:	6f74                	.insn	2, 0x6f74
-  1c:	68636c6f          	jal	s8,366a2 <_stack_start+0x356a2>
+  1c:	68636c6f          	jal	s8,366a2 <_stack_start+0x346a2>
   20:	6961                	.insn	2, 0x6961
   22:	2f6e                	.insn	2, 0x2f6e
   24:	7562                	.insn	2, 0x7562
@@ -413,7 +413,7 @@ Disassembly of section .debug_line_str:
   66:	696c                	.insn	2, 0x696c
   68:	6762                	.insn	2, 0x6762
   6a:	632f6363          	bltu	t5,s2,690 <_etext+0x264>
-  6e:	69666e6f          	jal	t3,66704 <_stack_start+0x65704>
+  6e:	69666e6f          	jal	t3,66704 <_stack_start+0x64704>
   72:	69722f67          	.insn	4, 0x69722f67
   76:	00766373          	.insn	4, 0x00766373
   7a:	756d                	.insn	2, 0x756d
@@ -512,7 +512,7 @@ Disassembly of section .debug_str:
   3e:	2d766373          	.insn	4, 0x2d766373
   42:	2d756e67          	.insn	4, 0x2d756e67
   46:	6f74                	.insn	2, 0x6f74
-  48:	68636c6f          	jal	s8,366ce <_stack_start+0x356ce>
+  48:	68636c6f          	jal	s8,366ce <_stack_start+0x346ce>
   4c:	6961                	.insn	2, 0x6961
   4e:	2f6e                	.insn	2, 0x2f6e
   50:	7562                	.insn	2, 0x7562

@@ -206,7 +206,7 @@ Disassembly of section .data:
  318:	60000513          	li	a0,1536
  31c:	ce5ff0ef          	jal	0x0
  320:	0000006f          	j	0x320
- 324:	00001117          	auipc	sp,0x1
- 328:	cdc10113          	addi	sp,sp,-804 # 0x1000
+ 324:	00002117          	auipc	sp,0x2
+ 328:	cdc10113          	addi	sp,sp,-804 # 0x2000
  32c:	f2dff0ef          	jal	0x258
  330:	ff5ff06f          	j	0x324

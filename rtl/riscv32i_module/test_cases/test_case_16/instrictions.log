@@ -33,7 +33,7 @@ Disassembly of section .text:
   5c:	60400513          	li	a0,1540
   60:	fa1ff0ef          	jal	0 <write_mmio>
   64:	0badf7b7          	lui	a5,0xbadf
-  68:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbade00d>
+  68:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbadd00d>
   6c:	60000513          	li	a0,1536
   70:	f91ff0ef          	jal	0 <write_mmio>
   74:	0000006f          	j	74 <fail+0x34>
@@ -46,7 +46,7 @@ Disassembly of section .text:
   88:	70000793          	li	a5,1792
   8c:	fef42623          	sw	a5,-20(s0)
   90:	deadc7b7          	lui	a5,0xdeadc
-  94:	eef78793          	addi	a5,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+  94:	eef78793          	addi	a5,a5,-273 # deadbeef <_stack_start+0xdead9eef>
   98:	fef42423          	sw	a5,-24(s0)
   9c:	fec42783          	lw	a5,-20(s0)
   a0:	fe842703          	lw	a4,-24(s0)
@@ -60,14 +60,14 @@ Disassembly of section .text:
   c0:	00100513          	li	a0,1
   c4:	f7dff0ef          	jal	40 <fail>
   c8:	deadc7b7          	lui	a5,0xdeadc
-  cc:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+  cc:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead9eef>
   d0:	60000513          	li	a0,1536
   d4:	f2dff0ef          	jal	0 <write_mmio>
   d8:	0000006f          	j	d8 <main+0x60>
 
 000000dc <_start>:
-  dc:	00001117          	auipc	sp,0x1
-  e0:	f2410113          	addi	sp,sp,-220 # 1000 <_stack_start>
+  dc:	00002117          	auipc	sp,0x2
+  e0:	f2410113          	addi	sp,sp,-220 # 2000 <_stack_start>
   e4:	f95ff0ef          	jal	78 <main>
   e8:	ff5ff06f          	j	dc <_start>
 

@@ -31,29 +31,29 @@ Disassembly of section .text:
   54:	fef42623          	sw	a5,-20(s0)
   58:	fec42783          	lw	a5,-20(s0)
   5c:	ffffe737          	lui	a4,0xffffe
-  60:	ead70713          	addi	a4,a4,-339 # ffffdead <_stack_start+0xffffcead>
+  60:	ead70713          	addi	a4,a4,-339 # ffffdead <_stack_start+0xffffbead>
   64:	00e79023          	sh	a4,0(a5)
   68:	fec42783          	lw	a5,-20(s0)
   6c:	0007d783          	lhu	a5,0(a5)
   70:	fef41523          	sh	a5,-22(s0)
   74:	fea41703          	lh	a4,-22(s0)
   78:	ffffe7b7          	lui	a5,0xffffe
-  7c:	ead78793          	addi	a5,a5,-339 # ffffdead <_stack_start+0xffffcead>
+  7c:	ead78793          	addi	a5,a5,-339 # ffffdead <_stack_start+0xffffbead>
   80:	00f71c63          	bne	a4,a5,98 <main+0x58>
   84:	deadc7b7          	lui	a5,0xdeadc
-  88:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdeadaeef>
+  88:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead9eef>
   8c:	60000513          	li	a0,1536
   90:	f71ff0ef          	jal	0 <write_mmio>
   94:	0140006f          	j	a8 <main+0x68>
   98:	0badf7b7          	lui	a5,0xbadf
-  9c:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbade00d>
+  9c:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbadd00d>
   a0:	60000513          	li	a0,1536
   a4:	f5dff0ef          	jal	0 <write_mmio>
   a8:	0000006f          	j	a8 <main+0x68>
 
 000000ac <_start>:
-  ac:	00001117          	auipc	sp,0x1
-  b0:	f5410113          	addi	sp,sp,-172 # 1000 <_stack_start>
+  ac:	00002117          	auipc	sp,0x2
+  b0:	f5410113          	addi	sp,sp,-172 # 2000 <_stack_start>
   b4:	f8dff0ef          	jal	40 <main>
   b8:	ff5ff06f          	j	ac <_start>
 

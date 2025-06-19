@@ -3,9 +3,9 @@
 module riscv32iTB
 #(
     parameter  N_param = 32, 
-    parameter memory_offset_param = 32'h00000600,
-    parameter success_code = 32'hDEADBEEF,
-    parameter cycles_timeout = 20000,
+    parameter memory_offset_param = 32'h00000000,
+    parameter success_code        = 32'hDEADBEEF,
+    parameter cycles_timeout      = 20000,
     parameter initial_pc    = 32'h000003F8
 )
 (
@@ -36,6 +36,18 @@ module riscv32iTB
     wire [31:0] data_mem_dinb;
     wire        data_mem_rstb_busy;
     wire [31:0] data_mem_doutb;
+
+
+// BRAM PORTS peripheral mem
+    wire        peripheral_mem_clkb;
+    wire        peripheral_mem_enb;
+    wire        peripheral_mem_rstb;
+    wire [3:0 ] peripheral_mem_web;
+    wire [31:0] peripheral_mem_addrb;
+    wire [31:0] peripheral_mem_dinb;
+    wire        peripheral_mem_rstb_busy;
+    wire [31:0] peripheral_mem_doutb;
+
 
 // BRAM ports ins_mem 
     wire        ins_mem_clkb;
@@ -85,6 +97,19 @@ riscv32i
         .data_mem_web(       data_mem_web      ),
         .data_mem_doutb(     data_mem_doutb    ),
         .data_mem_rstb_busy( data_mem_rstb_busy ),
+
+
+
+        //bram ports peripheral_mem
+        .peripheral_mem_clkb(      peripheral_mem_clkb     ),
+        .peripheral_mem_addrb(     peripheral_mem_addrb    ),
+        .peripheral_mem_dinb(      peripheral_mem_dinb     ),
+        .peripheral_mem_enb(       peripheral_mem_enb      ),
+        .peripheral_mem_rstb(      peripheral_mem_rstb     ),
+        .peripheral_mem_web(       peripheral_mem_web      ),
+        .peripheral_mem_doutb(     peripheral_mem_doutb    ),
+        .peripheral_mem_rstb_busy( peripheral_mem_rstb_busy ),
+
 
 
         //bram ports ins_mem
@@ -170,16 +195,30 @@ end
 
 
     // BRAM PORTS data mem
-    bram_mem #(.MEM_DEPTH(4096))  data_mem_bram (
-        .clkb(      data_mem_clkb     ),
-        .addrb(     data_mem_addrb    ),
-        .dinb(      data_mem_dinb     ),
-        .enb(       data_mem_enb      ),
-        .rstb(      data_mem_rstb     ),
-        .web(       data_mem_web      ),
-        .doutb(     data_mem_doutb    ),
-        .rstb_busy( data_mem_rstb_busy )
+    bram_mem #(.MEM_DEPTH(6656))  data_mem_bram (
+    // bram_mem #(.MEM_DEPTH(8192))  data_mem_bram (
+        .clkb(                  data_mem_clkb     ),
+        .addrb_pre_aligned(     data_mem_addrb    ),
+        .dinb(                  data_mem_dinb     ),
+        .enb(                   data_mem_enb      ),
+        .rstb(                  data_mem_rstb     ),
+        .web(                   data_mem_web      ),
+        .doutb(                 data_mem_doutb    ),
+        .rstb_busy(             data_mem_rstb_busy )
         );
+
+    bram_pmem #(.MEM_DEPTH(1024))  data_pmem_bram (
+    // bram_mem #(.MEM_DEPTH(8192))  data_mem_bram (
+        .clkb(                  peripheral_mem_clkb     ),
+        .addrb_pre_aligned(     peripheral_mem_addrb    ),
+        .dinb(                  peripheral_mem_dinb     ),
+        .enb(                   peripheral_mem_enb      ),
+        .rstb(                  peripheral_mem_rstb     ),
+        .web(                   peripheral_mem_web      ),
+        .doutb(                 peripheral_mem_doutb    ),
+        .rstb_busy(             peripheral_mem_rstb_busy )
+        );
+
 
     bram_ins #(.MEM_DEPTH(1096) ) ins_mem_bram (
         .clkb(       ins_mem_clkb),
@@ -214,13 +253,12 @@ end
 
 
 
-
-module bram_mem #(  parameter MEM_DEPTH = 1096 ) (
+module bram_pmem #(  parameter MEM_DEPTH = 1096 ) (
     input  wire        clkb,
     input  wire        enb,
     input  wire        rstb,
     input  wire [3:0 ] web,
-    input  wire [31:0] addrb,
+    input  wire [31:0] addrb_pre_aligned,
     input  wire [31:0] dinb,
     output wire        rstb_busy,
     output wire [31:0] doutb
@@ -234,6 +272,125 @@ module bram_mem #(  parameter MEM_DEPTH = 1096 ) (
   reg [29:0] addrb_word;
   wire [29:0] word_address;
   wire [ 1:0] byte_address;
+  // wire [31:0] addrb_aligned;
+  wire [31:0] addrb;
+  assign addrb = addrb_pre_aligned - 32'h00000600; // memory offset
+
+  assign word_address = addrb[31:2];  
+  assign byte_address = addrb[ 1:0];
+
+  integer i;
+
+
+  initial begin
+    // First initialize memory to zero
+    // integer i;
+    for (i = 0; i < MEM_DEPTH; i = i + 1) begin
+      DMEM[i] = 32'h00000000;
+    end
+  end
+
+
+  always @(posedge clkb) begin 
+  if (rstb) begin
+        for (i = 0; i < MEM_DEPTH; i = i + 1) begin
+          DMEM[i] <= 32'h00000000;
+        end 
+        end
+      
+  end
+
+reg [ 3:0] web_reg;  
+reg        enb_reg;  
+reg [31:0] addrb_reg; 
+reg [31:0] data_in_reg;
+
+  always @(posedge clkb) begin
+    web_reg <= web;
+    enb_reg <= enb;
+    addrb_reg <= addrb;
+    data_in_reg <= dinb;  
+
+    if (rstb) begin
+      doutb_reg <= 32'b0;
+    end else if (enb) begin
+      if (web != 4'b0000) begin
+        if (web[0]) begin DMEM[word_address][ 7: 0]  <=  dinb[ 7: 0];   end 
+        if (web[1]) begin DMEM[word_address][15: 8]  <=  dinb[15: 8];   end 
+        if (web[2]) begin DMEM[word_address][23:16]  <=  dinb[23:16];   end 
+        if (web[3]) begin DMEM[word_address][31:24]  <=  dinb[31:24];   end
+      // end
+
+       doutb_reg <= {
+          (web[3] ? dinb[31:24] : DMEM[word_address][31:24]),
+          (web[2] ? dinb[23:16] : DMEM[word_address][23:16]),
+          (web[1] ? dinb[15: 8] : DMEM[word_address][15: 8]),
+          (web[0] ? dinb[ 7: 0] : DMEM[word_address][ 7: 0])
+        };
+      end else begin
+        doutb_reg <= DMEM[word_address];
+      end
+    end
+  end
+  
+
+integer M,n;
+always @(negedge clkb) begin
+      #115
+      $write("\n\nPERIPHERAL_MEM:  ");
+      for (M=0; M < MEM_DEPTH; M=M+1) begin 
+      if (DMEM[M] != 0) begin
+      // $write("   D%4d: %9h,", M, DMEM[M]);
+      $write("   D%4h: %9h,", M*4, DMEM[M]);
+      // $write("   D%4d: %9h,", M*4, DMEM[M]);
+      // $write("   D%4h: %10h,", M*4, DMEM[M]);
+      end
+      end
+      $write("\nPERIPHERAL_MEM*: ");
+      for (n=0; n < MEM_DEPTH; n=n+1) begin 
+      if (DMEM[n] != 0) begin
+      $write("   D%4h: %9d,", n*4, $signed(DMEM[n]));
+      end
+    end
+    if (enb_reg) begin
+     if ((web_reg == 0))begin
+    //   $write("\nDATA LOADED:  D%8h: %8d, word in Mem %d",address,loadData,word_address);
+      $write("\nPDATA LOADED:  D%8h: %8h",addrb_reg,doutb_reg);
+     end else begin
+      $write("\nPDATA STORED:  D%8h: %8h",addrb_reg,doutb_reg);
+      end
+    $write("\n----------------------------------------------------------------------------------END\n");
+
+    end
+    end 
+
+
+endmodule
+
+
+
+module bram_mem #(  parameter MEM_DEPTH = 1096 ) (
+    input  wire        clkb,
+    input  wire        enb,
+    input  wire        rstb,
+    input  wire [3:0 ] web,
+    input  wire [31:0] addrb_pre_aligned,
+    input  wire [31:0] dinb,
+    output wire        rstb_busy,
+    output wire [31:0] doutb
+    );
+
+
+  assign doutb = doutb_reg;
+  assign rstb_busy = 0;
+  reg [31:0] DMEM [0:MEM_DEPTH-1];
+  reg [31:0] doutb_reg;
+  reg [29:0] addrb_word;
+  wire [29:0] word_address;
+  wire [ 1:0] byte_address;
+  // wire [31:0] addrb_aligned;
+  wire [31:0] addrb;
+  assign addrb = addrb_pre_aligned - 32'h00000600; // memory offset
 
   assign word_address = addrb[31:2];  
   assign byte_address = addrb[ 1:0];
@@ -299,8 +456,10 @@ always @(negedge clkb) begin
       $write("\n\nDATA_MEM:  ");
       for (M=0; M < MEM_DEPTH; M=M+1) begin 
       if (DMEM[M] != 0) begin
-    //   $write("   D%4d: %9h,", M, DMEM[M]);
-      $write("   D%4h: %10h,", M*4, DMEM[M]);
+      // $write("   D%4d: %9h,", M, DMEM[M]);
+      $write("   D%4h: %9h,", M*4, DMEM[M]);
+      // $write("   D%4d: %9h,", M*4, DMEM[M]);
+      // $write("   D%4h: %10h,", M*4, DMEM[M]);
       end
       end
       $write("\nDATA_MEM*: ");

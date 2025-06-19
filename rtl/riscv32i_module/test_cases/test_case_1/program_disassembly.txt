@@ -102,7 +102,7 @@ Disassembly of section .data:
  178:	60000513          	li	a0,1536
  17c:	e85ff0ef          	jal	0x0
  180:	0000006f          	j	0x180
- 184:	00001117          	auipc	sp,0x1
- 188:	e7c10113          	addi	sp,sp,-388 # 0x1000
+ 184:	00002117          	auipc	sp,0x2
+ 188:	e7c10113          	addi	sp,sp,-388 # 0x2000
  18c:	eb5ff0ef          	jal	0x40
  190:	ff5ff06f          	j	0x184

@@ -230,7 +230,7 @@ Disassembly of section .data:
  378:	60000513          	li	a0,1536
  37c:	c85ff0ef          	jal	0x0
  380:	0000006f          	j	0x380
- 384:	00001117          	auipc	sp,0x1
- 388:	c7c10113          	addi	sp,sp,-900 # 0x1000
+ 384:	00002117          	auipc	sp,0x2
+ 388:	c7c10113          	addi	sp,sp,-900 # 0x2000
  38c:	f2dff0ef          	jal	0x2b8
  390:	ff5ff06f          	j	0x384
