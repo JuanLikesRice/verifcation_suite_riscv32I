@@ -5,14 +5,17 @@ module riscv32iTB
     parameter  N_param = 32, 
     parameter memory_offset_param = 32'h00000000,
     parameter success_code        = 32'hDEADBEEF,
-    parameter cycles_timeout      = 20000,
-    parameter initial_pc    = 32'h000003F8
+    parameter cycles_timeout      = 500,
+    // parameter cycles_timeout      = 20000,
+    parameter initial_pc    = 32'h000003D8
 )
 (
 
 
 
 );
+
+
 
 
     // glbl glbl ();
@@ -47,6 +50,7 @@ module riscv32iTB
     wire [31:0] peripheral_mem_dinb;
     wire        peripheral_mem_rstb_busy;
     wire [31:0] peripheral_mem_doutb;
+    wire        timer_timeout;
 
 
 // BRAM ports ins_mem 
@@ -108,7 +112,8 @@ riscv32i
         .peripheral_mem_rstb(      peripheral_mem_rstb     ),
         .peripheral_mem_web(       peripheral_mem_web      ),
         .peripheral_mem_doutb(     peripheral_mem_doutb    ),
-        .peripheral_mem_rstb_busy( peripheral_mem_rstb_busy ),
+        .peripheral_mem_rstb_busy( peripheral_mem_rstb_busy),
+        .timer_timeout(            timer_timeout           ), // timer timeout signal
 
 
 
@@ -216,6 +221,7 @@ end
         .rstb(                  peripheral_mem_rstb     ),
         .web(                   peripheral_mem_web      ),
         .doutb(                 peripheral_mem_doutb    ),
+        .timer_timeout(         timer_timeout           ), // timer timeout signal
         .rstb_busy(             peripheral_mem_rstb_busy )
         );
 
@@ -260,6 +266,7 @@ module bram_pmem #(  parameter MEM_DEPTH = 1096 ) (
     input  wire [3:0 ] web,
     input  wire [31:0] addrb_pre_aligned,
     input  wire [31:0] dinb,
+    output wire timer_timeout,
     output wire        rstb_busy,
     output wire [31:0] doutb
     );
@@ -363,6 +370,25 @@ always @(negedge clkb) begin
 
     end
     end 
+
+
+wire [31:0] timer_val,timer_cmp;
+
+
+always @(posedge clkb) begin 
+  DMEM[32'h40] <= DMEM[32'h40] + 1;
+  if (timer_timeout) begin 
+    DMEM[32'h42] <= 32'h00000000; // reset timer cmp
+  end
+end
+
+
+assign timer_val = DMEM[32'h40] ; // timer value
+assign timer_cmp = DMEM[32'h42] ; // timer value
+
+assign timer_timeout   = (timer_val >= timer_cmp) && (DMEM[32'h42] != 0);
+// assign timer_timeout_a = (timer_val >= timer_cmp);
+ 
 
 
 endmodule

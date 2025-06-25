@@ -32,6 +32,7 @@ module riscv32i
     output wire [31:0]  peripheral_mem_dinb,
     input  wire         peripheral_mem_rstb_busy,
     input  wire [31:0]  peripheral_mem_doutb,
+    input  wire         timer_timeout, 
 
 
     // // BRAM ports for Ins Mem
@@ -183,6 +184,7 @@ end
       .Pmem_data_rdata_i(   Pmem_data_rdata_i),
       .Pmem_data_rvalid_i(  Pmem_data_rvalid_i),
       .Pmem_data_gnt_i(     Pmem_data_gnt_i),
+      .timer_timeout(       timer_timeout),
 
 
         // Memory interface signals
@@ -310,6 +312,7 @@ module riscv32i_main
     input  wire  [31:0]   Dmem_data_rdata_i,
     input  wire           Dmem_data_rvalid_i,
     input  wire           Dmem_data_gnt_i,
+    input  wire           timer_timeout,
 
 
     // output  wire          Pmem_clk,

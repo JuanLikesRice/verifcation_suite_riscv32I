@@ -1,108 +1,203 @@
-// #define PERIPHERAL_BASE   0x000007D0  // Base address for success/failure codes
-// #define PERIPHERAL_RESULT 0x000007D4  // Base address for matrix sum result
-#define PERIPHERAL_BASE           0x00000600  
-#define PERIPHERAL_RESULT         0x00000604
-// #define PERIPHERAL_SUM_immediate  0x00000608
+/* ==========================================================
+ * RV32I  –  Machine-Timer-Interrupt demo
+ * Custom MTIME / MTIMECMP map: 0x700 – 0x70F
+ * NO standard headers
+ * ========================================================== */
 
+/* ---------- simple typedefs ---------- */
+typedef unsigned int        uint32;          /* 32-bit */
+typedef unsigned long long  uint64;          /* 64-bit */
+typedef unsigned long       uintptr;         /* native pointer */
 
+/* ---------- string-ify helper (for asm immediates) ---------- */
+#define  _STR(x)  #x
+#define  STR(x)   _STR(x)
 
-// Function to write values to memory-mapped I/O
-void write_to_peripheral(int address, int value) {
-    volatile int* periph_addr = (int*)(address);
-    *periph_addr = value;
+/* ---------- MMIO addresses ---------- */
+#define MTIME_LO        (*(volatile uint32 *)0x00000700U)
+#define MTIME_HI        (*(volatile uint32 *)0x00000704U)
+#define MTIMECMP_LO     (*(volatile uint32 *)0x00000708U)
+#define MTIMECMP_HI     (*(volatile uint32 *)0x0000070CU)
+
+/* test-bench peripherals (unchanged) */
+#define PERIPHERAL_SUCCESS   0x00000600
+#define PERIPHERAL_BYTE      0x00000604
+
+/* ---------- CSR bit masks ---------- */
+#define MIE_MTIE       (1U << 7)     /* mie  – machine-timer enable   */
+#define MSTATUS_MIE    (1U << 3)     /* mstatus – global int enable   */
+
+/* ---------- globals ---------- */
+volatile uint32 timer_triggered = 0;
+
+/* ==========================================================
+ * Low-level helpers
+ * ========================================================== */
+static inline void write_mmio(uint32 addr, uint32 val)
+{
+    *(volatile uint32 *)addr = val;
 }
 
-// Function to perform matrix multiplication (memory and computation intensive)
-void matrix_multiply(int size, int A[][size], int B[][size], int C[][size]) {
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            C[i][j] = 0;
-            for (int k = 0; k < size; k++) {
-                C[i][j] += A[i][k] * B[k][j];
-            }
-        }
-    }
+/* 64-bit read of mtime with rollover guard             */
+static inline uint64 read_mtime(void)
+{
+    uint32 hi, lo;
+    do {
+        hi = MTIME_HI;
+        lo = MTIME_LO;
+    } while (hi != MTIME_HI);
+    return ((uint64)hi << 32) | lo;
 }
 
-int main() {
-    int size =  4;  //  4x 4 matrices for testing
-    int A[ 4][ 4], B[ 4][ 4], C[ 4][ 4];
+/* Safe 64-bit write to mtimecmp (spec §3.2.1 sequence) */
+static inline void set_timer(uint64 delta)
+{
+    uint64 now     = read_mtime();
+    uint64 cmp     = now + delta;
+    uint32 cmp_lo  = (uint32)cmp;
+    uint32 cmp_hi  = (uint32)(cmp >> 32);
 
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            A[i][j] = i + j;
-            B[i][j] = i * j;
-        }    }
-
-    matrix_multiply(size, A, B, C);
-
-    // Sum elements of result matrix C
-    int matrix_sum = 0;
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            matrix_sum += C[i][j];
-        }
-    }
-
-    write_to_peripheral(PERIPHERAL_RESULT, matrix_sum);  // Send result to peripheral
-    write_to_peripheral(PERIPHERAL_BASE,  0xDEADBEEF);  // Success code
-
-    // if (matrix_sum ==  4 4 4) {  // Known expected result for this matrix setup
-    //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);  // Success code
-    // } else {
-    //     write_to_peripheral(PERIPHERAL_BASE, 0xBADF00D);   // Failure code
-    // }
-
-    while (1) {}  // Halt
-    return 0;
+    MTIMECMP_HI = 0xFFFFFFFFU;   /* block comparator            */
+    MTIMECMP_LO = cmp_lo;
+    MTIMECMP_HI = cmp_hi;
+    // asm volatile("fence rw,rw"); /* ensure ordering              */
 }
 
+static inline void csr_write_mtvec(uintptr addr)
+{
+    asm volatile("csrw mtvec, %0" :: "r"(addr));
+}
 
-// #define   PERIPHERAL_BASE 0x00000600  // Base address for success/failure codes
-// #define PERIPHERAL_RESULT 0x00000604  // Base address for factorial result
+static inline void enable_timer_interrupts(void)
+{
+    asm volatile("csrs mie,     %0" :: "r"(MIE_MTIE));
+    asm volatile("csrs mstatus, %0" :: "r"(MSTATUS_MIE));
+}
 
-// void write_to_peripheral(int address, int value) {
-//     volatile int* periph_addr = (int*)(address);
-//     *periph_addr = value;}
+/* ==========================================================
+ * Naked interrupt handler – saves ALL 31 GPRs
+ * 128-byte 16-aligned frame
+ * ========================================================== */
+void __attribute__((naked)) trap_handler(void)
+{
+    asm volatile(
+        /* ---------- prologue ---------- */
+        "addi  sp, sp, -128            \n\t"
+        "sw    ra,   0(sp)             \n\t"
+        "sw    t0,   4(sp)             \n\t"
+        "sw    t1,   8(sp)             \n\t"
+        "sw    t2,  12(sp)             \n\t"
+        "sw    s0,  16(sp)             \n\t"
+        "sw    s1,  20(sp)             \n\t"
+        "sw    s2,  24(sp)             \n\t"
+        "sw    s3,  28(sp)             \n\t"
+        "sw    s4,  32(sp)             \n\t"
+        "sw    s5,  36(sp)             \n\t"
+        "sw    s6,  40(sp)             \n\t"
+        "sw    s7,  44(sp)             \n\t"
+        "sw    s8,  48(sp)             \n\t"
+        "sw    s9,  52(sp)             \n\t"
+        "sw    s10, 56(sp)             \n\t"
+        "sw    s11, 60(sp)             \n\t"
+        "sw    t3,  64(sp)             \n\t"
+        "sw    t4,  68(sp)             \n\t"
+        "sw    t5,  72(sp)             \n\t"
+        "sw    t6,  76(sp)             \n\t"
+        "sw    a0,  80(sp)             \n\t"
+        "sw    a1,  84(sp)             \n\t"
+        "sw    a2,  88(sp)             \n\t"
+        "sw    a3,  92(sp)             \n\t"
+        "sw    a4,  96(sp)             \n\t"
+        "sw    a5, 100(sp)             \n\t"
+        "sw    a6, 104(sp)             \n\t"
+        "sw    a7, 108(sp)             \n\t"
+        "sw    gp, 112(sp)             \n\t"
+        "sw    tp, 116(sp)             \n\t"
 
-// int factorial(int n) {
-//     if (n <= 1) return 1;
-//     return n * factorial(n - 1);}
+        /* ---------- body ---------- */
 
-// // int fibonacci(int n) {
-// //     if (n <= 1) {
-// //         return n;  
-// //     } else {
-// //         return fibonacci(n - 1) + fibonacci(n -  4);  // Recursive case
-// //     }
-// // }
+        /* MMIO 0xDEADBEEF → PERIPHERAL_SUCCESS               */
+        "li    t0,  " STR(PERIPHERAL_SUCCESS) "     \n\t"
+        "lui   t1,  0xDEADC                      \n\t"
+        "addi  t1,  t1, -273                     \n\t" /* t1 = 0xDEADBEEF */
+        "sw    t1,  0(t0)                        \n\t"
 
+        /* timer_triggered = 1                                */
+        "la    t0,  timer_triggered              \n\t"
+        "li    t1,  1                            \n\t"
+        "sw    t1,  0(t0)                        \n\t"
 
-// int main() {
-//     // int result = fibonacci(1 4);
-//     int result = factorial(1 4);
-//     write_to_peripheral(PERIPHERAL_BASE, result);  
-//     // if (result == 676 4) {
-//     //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);
-//     // } else {
-//     //     write_to_peripheral(PERIPHERAL_BASE, 0xBADF00D);
-//     // }
+        /* ---------- epilogue ---------- */
+        "lw    tp, 116(sp)             \n\t"
+        "lw    gp, 112(sp)             \n\t"
+        "lw    a7, 108(sp)             \n\t"
+        "lw    a6, 104(sp)             \n\t"
+        "lw    a5, 100(sp)             \n\t"
+        "lw    a4,  96(sp)             \n\t"
+        "lw    a3,  92(sp)             \n\t"
+        "lw    a2,  88(sp)             \n\t"
+        "lw    a1,  84(sp)             \n\t"
+        "lw    a0,  80(sp)             \n\t"
+        "lw    t6,  76(sp)             \n\t"
+        "lw    t5,  72(sp)             \n\t"
+        "lw    t4,  68(sp)             \n\t"
+        "lw    t3,  64(sp)             \n\t"
+        "lw    s11, 60(sp)             \n\t"
+        "lw    s10, 56(sp)             \n\t"
+        "lw    s9,  52(sp)             \n\t"
+        "lw    s8,  48(sp)             \n\t"
+        "lw    s7,  44(sp)             \n\t"
+        "lw    s6,  40(sp)             \n\t"
+        "lw    s5,  36(sp)             \n\t"
+        "lw    s4,  32(sp)             \n\t"
+        "lw    s3,  28(sp)             \n\t"
+        "lw    s2,  24(sp)             \n\t"
+        "lw    s1,  20(sp)             \n\t"
+        "lw    s0,  16(sp)             \n\t"
+        "lw    t2,  12(sp)             \n\t"
+        "lw    t1,   8(sp)             \n\t"
+        "lw    t0,   4(sp)             \n\t"
+        "lw    ra,   0(sp)             \n\t"
+        "addi  sp,  sp, 128            \n\t"
 
+        "mret                                   \n\t"
+        :
+        :
+        : "memory", "cc"
+    );
+}
 
+/* ==========================================================
+ * Init & main loop
+ * ========================================================== */
+static void init_mtvec(void)
+{
+    uintptr base = ((uintptr)&trap_handler) & ~0x3UL;
+    csr_write_mtvec(base);
+}
 
-//     // int    result;
-//     // int    A =  4 4;
-//     // int    B = 47 4;
-//     // result = A * B;
-//     // write_to_peripheral(PERIPHERAL_RESULT, 0xBADF00D);
-    
-//     // if (result ==  44700) {
-//     //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);
-//     // } else {
-//     //     write_to_peripheral(PERIPHERAL_BASE, 0xBADF00D);
-//     // }
+static inline void delay(void)
+{
+    for (volatile uint32 i = 0; i < 100000U; ++i)
+        asm volatile("");
+}
 
+void main(void)
+{
+    init_mtvec();                  /* point mtvec at ISR        */
+    enable_timer_interrupts();     /* MIE + MTIE                */
+    set_timer(200);                /* fire in ~100 cycles      */
 
-//     while (1) {}  // Halt
-//     return 0;
-// }
+    while (1)
+        delay();
+}
+
+/* ----------------------------------------------------------
+ * Optional “fail” helper (never used by default)
+ * ---------------------------------------------------------- */
+static void fail(int id)
+{
+    write_mmio(PERIPHERAL_BYTE,    (uint32)id);
+    write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
+    while (1);
+}
