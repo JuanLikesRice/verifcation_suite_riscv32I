@@ -39,28 +39,29 @@ Disassembly of section .data:
   7c:	00112e23          	sw	ra,28(sp)
   80:	00812c23          	sw	s0,24(sp)
   84:	02010413          	addi	s0,sp,32
-  88:	70000793          	li	a5,1792
-  8c:	fef42623          	sw	a5,-20(s0)
-  90:	deadc7b7          	lui	a5,0xdeadc
-  94:	eef78793          	addi	a5,a5,-273 # 0xdeadbeef
-  98:	fef42423          	sw	a5,-24(s0)
-  9c:	fec42783          	lw	a5,-20(s0)
-  a0:	fe842703          	lw	a4,-24(s0)
-  a4:	00e7a023          	sw	a4,0(a5)
-  a8:	fec42783          	lw	a5,-20(s0)
-  ac:	0007a783          	lw	a5,0(a5)
-  b0:	fef42223          	sw	a5,-28(s0)
-  b4:	fe442703          	lw	a4,-28(s0)
-  b8:	fe842783          	lw	a5,-24(s0)
-  bc:	00f70663          	beq	a4,a5,0xc8
-  c0:	00100513          	li	a0,1
-  c4:	f7dff0ef          	jal	0x40
-  c8:	deadc7b7          	lui	a5,0xdeadc
-  cc:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
-  d0:	60000513          	li	a0,1536
-  d4:	f2dff0ef          	jal	0x0
-  d8:	0000006f          	j	0xd8
-  dc:	00002117          	auipc	sp,0x2
-  e0:	f2410113          	addi	sp,sp,-220 # 0x2000
-  e4:	f95ff0ef          	jal	0x78
-  e8:	ff5ff06f          	j	0xdc
+  88:	000017b7          	lui	a5,0x1
+  8c:	90078793          	addi	a5,a5,-1792 # 0x900
+  90:	fef42623          	sw	a5,-20(s0)
+  94:	deadc7b7          	lui	a5,0xdeadc
+  98:	eef78793          	addi	a5,a5,-273 # 0xdeadbeef
+  9c:	fef42423          	sw	a5,-24(s0)
+  a0:	fec42783          	lw	a5,-20(s0)
+  a4:	fe842703          	lw	a4,-24(s0)
+  a8:	00e7a023          	sw	a4,0(a5)
+  ac:	fec42783          	lw	a5,-20(s0)
+  b0:	0007a783          	lw	a5,0(a5)
+  b4:	fef42223          	sw	a5,-28(s0)
+  b8:	fe442703          	lw	a4,-28(s0)
+  bc:	fe842783          	lw	a5,-24(s0)
+  c0:	00f70663          	beq	a4,a5,0xcc
+  c4:	00100513          	li	a0,1
+  c8:	f79ff0ef          	jal	0x40
+  cc:	deadc7b7          	lui	a5,0xdeadc
+  d0:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
+  d4:	60000513          	li	a0,1536
+  d8:	f29ff0ef          	jal	0x0
+  dc:	0000006f          	j	0xdc
+  e0:	00002117          	auipc	sp,0x2
+  e4:	f2010113          	addi	sp,sp,-224 # 0x2000
+  e8:	f91ff0ef          	jal	0x78
+  ec:	ff5ff06f          	j	0xe0

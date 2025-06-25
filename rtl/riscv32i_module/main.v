@@ -15,9 +15,88 @@ module core_controller_fsm (
     output wire        irq_grant_o,       // RET from interrupt executed
     output wire  override_all_stop,
     output wire  enable_design,
-    output wire  program_finished
+    output wire  program_finished,
 
+    input  wire        reset,             // Reset signal     
+
+// CSR stuff
+input wire          write_csr,
+input wire [11:0]   csrReg_write_dest_reg,
+input wire [31:0]   csrReg_write_dest_reg_data,
+input wire [11:0]   csrReg_read_src_reg,
+output wire [31:0]  csrReg_read_src_reg_data
 );
+
+   wire cntrl_csr;
+   reg [31:0] CSR_FILE[0:4096];  // 4096 32-bit registers
+   assign cntrl_csr   =  (csrReg_write_dest_reg == csrReg_read_src_reg) &&  write_csr ;
+    
+    assign csrReg_read_src_reg_data = cntrl_csr ? csrReg_write_dest_reg_data : CSR_FILE[csrReg_read_src_reg];
+
+
+    integer j;
+    integer p;
+
+    initial begin 
+    for (p=0; p <4096; p=p+1)begin
+                CSR_FILE[p] <= 32'b0;
+    end
+    end
+
+integer i;
+integer o;
+
+always @(posedge clk) begin
+    if (reset) begin 
+        for (o=0; o < 4096; o=o+1) begin
+            CSR_FILE[o] <= 32'b0;
+        end
+    end else begin 
+        if (write_csr) begin
+            CSR_FILE[csrReg_write_dest_reg] <= csrReg_write_dest_reg_data;
+        end
+    end
+end
+
+
+//MARKER AUTOMATED HERE START
+integer k;
+integer n;
+always @(negedge clk) begin
+      #100
+    //   $write("\n\nREGFILE:   ");
+    //   for (k=0; k < 32; k=k+1) begin 
+	//   	// REG_FILE[i] <= 32'b0;
+    //   if (REG_FILE[k] != 0) begin
+    //   $write("   R%4d: %9h,", k, REG_FILE[k]);
+    //   end
+    //   end
+    //   $write("\nREGFILE*:  ");
+    //   for (n=0; n < 32; n=n+1) begin 
+	//   	// REG_FILE[i] <= 32'b0;
+    //   if (REG_FILE[n] != 0) begin
+    //   $write("   R%4d: %9d,", n, $signed(REG_FILE[n]));
+    //   end
+    //   end
+    #1
+      $write("\n\nCSRs:   ");
+      for (k=0; k < 4096; k=k+1) begin 
+	  	// REG_FILE[i] <= 32'b0;
+      if (CSR_FILE[k] != 0) begin
+      $write("   R%4d: %9h,", k, CSR_FILE[k]);
+      end
+      end
+      $write("\nCSRs*:  ");
+      for (n=0; n < 4096; n=n+1) begin 
+	  	// REG_FILE[i] <= 32'b0;
+      if (CSR_FILE[n] != 0) begin
+      $write("   R%4d: %9d,", n, $signed(CSR_FILE[n]));
+      end
+      end
+
+
+end
+
 
 
     // Internal state register

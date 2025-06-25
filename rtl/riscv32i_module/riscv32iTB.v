@@ -7,7 +7,7 @@ module riscv32iTB
     parameter success_code        = 32'hDEADBEEF,
     parameter cycles_timeout      = 500,
     // parameter cycles_timeout      = 20000,
-    parameter initial_pc    = 32'h000003D8
+    parameter initial_pc    = 32'h000003F8
 )
 (
 

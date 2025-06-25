@@ -399,7 +399,18 @@ end
         .program_finished(        finished_program),
         .irq_grant_o(             irq_grant_o),
         .override_all_stop(       override_all_stop),
-        .enable_design(           enable_design)
+        .enable_design(           enable_design),
+
+
+        .reset(                   reset),
+        .write_csr(          write_csr_wire_stage3),
+        .csrReg_write_dest_reg(         csr_stage3),
+        .csrReg_write_dest_reg_data(csr_val_stage3),
+
+        .csrReg_read_src_reg(csr_o),
+        .csrReg_read_src_reg_data(csr_regfile_o)
+
+
     );
 
 
@@ -676,15 +687,15 @@ debug # (.Param_delay(20),.regCount(3) ) debug_3 (.i_clk(clk),.pipeReg(pipeReg3)
 .we_pi(write_reg_file_wire_stage3), 
 .writeData_pi(writeData_pi), 
 .operand1_po(operand1_po),
-.operand2_po(operand2_po),
+.operand2_po(operand2_po)
 
 
-.write_csr(          write_csr_wire_stage3),
-.csrReg_write_dest_reg(         csr_stage3),
-.csrReg_write_dest_reg_data(csr_val_stage3),
+// .write_csr(          write_csr_wire_stage3),
+// .csrReg_write_dest_reg(         csr_stage3),
+// .csrReg_write_dest_reg_data(csr_val_stage3),
 
-.csrReg_read_src_reg(csr_o),
-.csrReg_read_src_reg_data(csr_regfile_o)
+// .csrReg_read_src_reg(csr_o),
+// .csrReg_read_src_reg_data(csr_regfile_o)
 
 
 

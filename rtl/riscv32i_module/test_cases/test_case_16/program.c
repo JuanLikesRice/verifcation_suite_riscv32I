@@ -17,7 +17,7 @@ void fail(int test_index) {
 int main(void) {
     // In ILP32, long is 32 bits.
     // Use a fixed memory address (adjust as appropriate for your system).
-    volatile long *mem_ptr = (volatile long *)0x00000700;
+    volatile long *mem_ptr = (volatile long *)0x00000900;
     
     // Test value: 0xDEADBEEF
     long test_val = 0xDEADBEEF;

@@ -3006,4 +3006,4 @@ TEST FINISHED by success write :deadbeef
 
 
              1305000: STOP_sim signal received
-riscv32iTB.v:191: $finish called at 1305000 (1ps)
+riscv32iTB.v:195: $finish called at 1305000 (1ps)
