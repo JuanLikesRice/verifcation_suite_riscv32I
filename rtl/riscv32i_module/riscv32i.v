@@ -94,7 +94,7 @@ wire              Pmem_data_gnt_i;
 
 
 
-pulse_generator uut (
+pulse_generator pulse_generator_GPIO0_R0_CH1 (
     .clk(clk),
     .in(GPIO0_R0_CH1),
     .out(control_signals_in)
@@ -381,34 +381,51 @@ initial begin
     halt_i          <= 0;
 end
 
-
+  wire irq_prep;
   wire enable_design;
+  wire pulsed_irq_prep;
+  wire [31:0] interrupt_vector_i;
+
+  pulse_generator_1bit pulse_generator_1bit (
+    .clk(clk),
+    .in(  irq_prep),
+    .out( pulsed_irq_prep)
+);
 
     core_controller_fsm core_controller_fsm (
-        .clk(                     clk),
-        .control_signal(          control_signal),
+        .clk(                         clk),
+        .control_signal(              control_signal),
 
-        .initate_irq(             initate_irq),
-        .end_condition(           end_condition),
-        .all_ready(               all_ready),
-        .ready_for_irq_handler(   ready_for_irq_handler),
-        .irq_service_done(        irq_service_done),
-        .irq_req_i(               irq_req_i),
-        .irq_addr_i(              irq_addr_i),
+        // .initate_irq(                 initate_irq),
+        .end_condition(               end_condition),
+        .all_ready(                   all_ready),
+        .ready_for_irq_handler(       ready_for_irq_handler),
+        // .irq_service_done(            irq_service_done),
+        .irq_req_i(                   irq_req_i),
+        .irq_addr_i(                  irq_addr_i),
 
-        .program_finished(        finished_program),
-        .irq_grant_o(             irq_grant_o),
-        .override_all_stop(       override_all_stop),
-        .enable_design(           enable_design),
+        .program_finished(            finished_program),
+        .irq_grant_o(                 irq_grant_o),
+        .override_all_stop(           override_all_stop),
+        .enable_design(               enable_design),
 
+        .reset(                       reset),
+        .write_csr(                   write_csr_wire_stage3),
+        .csrReg_write_dest_reg(       csr_stage3),
+        .csrReg_write_dest_reg_data(  csr_val_stage3),
 
-        .reset(                   reset),
-        .write_csr(          write_csr_wire_stage3),
-        .csrReg_write_dest_reg(         csr_stage3),
-        .csrReg_write_dest_reg_data(csr_val_stage3),
+        .csrReg_read_src_reg(         csr_o),
+        .csrReg_read_src_reg_data(    csr_regfile_o),
+        .mepc(                        mepc),
+        .mret_inst(                   mret_inst),
 
-        .csrReg_read_src_reg(csr_o),
-        .csrReg_read_src_reg_data(csr_regfile_o)
+        .irq_prep(                    irq_prep),
+        .timer_timeout(               timer_timeout),
+        .nextPC_o(                                nextPC_o),
+        .pc_stage_2(                              pc_stage_2),
+        .change_PC_condition_for_jump_or_branch(  change_PC_condition_for_jump_or_branch),
+        .interrupt_vector_i(          interrupt_vector_i),
+        .Single_Instruction_stage2(Single_Instruction_stage2)
 
 
     );
@@ -422,11 +439,16 @@ wire irq_grant_o, override_all_stop;
 assign  initate_irq             = 1'b0;  
 assign  end_condition           = (final_value == success_code);  
 assign  all_ready               = 1'b0;  
-assign  ready_for_irq_handler   = 1'b0;  
+assign  ready_for_irq_handler   = 1'b1;  
 assign  irq_service_done        = 1'b0;  
 assign  irq_req_i               = 1'b0;  
 assign  irq_addr_i              = 32'h0;
 
+
+wire [31:0] nextPC_o;
+wire change_PC_condition_for_jump_or_branch;
+wire [31:0] mepc;
+wire mret_inst;
 
     pc pc  (
         .clk_i(clk),
@@ -438,7 +460,15 @@ assign  irq_addr_i              = 32'h0;
         .enable_design(enable_design),
         .pc_o(pc_i),
         .initial_pc_i(initial_pc_i),
-        .pc_valid(pc_valid)
+        .pc_valid(pc_valid),
+
+        .nextPC_o(                                nextPC_o),
+        .change_PC_condition_for_jump_or_branch(  change_PC_condition_for_jump_or_branch),
+        .interrupt_vector_i(                      interrupt_vector_i),
+        .irq_prep(                                irq_prep),
+        .mret_inst(                               mret_inst),
+        .mepc(                                    mepc)
+
     );
 
     // ins_mem  ins_mem(
@@ -475,7 +505,7 @@ assign  irq_addr_i              = 32'h0;
         .STALL_ID_not_ready_w(STALL_ID_not_ready_w),
         .instruction_o_w     (instruction),
         .stall_i_EXEC        (exec_stall),
-        .abort_rvalid(      delete_reg1_reg2),
+        .abort_rvalid(        delete_reg1_reg2),
 
         .stop_request_overide(      stop_request_overide_insmem),
         .reset_able(                reset_able_insmem),
@@ -623,7 +653,7 @@ wire stage_IF_ready;   // IF  ready for PC register
 assign write_reg_stage3 = write_reg_file_wire_stage3|load_into_reg_stage3;
 
 //flush from branch
-assign delete_reg1_reg2 = branch_inst_wire_stage2 | jump_inst_wire_stage2;
+assign delete_reg1_reg2 = branch_inst_wire_stage2 | jump_inst_wire_stage2| irq_prep | mret_inst;
 
 //Value being wrtten to regfile in WBB stage, also may be forwarded to ALU
 assign writeData_pi     = load_into_reg_stage3 ? loaded_data_stage3 : alu_result_1_stage3;
@@ -638,8 +668,10 @@ wire    stop_request_overide_datamem, reset_able_datamem;
 assign  stop_request_overide_datamem = 1'b0;
 wire    stop_request_overide_insmem, reset_able_insmem;  
 assign  stop_request_overide_insmem = 1'b0;
+// assign  stop_request_overide_insmem = irq_prep;
 
 
+assign mret_inst =   (Single_Instruction_stage2 == `inst_MRET);
 
 
 //MARKER AUTOMATED HERE START
@@ -1125,6 +1157,22 @@ integer i;
 endmodule
 
 
+module pulse_generator_1bit(
+    input  wire       clk,
+    input wire  in,
+    output wire out
+);
+reg out_r;
+reg prev_in;
+assign out = out_r;
+integer i;
+  always @(posedge clk) begin
+    // for (i = 0; i < 32; i = i + 1) begin
+        out_r   <= in & ~prev_in;
+        prev_in <= in;
+    // end
+  end
+endmodule
 
 
 module data_mem_bram_wrapper #(  parameter MEM_DEPTH = 1096 ) (

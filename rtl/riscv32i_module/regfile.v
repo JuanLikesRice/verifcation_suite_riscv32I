@@ -56,9 +56,6 @@ always @(posedge clk) begin
             for (i=0; i < 32; i=i+1) begin 
 	  	     REG_FILE[i] <= 32'b0;	
             end
-            // for (o=0; o < 4096; o=o+1) begin
-            //      CSR_FILE[o] <= 32'b0;
-            // end
       end else begin 
 	   if (we_pi && (destReg_pi!=0))  begin 
 		   REG_FILE[destReg_pi] <= writeData_pi;

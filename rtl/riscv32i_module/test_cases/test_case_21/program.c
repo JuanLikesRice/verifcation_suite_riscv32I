@@ -182,22 +182,15 @@ static inline void delay(void)
         asm volatile("");
 }
 
+
 void main(void)
 {
     init_mtvec();                  /* point mtvec at ISR        */
     enable_timer_interrupts();     /* MIE + MTIE                */
-    set_timer(200);                /* fire in ~100 cycles      */
+    set_timer(300);                /* fire in ~100 cycles      */
 
-    while (1)
+    while (1){
         delay();
-}
 
-/* ----------------------------------------------------------
- * Optional “fail” helper (never used by default)
- * ---------------------------------------------------------- */
-static void fail(int id)
-{
-    write_mmio(PERIPHERAL_BYTE,    (uint32)id);
-    write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
-    while (1);
-}
+    }    }
+
