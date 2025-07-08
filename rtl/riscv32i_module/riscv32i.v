@@ -1274,9 +1274,9 @@ module  peripheral_mem_bram_wrapper #(  parameter MEM_DEPTH = 1096 ) (
     reg rvalid_reg,rvalid_reg_1,rvalid_reg_2,rvalid_reg_3,rvalid_reg_4,rvalid_reg_5,rvalid_reg_6,rvalid_reg_7;
     wire rstb_busy;
     assign ins_data_gnt_i     = ins_data_req_o;
-    // assign ins_data_rvalid_i  = rvalid_reg;
+    assign ins_data_rvalid_i  = rvalid_reg;
     // assign ins_data_gnt_i     = rvalid_reg;
-    assign ins_data_rvalid_i  = rvalid_reg_7;
+    // assign ins_data_rvalid_i  = rvalid_reg_6;
     // assign  bram_web = 4'b0;
 
 

@@ -1324,8 +1324,8 @@ PipeReg3  PC: 000000ec: I:{00000013}    inst_ADDI   rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001fd0,   R   8:  00001ff0,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8144,   R   8:      8176,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000003a,
 PERIPHERAL_MEM*:    D00000100:        58,
@@ -1346,8 +1346,8 @@ PipeReg3  PC: 000000ec: I:{00000013}    inst_ADDI   rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001fd0,   R   8:  00001ff0,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8144,   R   8:      8176,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000003b,
 PERIPHERAL_MEM*:    D00000100:        59,
@@ -1371,8 +1371,8 @@ PipeReg3  PC: 000000f0: I:{01c12083}    inst_LW     rd_i_a    1 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001fd0,   R   8:  00001ff0,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8144,   R   8:      8176,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000003c,
 PERIPHERAL_MEM*:    D00000100:        60,
@@ -1393,8 +1393,8 @@ PipeReg3  PC: 000000f0: I:{01c12083}    inst_LW     rd_i_a    1 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001fd0,   R   8:  00001ff0,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8144,   R   8:      8176,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000003d,
 PERIPHERAL_MEM*:    D00000100:        61,
@@ -1418,8 +1418,8 @@ PipeReg3  PC: 000000f4: I:{01812403}    inst_LW     rd_i_a    8 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001fd0,   R   8:  00001ff0,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8144,   R   8:      8176,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000003e,
 PERIPHERAL_MEM*:    D00000100:        62,
@@ -1442,8 +1442,8 @@ PC_module: JUMP!   Next cycle, New PC: 00000158, Destroyed PC 0000010c
 REGFILE:      R   1:  00000158,   R   2:  00001fd0,   R   8:  00002000,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8144,   R   8:      8192,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000003f,
 PERIPHERAL_MEM*:    D00000100:        63,
@@ -1464,8 +1464,8 @@ PipeReg3  PC: 000000fc: I:{00008067}    inst_JALR   rd_i_a    0 rs1_a    1 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8176,   R   8:      8192,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000040,
 PERIPHERAL_MEM*:    D00000100:        64,
@@ -1486,8 +1486,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8176,   R   8:      8192,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000041,
 PERIPHERAL_MEM*:    D00000100:        65,
@@ -1508,8 +1508,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8176,   R   8:      8192,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000042,
 PERIPHERAL_MEM*:    D00000100:        66,
@@ -1531,8 +1531,8 @@ PipeReg3  PC: 00000000: I:{00000013}    inst_ADDI   rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8176,   R   8:      8192,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000043,
 PERIPHERAL_MEM*:    D00000100:        67,
@@ -1553,8 +1553,8 @@ PipeReg3  PC: 00000158: I:{deadc7b7}    inst_LUI    rd_i_a   15 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00100000,   R  15:  00100000,
 REGFILE*:     R   1:       344,   R   2:      8176,   R   8:      8192,   R  10:   1048576,   R  15:   1048576,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000044,
 PERIPHERAL_MEM*:    D00000100:        68,
@@ -1575,8 +1575,8 @@ PipeReg3  PC: 0000015c: I:{eef78593}    inst_ADDI   rd_i_a   11 rs1_a   15 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00100000,   R  15:  deadc000,
 REGFILE*:     R   1:       344,   R   2:      8176,   R   8:      8192,   R  10:   1048576,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000045,
 PERIPHERAL_MEM*:    D00000100:        69,
@@ -1598,8 +1598,8 @@ PC_module: JUMP!   Next cycle, New PC: 00000000, Destroyed PC 00000174
 REGFILE:      R   1:  00000158,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00100000,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       344,   R   2:      8176,   R   8:      8192,   R  10:   1048576,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000046,
 PERIPHERAL_MEM*:    D00000100:        70,
@@ -1620,8 +1620,8 @@ PipeReg3  PC: 00000164: I:{e9dff0ef}    inst_JAL    rd_i_a    1 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000158,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       344,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000047,
 PERIPHERAL_MEM*:    D00000100:        71,
@@ -1642,8 +1642,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000048,
 PERIPHERAL_MEM*:    D00000100:        72,
@@ -1664,8 +1664,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000049,
 PERIPHERAL_MEM*:    D00000100:        73,
@@ -1687,8 +1687,8 @@ PipeReg3  PC: 00000000: I:{00000013}    inst_ADDI   rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000004a,
 PERIPHERAL_MEM*:    D00000100:        74,
@@ -1710,8 +1710,8 @@ PipeReg3  PC: 00000000: I:{fd010113}    inst_ADDI   rd_i_a    2 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000004b,
 PERIPHERAL_MEM*:    D00000100:        75,
@@ -1733,8 +1733,8 @@ PipeReg3  PC: 00000000: I:{fd010113}    inst_ADDI   rd_i_a    2 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000004c,
 PERIPHERAL_MEM*:    D00000100:        76,
@@ -1758,8 +1758,8 @@ PipeReg3  PC: 00000004: I:{02112623}    inst_SW     rd_i_a    0 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000004d,
 PERIPHERAL_MEM*:    D00000100:        77,
@@ -1780,8 +1780,8 @@ PipeReg3  PC: 00000004: I:{02112623}    inst_SW     rd_i_a    0 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000004e,
 PERIPHERAL_MEM*:    D00000100:        78,
@@ -1806,8 +1806,8 @@ PipeReg3  PC: 00000008: I:{02812423}    inst_SW     rd_i_a    0 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000004f,
 PERIPHERAL_MEM*:    D00000100:        79,
@@ -1829,8 +1829,8 @@ PipeReg3  PC: 0000000c: I:{03010413}    inst_ADDI   rd_i_a    8 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000050,
 PERIPHERAL_MEM*:    D00000100:        80,
@@ -1852,8 +1852,8 @@ PipeReg3  PC: 0000000c: I:{03010413}    inst_ADDI   rd_i_a    8 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000051,
 PERIPHERAL_MEM*:    D00000100:        81,
@@ -1877,8 +1877,8 @@ PipeReg3  PC: 00000010: I:{fca42e23}    inst_SW     rd_i_a    0 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000052,
 PERIPHERAL_MEM*:    D00000100:        82,
@@ -1899,8 +1899,8 @@ PipeReg3  PC: 00000010: I:{fca42e23}    inst_SW     rd_i_a    0 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000053,
 PERIPHERAL_MEM*:    D00000100:        83,
@@ -1925,8 +1925,8 @@ PipeReg3  PC: 00000014: I:{fcb42c23}    inst_SW     rd_i_a    0 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000054,
 PERIPHERAL_MEM*:    D00000100:        84,
@@ -1948,8 +1948,8 @@ PipeReg3  PC: 00000014: I:{fcb42c23}    inst_SW     rd_i_a    0 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000055,
 PERIPHERAL_MEM*:    D00000100:        85,
@@ -1973,8 +1973,8 @@ PipeReg3  PC: 00000018: I:{fdc42783}    inst_LW     rd_i_a   15 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  deadc000,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15: -559038464,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000056,
 PERIPHERAL_MEM*:    D00000100:        86,
@@ -1995,8 +1995,8 @@ PipeReg3  PC: 00000018: I:{fdc42783}    inst_LW     rd_i_a   15 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000057,
 PERIPHERAL_MEM*:    D00000100:        87,
@@ -2020,8 +2020,8 @@ PipeReg3  PC: 0000001c: I:{fef42623}    inst_SW     rd_i_a    0 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000058,
 PERIPHERAL_MEM*:    D00000100:        88,
@@ -2042,8 +2042,8 @@ PipeReg3  PC: 0000001c: I:{fef42623}    inst_SW     rd_i_a    0 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  00000059,
 PERIPHERAL_MEM*:    D00000100:        89,
@@ -2069,8 +2069,8 @@ PipeReg3  PC: 00000020: I:{fec42783}    inst_LW     rd_i_a   15 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000005a,
 PERIPHERAL_MEM*:    D00000100:        90,
@@ -2093,8 +2093,8 @@ PipeReg3  PC: 00000020: I:{fec42783}    inst_LW     rd_i_a   15 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000005b,
 PERIPHERAL_MEM*:    D00000100:        91,
@@ -2118,8 +2118,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000100:  0000005c,
 PERIPHERAL_MEM*:    D00000100:        92,
@@ -2140,8 +2140,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000005d,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:        93,
@@ -2165,8 +2165,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000005e,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:        94,
@@ -2187,8 +2187,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000005f,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:        95,
@@ -2209,8 +2209,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000060,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:        96,
@@ -2231,8 +2231,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000061,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:        97,
@@ -2253,8 +2253,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000062,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:        98,
@@ -2275,8 +2275,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000063,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:        99,
@@ -2297,8 +2297,8 @@ PipeReg3  PC: 00000024: I:{fd842703}    inst_LW     rd_i_a   14 rs1_a    8 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000064,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       100,
@@ -2319,8 +2319,8 @@ PipeReg3  PC: 00000028: I:{00e7a023}    inst_SW     rd_i_a    0 rs1_a   15 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000065,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       101,
@@ -2341,8 +2341,8 @@ PipeReg3  PC: 0000002c: I:{00000013}    inst_ADDI   rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000066,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       102,
@@ -2363,8 +2363,8 @@ PipeReg3  PC: 0000002c: I:{00000013}    inst_ADDI   rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000067,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       103,
@@ -2388,8 +2388,8 @@ PipeReg3  PC: 00000030: I:{02c12083}    inst_LW     rd_i_a    1 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000068,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       104,
@@ -2410,8 +2410,8 @@ PipeReg3  PC: 00000030: I:{02c12083}    inst_LW     rd_i_a    1 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000069,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       105,
@@ -2435,8 +2435,8 @@ PipeReg3  PC: 00000034: I:{02812403}    inst_LW     rd_i_a    8 rs1_a    2 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00001ff0,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8176,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000006a,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       106,
@@ -2459,8 +2459,8 @@ PC_module: JUMP!   Next cycle, New PC: 00000168, Destroyed PC 0000004c
 REGFILE:      R   1:  00000168,   R   2:  00001fc0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8128,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000006b,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       107,
@@ -2481,8 +2481,8 @@ PipeReg3  PC: 0000003c: I:{00008067}    inst_JALR   rd_i_a    0 rs1_a    1 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000006c,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       108,
@@ -2503,8 +2503,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000006d,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       109,
@@ -2525,8 +2525,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000006e,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       110,
@@ -2548,8 +2548,8 @@ PC_module: JUMP!   Next cycle, New PC: 00000168, Destroyed PC 00000178
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000006f,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       111,
@@ -2570,8 +2570,8 @@ PipeReg3  PC: 00000168: I:{0000006f}    inst_JAL    rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000070,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       112,
@@ -2592,8 +2592,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000071,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       113,
@@ -2614,8 +2614,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000072,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       114,
@@ -2637,8 +2637,8 @@ PC_module: JUMP!   Next cycle, New PC: 00000168, Destroyed PC 00000178
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000073,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       115,
@@ -2659,8 +2659,8 @@ PipeReg3  PC: 00000168: I:{0000006f}    inst_JAL    rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000074,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       116,
@@ -2681,8 +2681,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000075,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       117,
@@ -2703,8 +2703,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000076,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       118,
@@ -2726,8 +2726,8 @@ PC_module: JUMP!   Next cycle, New PC: 00000168, Destroyed PC 00000178
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000077,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       119,
@@ -2748,8 +2748,8 @@ PipeReg3  PC: 00000168: I:{0000006f}    inst_JAL    rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000078,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       120,
@@ -2770,8 +2770,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  00000079,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       121,
@@ -2792,8 +2792,8 @@ PipeReg3  PC: 00000000: I:{00000000}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000007a,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       122,
@@ -2815,8 +2815,8 @@ PC_module: JUMP!   Next cycle, New PC: 00000168, Destroyed PC 00000178
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000007b,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       123,
@@ -2837,8 +2837,8 @@ PipeReg3  PC: 00000168: I:{0000006f}    inst_JAL    rd_i_a    0 rs1_a    0 rs2_a
 REGFILE:      R   1:  00000168,   R   2:  00001ff0,   R   8:  00002000,   R  10:  00000600,   R  11:  deadbeef,   R  14:  deadbeef,   R  15:  00000600,
 REGFILE*:     R   1:       360,   R   2:      8176,   R   8:      8192,   R  10:      1536,   R  11: -559038737,   R  14: -559038737,   R  15:      1536,
 
-CSRs:      R 773:  00100000,
-CSRs*:     R 773:   1048576,
+CSRs:      R00000305:  00100000,
+CSRs*:     R00000305:   1048576,
 
 PERIPHERAL_MEM:     D00000000:  deadbeef,   D00000100:  0000007c,
 PERIPHERAL_MEM*:    D00000000: -559038737,   D00000100:       124,

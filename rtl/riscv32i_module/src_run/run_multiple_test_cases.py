@@ -98,7 +98,7 @@ def check_simulation_result(test_case):
 
 def main():
     recompile = True
-    num_test_cases = 18
+    num_test_cases = 19
     # Determine test cases: if provided via command-line, use them; otherwise, use default list.
     if len(sys.argv) > 1:
         test_cases = sys.argv[1:]

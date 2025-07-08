@@ -49,7 +49,7 @@ always @(posedge clk_i) begin
 	end else  if (enable_design) begin
             // PC <= nextPC;
 
- 	    if (stage_IF_ready|change_PC_condition_for_jump_or_branch)  begin
+ 	    if (stage_IF_ready|change_PC_condition_for_jump_or_branch|override_change_PC_condition_for_jump_or_branch|mret_inst)  begin
             PC <= nextPC;
 			pc_valid_r <= 1'b1;
 		end 

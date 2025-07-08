@@ -78,8 +78,29 @@ static inline void enable_timer_interrupts(void)
  * Naked interrupt handler – saves ALL 31 GPRs
  * 128-byte 16-aligned frame
  * ========================================================== */
+
+
+// static inline void on_timer_irq(void)
+// {
+//     *(volatile uint32 *)PERIPHERAL_BYTE = 0xDEADBEEF; /* MMIO write */  /*:contentReference[oaicite:8]{index=8}*/
+//     timer_triggered = 1;
+// }
+
+/* -------- helper must come first (or at least a prototype) -------- */
+static void on_timer_irq(void) __attribute__((noinline));
+static void on_timer_irq(void)
+{
+    /* MMIO write for test bench */
+    *(volatile uint32 *)PERIPHERAL_SUCCESS = 0xDEADBEEF;
+    timer_triggered = 1;
+}
+
+/* -------- unchanged naked wrapper, but now “call” is valid -------- */
 void __attribute__((naked)) trap_handler(void)
 {
+
+// void __attribute__((naked)) trap_handler(void)
+// {
     asm volatile(
         /* ---------- prologue ---------- */
         "addi  sp, sp, -128            \n\t"
@@ -113,20 +134,8 @@ void __attribute__((naked)) trap_handler(void)
         "sw    a7, 108(sp)             \n\t"
         "sw    gp, 112(sp)             \n\t"
         "sw    tp, 116(sp)             \n\t"
-
         /* ---------- body ---------- */
-
-        /* MMIO 0xDEADBEEF → PERIPHERAL_SUCCESS               */
-        "li    t0,  " STR(PERIPHERAL_SUCCESS) "     \n\t"
-        "lui   t1,  0xDEADC                      \n\t"
-        "addi  t1,  t1, -273                     \n\t" /* t1 = 0xDEADBEEF */
-        "sw    t1,  0(t0)                        \n\t"
-
-        /* timer_triggered = 1                                */
-        "la    t0,  timer_triggered              \n\t"
-        "li    t1,  1                            \n\t"
-        "sw    t1,  0(t0)                        \n\t"
-
+        "call  on_timer_irq        \n\t"   /*  <-- safe C helper  */
         /* ---------- epilogue ---------- */
         "lw    tp, 116(sp)             \n\t"
         "lw    gp, 112(sp)             \n\t"
@@ -187,10 +196,9 @@ void main(void)
 {
     init_mtvec();                  /* point mtvec at ISR        */
     enable_timer_interrupts();     /* MIE + MTIE                */
-    set_timer(300);                /* fire in ~100 cycles      */
+    set_timer(10);                /* fire in ~100 cycles      */
 
     while (1){
         delay();
 
     }    }
-
