@@ -16,3 +16,4 @@ XilinxUnisimLibrary/
 **/**/**/synth.log
 **/**/**/sanity.hex
 **/test_cases_original
+riscv32i_module/test_cases/*/outputs
