@@ -1,0 +1,15 @@
+
+program.bin:     file format binary
+
+
+Disassembly of section .data:
+
+0000000000000000 <.data>:
+   0:	00002117          	auipc	sp,0x2
+   4:	00010113          	mv	sp,sp
+   8:	008000ef          	jal	0x10
+   c:	ff5ff06f          	j	0x0
+  10:	deadc7b7          	lui	a5,0xdeadc
+  14:	eef78793          	addi	a5,a5,-273 # 0xffffffffdeadbeef
+  18:	60f02023          	sw	a5,1536(zero) # 0x600
+  1c:	0000006f          	j	0x1c
