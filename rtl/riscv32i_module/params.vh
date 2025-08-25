@@ -1,31 +1,123 @@
 `ifndef PARAMS_VH
 `define PARAMS_VH
 
+`define size_X_LEN             32
 
-`define PC_reg              31:00   //[31:00]
-`define instruct            63:32   //[31:00]
-`define alu_res1            95:64   //[31:00]
-`define csr_write_en        96
+`define size_PC_reg             `size_X_LEN
+`define size_instruct           `size_X_LEN      //63:32   //[31:00]
+`define size_alu_res1           `size_X_LEN       // 95:64   //[31:00]
+`define size_csr_write_en       1               // 96
+`define size_load_reg           1               // 1 101
+`define size_jump_en            1               // 102     //[ 4:0]
+`define size_branch_en          1               // 103     //[ 4:0]
+`define size_reg_write_en       1               // 104     //[ 4:0]
+`define size_LD_ready           1               // 105     //[ 4:0]
+`define size_SD_ready           1               // 106     //[ 4:0]
+`define size_rd                 5               // 111:107 //[ 4:0]
+`define size_operand_amt        4               // 115:112 //[ 3:0]
+`define size_opRs1_reg          5               // 120:116 //[4:0]
+`define size_opRs2_reg          5               // 127:121 //[4:0]
+`define size_op1_reg            `size_X_LEN      // 159:128 //[31:00]
+`define size_op2_reg            `size_X_LEN      // 191:160 //[31:00]
+`define size_immediate          `size_X_LEN      // 223:192 //[31:0]
+`define size_alu_res2           `size_X_LEN      // 255:224 //[31:0]
+`define size_rd_data            `size_X_LEN      // 287:256 //[31:0]
+`define size_Single_Instruction 64              // 351:288 //[63:00]   
+`define size_data_mem_loaded    `size_X_LEN      // 383:352  
+`define size_csr_reg            12              // 395:384 //[11:0]
+`define size_csr_reg_val        `size_X_LEN      // 427:396 //[31:0]
 
-`define load_reg           101
-`define jump_en            102     //[ 4:0]
-`define branch_en          103     //[ 4:0]
-`define reg_write_en       104     //[ 4:0]
-`define LD_ready           105     //[ 4:0]
-`define SD_ready           106     //[ 4:0]
-`define rd                 111:107 //[ 4:0]
-`define operand_amt        115:112 //[ 3:0]
-`define opRs1_reg          120:116 //[4:0]
-`define opRs2_reg          127:121 //[4:0]
-`define op1_reg            159:128 //[31:00]
-`define op2_reg            191:160 //[31:00]
-`define immediate          223:192 //[31:0]
-`define alu_res2           255:224 //[31:0]
-`define rd_data            287:256 //[31:0]
-`define Single_Instruction 351:288 //[63:00]   
-`define data_mem_loaded    383:352  
-`define csr_reg            395:384 //[11:0]
-`define csr_reg_val        427:396 //[31:0]
+
+`define PC_reg_end          `size_PC_reg
+`define PC_reg              `size_PC_reg-1:0
+
+`define instruct_end        `size_instruct      + `PC_reg_end   
+`define instruct            (`instruct_end-1)   : `PC_reg_end
+
+`define alu_res1_end        `size_alu_res1   + `instruct_end
+`define alu_res1            `alu_res1_end -1 : `instruct_end
+
+`define csr_write_en_end    `alu_res1_end       +`size_csr_write_en
+`define csr_write_en        `csr_write_en_end   -1
+
+`define load_reg_end        `csr_write_en_end + `size_load_reg
+`define load_reg            `load_reg_end -1            
+
+`define jump_en_end        `load_reg_end + `size_jump_en
+`define jump_en            `jump_en_end -1            
+
+`define branch_en_end      `jump_en_end + `size_branch_en
+`define branch_en          `branch_en_end -1            
+
+`define reg_write_en_end    `branch_en_end + `size_reg_write_en
+`define reg_write_en        `reg_write_en_end -1        
+    
+`define LD_ready_end        `reg_write_en_end +  `size_LD_ready
+`define LD_ready            `LD_ready_end - 1
+
+`define SD_ready_end        `LD_ready_end + `size_SD_ready
+`define SD_ready            `SD_ready_end-1    
+
+`define rd_end              `SD_ready_end   + `size_rd
+`define rd                  `rd_end -1 : `SD_ready_end
+
+`define operand_amt_end     `size_operand_amt  +`rd_end     
+`define operand_amt         `operand_amt_end -1:`rd_end
+
+`define opRs1_reg_end       `size_opRs1_reg +`operand_amt_end    
+`define opRs1_reg           `opRs1_reg_end-1:`operand_amt_end
+
+`define opRs2_reg_end       `size_opRs2_reg +`opRs1_reg_end    
+`define opRs2_reg           `opRs2_reg_end-1:`opRs1_reg_end
+
+`define op1_reg_end         `size_op1_reg + `opRs2_reg_end            
+`define op1_reg             `op1_reg_end-1 :`opRs2_reg_end
+`define op2_reg_end               `size_op2_reg + `op1_reg_end          
+`define op2_reg                   `op2_reg_end-1: `op1_reg_end 
+
+`define immediate_end            (`size_immediate + `op2_reg_end)
+`define immediate                (`immediate_end-1):`op2_reg_end
+`define alu_res2_end             (`size_alu_res2 + `immediate_end)
+`define alu_res2                 (`alu_res2_end-1):`immediate_end
+`define rd_data_end              (`size_rd_data + `alu_res2_end)
+`define rd_data                  (`rd_data_end-1):`alu_res2_end
+`define Single_Instruction_end   (`size_Single_Instruction + `rd_data_end)
+`define Single_Instruction       (`Single_Instruction_end-1):`rd_data_end
+`define data_mem_loaded_end      (`size_data_mem_loaded + `Single_Instruction_end)
+`define data_mem_loaded          (`data_mem_loaded_end-1):`Single_Instruction_end
+`define csr_reg_end              (`size_csr_reg + `data_mem_loaded_end)
+`define csr_reg                  (`csr_reg_end-1):`data_mem_loaded_end
+`define csr_reg_val_end          (`size_csr_reg_val + `csr_reg_end)
+`define csr_reg_val              (`csr_reg_val_end-1):`csr_reg_end
+
+// `define immediate          223:192 //[31:0]
+// `define alu_res2           255:224 //[31:0]
+// `define rd_data            287:256 //[31:0]
+// `define Single_Instruction 351:288 //[63:00]   
+// `define data_mem_loaded    383:352  
+// `define csr_reg            395:384 //[11:0]
+// `define csr_reg_val        427:396 //[31:0]
+// `define PC_reg              31:00   //[31:00]
+// `define instruct            63:32   //[31:00]
+// `define alu_res1            95:64   //[31:00]
+
+// `define csr_write_en        96
+// `define load_reg           101
+// `define jump_en            102     //[ 4:0]
+// `define branch_en          103     //[ 4:0]
+// `define reg_write_en       104     //[ 4:0]
+// `define LD_ready           105     //[ 4:0]
+// `define SD_ready           106     //[ 4:0]
+ 
+
+// `define immediate          223:192 //[31:0]
+// `define alu_res2           255:224 //[31:0]
+// `define rd_data            287:256 //[31:0]
+// `define Single_Instruction 351:288 //[63:00]   
+// `define data_mem_loaded    383:352  
+// `define csr_reg            395:384 //[11:0]
+// `define csr_reg_val        427:396 //[31:0]
+
 
 // Opcode Decoding Type
 `define R_Type            7'b0110011 //0110011
