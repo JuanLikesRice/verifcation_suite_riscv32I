@@ -100,7 +100,7 @@ Disassembly of section .data:
  170:	8007a023          	sw	zero,-2048(a5) # 0x800
  174:	f7dff0ef          	jal	0xf0
  178:	fe9ff06f          	j	0x160
- 17c:	00001117          	auipc	sp,0x1
- 180:	e8410113          	addi	sp,sp,-380 # 0x1000
+ 17c:	00002117          	auipc	sp,0x2
+ 180:	e8410113          	addi	sp,sp,-380 # 0x2000
  184:	fb9ff0ef          	jal	0x13c
  188:	ff5ff06f          	j	0x17c

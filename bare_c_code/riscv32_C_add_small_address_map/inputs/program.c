@@ -196,7 +196,7 @@ void main(void)
 {
     init_mtvec();                  /* point mtvec at ISR        */
     enable_timer_interrupts();     /* MIE + MTIE                */
-    set_timer(10);                /* fire in ~100 cycles      */
+    set_timer(100);                /* fire in ~100 cycles      */
 
     while (1){
         delay();

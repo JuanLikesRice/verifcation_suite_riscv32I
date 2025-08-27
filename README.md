@@ -1,4 +1,13 @@
+
+# Whats Left to fix
+
+-- all_ready implementation
+
+
+
 # SPring_2025_core
+
+
 
 
 ## Tool flow 

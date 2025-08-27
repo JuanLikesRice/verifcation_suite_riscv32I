@@ -2,6 +2,10 @@
 `define PARAMS_VH
 
 `define size_X_LEN             32
+`define size_CSR_ENTRIES        4096
+`define size_CSR_bit            12
+
+
 
 `define size_PC_reg             `size_X_LEN
 `define size_instruct           `size_X_LEN      //63:32   //[31:00]

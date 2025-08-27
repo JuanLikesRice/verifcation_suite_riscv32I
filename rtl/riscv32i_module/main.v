@@ -1,88 +1,83 @@
 module core_controller_fsm (
     input  wire        clk,
-    input  wire [31:0] control_signal,        
+    input  wire                                     reset,             // Reset signal     
 
-    // input wire    initate_irq,
-    input wire    end_condition,
+    input  wire [`size_X_LEN-1:0]                   control_signal,// implementation of FPGA control signal
+    input wire                                      end_condition,
+    input wire                                      all_ready,
+    input wire                                      ready_for_irq_handler,
+    output wire                                     irq_prep,         // Acknowledge interrupt request
+    output wire [`size_X_LEN-1:0]                   interrupt_vector_i, // Interrupt vector address
+    input wire [`size_X_LEN-1:0] 	                nextPC_o,
+    input wire [`size_X_LEN-1:0] 	                pc_stage_2,
+    input wire 		                                change_PC_condition_for_jump_or_branch,
+    input wire [`size_Single_Instruction-1:0]       Single_Instruction_stage2,
+    input wire                                      mret_inst,
+    output wire                                     enable_design,
+    output wire                                     program_finished,
+    output wire  [`size_X_LEN-1:0]                  mepc,
 
-    input wire    all_ready,
-
-    input wire    ready_for_irq_handler,
-    
-    input  wire        irq_req_i,          // Interrupt detected
-    input  wire [31:0] irq_addr_i,        // Address of interrupt handler
-
-    output wire        irq_grant_o,       // RET from interrupt executed
-    output wire        irq_prep,         // Acknowledge interrupt request
-    output wire [31:0] interrupt_vector_i, // Interrupt vector address
+// CSR stage
+// write to csrs
+input wire                        write_csr,
+input wire  [`size_CSR_bit-1 :0]   csrReg_write_dest_reg,
+input wire  [`size_X_LEN-1   :0]   csrReg_write_dest_reg_data,
+input wire  [`size_CSR_bit-1 :0]   csrReg_read_src_reg,
+output wire [`size_X_LEN-1  :0]   csrReg_read_src_reg_data,
+input wire                        timer_timeout,
 
 
-    input wire [31:0] 	nextPC_o,
-    input wire [31:0] 	pc_stage_2,
-    input wire 		    change_PC_condition_for_jump_or_branch,
-    input wire [63:0]   Single_Instruction_stage2,
-    input wire          mret_inst,
-
-
-
+//unused
     output wire  override_all_stop,
-    output wire  enable_design,
-    output wire  program_finished,
-
-    output wire  [31:0] mepc,
-
-    input  wire        reset,             // Reset signal     
-
-// CSR stuff
-input wire          write_csr,
-input wire [11:0]   csrReg_write_dest_reg,
-input wire [31:0]   csrReg_write_dest_reg_data,
-input wire [11:0]   csrReg_read_src_reg,
-output wire [31:0]  csrReg_read_src_reg_data,
-
-input wire timer_timeout
+    output wire        irq_grant_o,       // RET from interrupt executed
+    input  wire [`size_X_LEN-1:0] irq_addr_i,        // Address of interrupt handler
+    input  wire        irq_req_i          // Interrupt detected
 );
-
-    wire cntrl_csr;
-    reg [31:0] CSR_FILE[0:4096];  // 4096 32-bit registers
-    assign cntrl_csr   =  (csrReg_write_dest_reg == csrReg_read_src_reg) &&  write_csr ;
-    assign csrReg_read_src_reg_data = cntrl_csr ? csrReg_write_dest_reg_data : CSR_FILE[csrReg_read_src_reg];
-    wire [31:0] mtvec,mie, mstatus, mcause,mip,mtval;
-    wire    irq_service_done;
-    assign irq_service_done = mret_inst;
-
+    // wire instants
     // wire mret_inst;
     // wire mret_inst =   (Single_Instruction_stage2 == `inst_MRET);
+    wire   mstatus_MPIE;
+    wire   mie_MTIE;
+    wire   mip_MTIP;
+
+    wire [`size_X_LEN-3:0] mtvec_base;
+    wire  [1:0] mtvec_mode;
+    wire        Timmer_enable_interrupt;
+    wire        initate_irq;
+    wire [`size_X_LEN-1:0] saved_instruction_mepc;
+    wire cntrl_csr;
+    reg [`size_X_LEN-1:0] CSR_FILE[0:`size_CSR_ENTRIES];  // 4096 32-bit registers
+    wire [`size_X_LEN-1:0] mtvec,mie, mstatus, mcause,mip,mtval;
+    wire   irq_service_done;
+    wire start_program, reset_request, rst_force;
+
+integer j;  integer p;  integer i;  integer o;
+
+
+initial begin 
+    for (p=0; p <4096; p=p+1) begin
+                CSR_FILE[p] <= 32'b0;
+    end
+end
+
+
+    assign cntrl_csr   =  (csrReg_write_dest_reg == csrReg_read_src_reg) &&  write_csr ; // forwarding
+    assign csrReg_read_src_reg_data = cntrl_csr ? csrReg_write_dest_reg_data : CSR_FILE[csrReg_read_src_reg];
+    assign irq_service_done = mret_inst;
 
 //CSR signals
-assign mstatus      =  CSR_FILE[12'h300];
-assign mie          =  CSR_FILE[12'h304];
+assign mstatus      =  CSR_FILE[`size_CSR_bit'h300];    assign mie          =  CSR_FILE[12'h304];
 assign mtvec        =  CSR_FILE[12'h305];
+assign mepc         =  CSR_FILE[12'h341];               assign mcause       =  CSR_FILE[12'h342];
+assign mtval        =  CSR_FILE[12'h343];               assign mip          =  CSR_FILE[12'h344];
 
-assign mepc         =  CSR_FILE[12'h341];
-assign mcause       =  CSR_FILE[12'h342];
-assign mtval        =  CSR_FILE[12'h343];
-assign mip          =  CSR_FILE[12'h344];
-
-wire mstatus_MPIE;
-wire   mie_MTIE;
-wire   mip_MTIP;
-
-wire [29:0] mtvec_base;
-wire  [1:0] mtvec_mode;
-wire        Timmer_enable_interrupt;
-wire        initate_irq;
-wire [31:0] saved_instruction_mepc;
-
-assign saved_instruction_mepc   = change_PC_condition_for_jump_or_branch ? nextPC_o : pc_stage_2 + 4  ;
-assign mstatus_MPIE             = mstatus[3];
-assign mie_MTIE                 = mie[7];
-assign mip_MTIP                 = mip[7];
-
-assign mtvec_base = mtvec[31:2];
-assign mtvec_mode = mtvec[ 1:0];
+assign  saved_instruction_mepc   = change_PC_condition_for_jump_or_branch ? nextPC_o : pc_stage_2 + 4  ;
+assign  mstatus_MPIE             = mstatus[3];
+assign  mie_MTIE                 = mie[7];
+assign  mip_MTIP                 = mip[7];
+assign  mtvec_base = mtvec[`size_X_LEN-1:2];
+assign  mtvec_mode = mtvec[ 1:0];
 assign  Timmer_enable_interrupt = mie_MTIE & mstatus_MPIE;
-
 assign  initate_irq        = Timmer_enable_interrupt && timer_timeout;
 assign  interrupt_vector_i = {mtvec_base, 2'b00}; // Assuming mtvec_base is aligned to 4 bytes
 
@@ -97,16 +92,6 @@ end
 
 
 
-integer j;
-integer p;
-integer i;
-integer o;
-
-initial begin 
-    for (p=0; p <4096; p=p+1) begin
-                CSR_FILE[p] <= 32'b0;
-    end
-end
 
 always @(posedge clk) begin
     if (reset) begin 
@@ -121,39 +106,13 @@ always @(posedge clk) begin
 end
 
 
-//MARKER AUTOMATED HERE START
-integer k;
-integer n;
-always @(negedge clk) begin
-      #100
-    #1
-      $write("\n\nCSRs:   ");
-      for (k=0; k < 4096; k=k+1) begin 
-	  	// REG_FILE[i] <= 32'b0;
-      if (CSR_FILE[k] != 0) begin
-      $write("   R%4h: %9h,", k, CSR_FILE[k]);
-      end
-      end
-      $write("\nCSRs*:  ");
-      for (n=0; n < 4096; n=n+1) begin 
-	  	// REG_FILE[i] <= 32'b0;
-      if (CSR_FILE[n] != 0) begin
-      $write("   R%4h: %9d,", n, $signed(CSR_FILE[n]));
-      end
-      end
-end
 
-    // Internal state register
-    reg [2:0] state, next_state;
-    // Internal signal registers (assigned to outputs)
-    reg global_reset_r, pc_override_r, flush_partial_r, flush_full_r;
-    reg csr_swap_context_r, run_irq_handler_r, begin_execution_r, done_flag_r;
-    reg [2:0] state_out_r;
+    reg [2:0] state, next_state;    // Internal state register
     assign program_finished = (state == DONE);
     
     // State register
     always @(posedge clk) begin
-        if (rerset_force) begin 
+        if (rst_force) begin 
             state <= IDLE;
         end 
         else begin 
@@ -170,14 +129,10 @@ end
         FULL_FLUSH_RESET  = 3'b100,
         DONE              = 3'b101;
 
-
-
     // control signals
-    wire start_program, reset_request, rerset_force;
-
     assign start_program    = control_signal[0];
     assign reset_request    = control_signal[1];
-    assign rerset_force     = control_signal[2];    
+    assign rst_force     = control_signal[2];    
 
     // assign enable_design    = (state  != IDLE)       && (state  != PARTIAL_IRQ);
     assign enable_design    = (state  != IDLE);
@@ -192,7 +147,6 @@ end
                     next_state = PROGRAM;
                 end 
             end
-
             PROGRAM: begin
                 if (reset_request) begin 
                     next_state = FULL_FLUSH_RESET;
@@ -237,6 +191,29 @@ end
         
         endcase
     end
+
+
+//MARKER AUTOMATED HERE START
+integer k;
+integer n;
+always @(negedge clk) begin
+      #100
+    #1
+      $write("\n\nCSRs:   ");
+      for (k=0; k < 4096; k=k+1) begin 
+	  	// REG_FILE[i] <= 32'b0;
+      if (CSR_FILE[k] != 0) begin
+      $write("   R%4h: %9h,", k, CSR_FILE[k]);
+      end
+      end
+      $write("\nCSRs*:  ");
+      for (n=0; n < 4096; n=n+1) begin 
+	  	// REG_FILE[i] <= 32'b0;
+      if (CSR_FILE[n] != 0) begin
+      $write("   R%4h: %9d,", n, $signed(CSR_FILE[n]));
+      end
+      end
+end
 
 
 

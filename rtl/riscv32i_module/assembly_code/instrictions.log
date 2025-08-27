@@ -243,7 +243,7 @@ Disassembly of section .text:
  36c:	01010413          	addi	s0,sp,16
  370:	f6dff0ef          	jal	2dc <init_mtvec>
  374:	df1ff0ef          	jal	164 <enable_timer_interrupts>
- 378:	00a00513          	li	a0,10
+ 378:	06400513          	li	a0,100
  37c:	00000593          	li	a1,0
  380:	d01ff0ef          	jal	80 <set_timer>
  384:	f91ff0ef          	jal	314 <delay>

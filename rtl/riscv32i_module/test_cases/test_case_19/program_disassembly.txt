@@ -227,7 +227,7 @@ Disassembly of section .data:
  36c:	01010413          	addi	s0,sp,16
  370:	f6dff0ef          	jal	0x2dc
  374:	df1ff0ef          	jal	0x164
- 378:	00a00513          	li	a0,10
+ 378:	06400513          	li	a0,100
  37c:	00000593          	li	a1,0
  380:	d01ff0ef          	jal	0x80
  384:	f91ff0ef          	jal	0x314
