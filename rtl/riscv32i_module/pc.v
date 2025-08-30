@@ -45,7 +45,7 @@ always @(posedge clk_i) begin
 		if (state_r) begin
 			PC 		<= initial_pc_i;
 			state_r <= 1'b0;
-		end else if (			)  begin
+		end else if (pc_valid_next)  begin
             PC <= nextPC;
 			pc_valid_r <= 1'b1;
 		end 
