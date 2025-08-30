@@ -32,13 +32,20 @@ assign nextPC					= mret_inst 										?  mepc  				: nextPC_intermediate_1;
 assign pc_o = PC;
 assign pc_valid = enable_design ;
 assign nextPC_o = nextPC;
+reg state_r;
+wire pc_valid_next;
+assign pc_valid_next = stage_IF_ready|change_PC_condition_for_jump_or_branch|override_change_PC_condition_for_jump_or_branch|mret_inst;
+
 
 always @(posedge clk_i) begin
   	 if (reset_i) begin
 		pc_valid_r  <= 1'b1;
-	    PC  		<= initial_pc_i; //32'h1CC;
+		state_r		<= 1'b1;
 	end else  if (enable_design) begin
- 	    if (stage_IF_ready|change_PC_condition_for_jump_or_branch|override_change_PC_condition_for_jump_or_branch|mret_inst)  begin
+		if (state_r) begin
+			PC 		<= initial_pc_i;
+			state_r <= 1'b0;
+		end else if (			)  begin
             PC <= nextPC;
 			pc_valid_r <= 1'b1;
 		end 

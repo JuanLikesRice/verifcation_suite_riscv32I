@@ -240,7 +240,7 @@ end
             if (accept_new_req) begin
                 data_req_o_internal   = 1'b1;
                 data_addr_o_internal  = address;
-                fsm_mem_stall   = 1; // stall for load or store (because of store you need rvalid in next or upcoming cycles)
+                fsm_mem_stall   = 1'b1;; // stall for load or store (because of store you need rvalid in next or upcoming cycles)
                   if (data_gnt_i) begin
                       next_state      = S_WAIT_RVALID;
                   end else begin      

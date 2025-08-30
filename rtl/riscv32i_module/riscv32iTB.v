@@ -5,8 +5,8 @@ module riscv32iTB
     parameter  N_param = 32, 
     parameter memory_offset_param = 32'h00000000,
     parameter success_code        = 32'hDEADBEEF,
-    parameter cycles_timeout      = 20000,
-    // parameter cycles_timeout      = 700,
+    // parameter cycles_timeout      = 20000,
+    parameter cycles_timeout      = 700,
     parameter initial_pc    = 32'h0000038C
 )
 (
@@ -170,7 +170,7 @@ end
         GPIO0_R1_CH1 <= initial_pc; // initial_pc_i
         GPIO0_R1_CH2 <= success_code; // success_code
         repeat (10) @(posedge tb_clk);
-        GPIO0_R0_CH1 <= 32'b10; // control signals
+        GPIO0_R0_CH1 <= 32'b100; // control signals
 
         repeat (1)  @(posedge tb_clk);
         #7000

@@ -106,7 +106,8 @@ assign  initial_pc_i      = GPIO0_R1_CH1;
 assign  success_code      = GPIO0_R1_CH2;
 
 assign start_design    = control_signals_in[0];
-assign reset           = control_signals_in[1];
+// assign reset           = control_signals_in[1];
+assign reset           = control_signals_in[2];
 
 assign enable_design = enable_design_reg & ~stop_design;
 
@@ -150,7 +151,7 @@ end
         .N_param(32)
     ) u_riscv32i_main (
         .clk(             clk),
-        .reset(           reset),
+        // .reset(           reset),
         .Cycle_count(     Cycle_count),
 
         // four GPIO IPUTS
@@ -289,7 +290,7 @@ module riscv32i_main
     parameter   N_param = 32
    ) (
     input  wire clk,
-    input  wire reset,
+    // input  wire reset,
 
     input  wire [31:0] Cycle_count,
 
@@ -366,6 +367,9 @@ module riscv32i_main
     wire  [6:0] INST_typ_o, opcode_o;
     wire  [63:0] Single_Instruction_o;
     wire  i_en;
+    wire  [`size_X_LEN-1:0] main2pc_initial_pc_i;
+    wire reset;
+    
 
     // param_module params ();
     reg halt_i;
@@ -425,7 +429,11 @@ end
         .pc_stage_2(                              pc_stage_2),
         .change_PC_condition_for_jump_or_branch(  change_PC_condition_for_jump_or_branch),
         .interrupt_vector_i(          interrupt_vector_i),
-        .Single_Instruction_stage2(Single_Instruction_stage2)
+        .Single_Instruction_stage2(Single_Instruction_stage2),
+
+        .initial_pc_i(          initial_pc_i),
+        .initial_pc_o(  main2pc_initial_pc_i)
+
 
 
     );
@@ -439,7 +447,9 @@ wire irq_grant_o, override_all_stop;
 assign  initate_irq             = 1'b0;  
 assign  end_condition           = (final_value == success_code);  
 assign  all_ready               = 1'b0;  
-assign  ready_for_irq_handler   = 1'b1;  
+// assign  ready_for_irq_handler   = 1'b1;  //reset_able_datamem & reset_able_datamem;
+assign  ready_for_irq_handler   = reset_able_datamem & reset_able_datamem;
+
 assign  irq_service_done        = 1'b0;  
 assign  irq_req_i               = 1'b0;  
 assign  irq_addr_i              = 32'h0;
@@ -459,7 +469,7 @@ wire mret_inst;
         .targetPC_i(alu_result_2_stage2),
         .enable_design(enable_design),
         .pc_o(pc_i),
-        .initial_pc_i(initial_pc_i),
+        .initial_pc_i(main2pc_initial_pc_i),
         .pc_valid(pc_valid),
 
         .nextPC_o(                                nextPC_o),

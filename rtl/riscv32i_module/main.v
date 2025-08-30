@@ -1,6 +1,6 @@
 module core_controller_fsm (
-    input  wire        clk,
-    input  wire                                     reset,             // Reset signal     
+    input   wire        clk,
+    output  wire        reset,             // Reset signal     
 
     input  wire [`size_X_LEN-1:0]                   control_signal,// implementation of FPGA control signal
     input wire                                      end_condition,
@@ -16,6 +16,8 @@ module core_controller_fsm (
     output wire                                     enable_design,
     output wire                                     program_finished,
     output wire  [`size_X_LEN-1:0]                  mepc,
+    input wire  [`size_X_LEN-1:0]                   initial_pc_i,
+    output wire  [`size_X_LEN-1:0]                  initial_pc_o,
 
 // CSR stage
 // write to csrs
@@ -33,13 +35,14 @@ input wire                        timer_timeout,
     input  wire [`size_X_LEN-1:0] irq_addr_i,        // Address of interrupt handler
     input  wire        irq_req_i          // Interrupt detected
 );
-    // wire instants
-    // wire mret_inst;
-    // wire mret_inst =   (Single_Instruction_stage2 == `inst_MRET);
+    // wire instants// wire mret_inst;// wire mret_inst =   (Single_Instruction_stage2 == `inst_MRET);
+    // assign initial_pc_o = initial_pc_i;
+    assign initial_pc_o = initial_pc;
+    reg [`size_X_LEN-1:0] initial_pc;
+
     wire   mstatus_MPIE;
     wire   mie_MTIE;
     wire   mip_MTIP;
-
     wire [`size_X_LEN-3:0] mtvec_base;
     wire  [1:0] mtvec_mode;
     wire        Timmer_enable_interrupt;
@@ -53,13 +56,13 @@ input wire                        timer_timeout,
 
 integer j;  integer p;  integer i;  integer o;
 
+assign reset = rst_force ||  (state  == FULL_FLUSH_RESET);
 
 initial begin 
     for (p=0; p <4096; p=p+1) begin
                 CSR_FILE[p] <= 32'b0;
     end
 end
-
 
     assign cntrl_csr   =  (csrReg_write_dest_reg == csrReg_read_src_reg) &&  write_csr ; // forwarding
     assign csrReg_read_src_reg_data = cntrl_csr ? csrReg_write_dest_reg_data : CSR_FILE[csrReg_read_src_reg];
@@ -114,11 +117,24 @@ end
     always @(posedge clk) begin
         if (rst_force) begin 
             state <= IDLE;
-        end 
-        else begin 
+        end else begin 
             state <= next_state;
         end
     end
+
+    // always @(posedge clk) begin
+    //     if ((state == IDLE)&&(start_program)) begin 
+    //         initial_pc <= initial_pc_i;
+    //     end 
+    // end
+    always @(posedge clk) begin
+        if (rst_force) begin 
+            initial_pc <= initial_pc_i;
+        end 
+    end
+
+
+
 
     // reg [2:0] next_state;
     localparam [2:0]
@@ -132,7 +148,7 @@ end
     // control signals
     assign start_program    = control_signal[0];
     assign reset_request    = control_signal[1];
-    assign rst_force     = control_signal[2];    
+    assign rst_force        = control_signal[2];    
 
     // assign enable_design    = (state  != IDLE)       && (state  != PARTIAL_IRQ);
     assign enable_design    = (state  != IDLE);
