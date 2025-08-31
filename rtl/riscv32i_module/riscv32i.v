@@ -687,7 +687,7 @@ module riscv32i_main
    //MARKER AUTOMATED HERE START
 
    wire [63:0] pipeReg0_wire_debug;
-   assign pipeReg0_wire_debug[31:0] = pipeReg0[31:0];
+   assign pipeReg0_wire_debug[31:0] = pc_stage_0;
    assign pipeReg0_wire_debug[`instruct] = instruction_stage_0;
    // assign pipeReg0_wire_debug[511:64] = pipeReg1[511:64];
 
@@ -830,22 +830,10 @@ module riscv32i_main
    assign Pmem_data_be_o    =  data_be_o          ;
    assign Pmem_data_wdata_o =  data_wdata_o       ;
 
-
-
    assign data_rdata_i     = in_range_peripheral  ? Pmem_data_rdata_i             : Dmem_data_rdata_i     ;
    assign data_rvalid_i    = in_range_peripheral  ? Pmem_data_rvalid_i            : Dmem_data_rvalid_i    ;
    assign data_gnt_i       = in_range_peripheral  ? Pmem_data_gnt_i               : Dmem_data_gnt_i       ;
 
-
-   // output  wire          Pmem_clk,
-   // output wire           Pmem_data_req_o,
-   // output wire [31:0]    Pmem_data_addr_o,
-   // output wire           Pmem_data_we_o,
-   // output wire  [3:0]    Pmem_data_be_o,
-   // output wire [31:0]    Pmem_data_wdata_o,
-   // input  wire  [31:0]   Pmem_data_rdata_i,
-   // input  wire           Pmem_data_rvalid_i,
-   // input  wire           Pmem_data_gnt_i,
 
 
    dataMem dataMem 
@@ -916,10 +904,22 @@ module riscv32i_main
 		  );
 
 
-   assign pc_stage_0          =        pipeReg0[`PC_reg];
-   // assign instruction_stage_0 =        pipeReg0[`instruct];
    assign instruction_stage_0          =  delete_reg1_reg2_reg ? 32'h00000013 : instruction;
+    pipe_ff_fields u_pipep0 (
+        .clk                  (clk),
+        .rst                  (reset),
+        .flush                (delete_reg1_reg2),
+        .en                   (stage0_IF_valid),
+        .i_PC_reg             (pc_i),
+        // .i_instruct           (),
+        .o_PC_reg             (pc_stage_0)
+        // .o_instruct           (instr     `uction_stage_0),
+    );
    // assign instruction_stage_0 =        instruction; //pipeReg0[`instruct];
+
+
+
+
    assign pc_stage_1 =                 pipeReg1[`PC_reg];
    assign instruction_stage_1 =        pipeReg1[`instruct];
    assign rd_stage1 =                  pipeReg1[`rd];

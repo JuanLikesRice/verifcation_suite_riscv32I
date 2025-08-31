@@ -2,8 +2,9 @@
 `define PARAMS_VH
 
 `define size_X_LEN             32
-`define size_CSR_ENTRIES        4096
+`define size_CSR_ENTRIES       4096
 `define size_CSR_bit            12
+`define pipe_len               512
 
 
 
