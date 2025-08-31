@@ -15,7 +15,7 @@ sim: riscv32i-sim
 	./$< +VCDFILE=sim.vcd +VCDLEVEL=5 &> sim.log
 
 
-riscv32i-sim: riscv32iTB.v ${DUT} main.v ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v | ${XILINX_CELLS_DIR}
+riscv32i-sim: riscv32iTB.v ${DUT} main.v pipe.v ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v | ${XILINX_CELLS_DIR}
 	${IVERILOG} -g2001 -s riscv32iTB -y ${XILINX_CELLS_DIR} -o $@ $^
 
 synth: riscv32i.netlist.v

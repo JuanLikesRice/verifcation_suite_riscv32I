@@ -1,81 +1,74 @@
 module ins_mem (
-		input wire	   clk,
-		input wire	   reset,
+		input wire	                  clk,
+		input wire	                  reset,
 
-		input wire [31:0]  pc_i,
-		input wire	   pc_i_valid, // request valid from PC
-
-		output wire	   STALL_IF_not_ready_w, // stall signal for IF stage (PC module is stalled)
-		output wire	   STALL_ID_not_ready_w, // stall signal for DECO stage (Decode module is stalled, exec doesnt get new value)
-		output wire [31:0] instruction_o_w,
-
-		input wire	   stall_i_EXEC, //  
-		input wire	   abort_rvalid,
-
-		input wire	   stop_request_overide,
-		output wire	   reset_able,
-
+		input wire [`size_X_LEN-1:0]  pc_i,
+		input wire	                  pc_i_valid, // request valid from PC
+		output wire	                  STALL_IF_not_ready_w, // stall signal for IF stage (PC module is stalled)
+		output wire	                  STALL_ID_not_ready_w, // stall signal for DECO stage (Decode module is stalled, exec doesnt get new value)
+		output wire [`size_X_LEN-1:0] instruction_o_w,
+		input wire	                  stall_i_EXEC,  
+		input wire	                  abort_rvalid,
+		input wire	                  stop_request_overide,
+		output wire	                  reset_able,
 
 		// Memory interface
-		output wire	   data_clk,
-
-		output wire	   data_req_o_w,
-		output wire [31:0] data_addr_o_w,
-		output wire	   data_we_o_w,
-		output wire [3:0]  data_be_o_w,
-		output wire [31:0] data_wdata_o_w,
-
-		input wire [31:0]  data_rdata_i,
-		input wire	   data_rvalid_i,
-		input wire	   data_gnt_i
+		output wire	                  data_clk,
+		output wire	                  data_req_o_w,
+		output wire [`size_X_LEN-1:0] data_addr_o_w,
+		output wire	                  data_we_o_w,
+		output wire [3:0]             data_be_o_w,
+		output wire [`size_X_LEN-1:0] data_wdata_o_w,
+		input wire [`size_X_LEN-1:0]  data_rdata_i,
+		input wire	                  data_rvalid_i,
+		input wire	                  data_gnt_i
 		);
    assign data_clk = clk; // Memory clock is the same as the system clock
    reg				   data_req_o;
-   reg [31:0]			   data_addr_o;
+   reg [`size_X_LEN-1:0]			   data_addr_o;
    reg				   data_we_o;
    reg [3:0]			   data_be_o;
-   reg [31:0]			   data_wdata_o;
-
+   reg [`size_X_LEN-1:0]			   data_wdata_o;
    reg				   STALL_IF_not_ready;
    reg				   STALL_ID_not_ready;
-   reg [31:0]			   instruction_o;
-
+   reg [`size_X_LEN-1:0]			   instruction_o;
    localparam [1:0]		   S_IDLE         = 2'b00, // Accepts new requests from PC 
-				   S_WAIT_GNT     = 2'b01, // Waiting for request to be taken by memory (recognized by mem), no new request from PC 
-				   S_WAIT_RVALID  = 2'b10, // waiting for request to be satsisfied, if satsitisfied can accept new request from PC
-				   S_ABORT_RVALID = 2'b11; // waiting for request to be satsisfied which is thrown away since aborted,
+				               S_WAIT_GNT     = 2'b01, // Waiting for request to be taken by memory (recognized by mem), no new request from PC 
+				               S_WAIT_RVALID  = 2'b10, // waiting for request to be satsisfied, if satsitisfied can accept new request from PC
+				               S_ABORT_RVALID = 2'b11; // waiting for request to be satsisfied which is thrown away since aborted,
    // if satsitisfied can accept new request from PC
 
    reg [1:0]			   current_state, next_state;
-   reg [31:0]			   pc_decode;
-   reg [31:0]			   current_PC_wating_rvalid, instruction_o_backup;
-   reg [31:0]			   PC_requested;
-
-
-
-   assign data_we_o_w      =   32'b0;   // We are not writing data, so this is always 0
-   assign data_be_o_w      =   4'b1111; // We always want the entire word;
-   assign data_wdata_o_w   =   32'b0;   // We are not writing data, so this is always 0
-   assign data_req_o_w     =   data_req_o;
-   assign data_addr_o_w    =   data_addr_o;
-
-   assign STALL_IF_not_ready_w = STALL_IF_not_ready;
-   assign STALL_ID_not_ready_w = STALL_ID_not_ready;
-   assign instruction_o_w      = saved_instruction_from_stall ? instruction_o_backup : instruction_o; // Default instruction if reset is high
-
+   reg [`size_X_LEN-1:0]			   pc_decode;
+   reg [`size_X_LEN-1:0]			   current_PC_wating_rvalid, instruction_o_backup;
+   reg [`size_X_LEN-1:0]			   PC_requested;
    wire				   backup_used;
-   assign backup_used = ~stall_i_EXEC && saved_instruction_from_stall;
-
-   // Outputs changed in FSM
-   // instruction_o 
-   // data_req_o    // request send to mem
-   // data_addr_o   // address 
-   // STALL_IF_not_ready
-   // STALL_ID_not_ready
    wire				   new_request_from_PC_accept;
 
+
+
+   assign data_we_o_w          =   `size_X_LEN'b0;     // We are not writing data, so this is always 0
+   assign data_be_o_w          =   4'b1111;            // We always want the entire word;
+   assign data_wdata_o_w       =   `size_X_LEN'b0;     // We are not writing data, so this is always 0
+   assign data_req_o_w         =   data_req_o;
+   assign data_addr_o_w        =   data_addr_o;
+
+   assign STALL_IF_not_ready_w = STALL_IF_not_ready;
+   // assign STALL_IF_not_ready_w = STALL_ID_not_ready;
+   
+   assign STALL_ID_not_ready_w = STALL_ID_not_ready;
+   assign instruction_o_w      = saved_instruction_from_stall ? instruction_o_backup : instruction_o; // Default instruction if reset is high
+   assign backup_used          = ~stall_i_EXEC && saved_instruction_from_stall;
    assign new_request_from_PC_accept   = pc_i_valid && (~abort_rvalid) && ~(stall_i_EXEC) && ~stall_i_EXEC && ~stop_request_overide; 
    assign reset_able                   = (current_state == S_IDLE) && ~new_request_from_PC_accept; // Reset is not able if stop_request_overide is high
+
+
+      // Outputs changed in FSM
+      // instruction_o 
+      // data_req_o    // request send to mem
+      // data_addr_o   // address 
+      // STALL_IF_not_ready
+      // STALL_ID_not_ready
 
    always @(*) begin
       case (current_state)
@@ -98,7 +91,7 @@ module ins_mem (
            end else begin  // IDLE bc no new request
               // If there is a branch or jump, then the request is trashed
               data_req_o          = 1'b0;        
-              data_addr_o         = 32'b0;  
+              data_addr_o         = `size_X_LEN'b0;  
               STALL_IF_not_ready  = 1'b0;
               STALL_ID_not_ready  = 1'b0;
               next_state          = S_IDLE;
@@ -208,7 +201,7 @@ module ins_mem (
                  end 
               end else begin  // IDLE bc no new request
                  data_req_o          = 1'b0;        
-                 data_addr_o         = 32'b0;  
+                 data_addr_o         = `size_X_LEN'b0;  
                  STALL_IF_not_ready  = 1'b0;
                  STALL_ID_not_ready  = 1'b0;
                  next_state          = S_IDLE;

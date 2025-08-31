@@ -952,7 +952,6 @@ module riscv32i_main
    assign write_csr_wire_stage2      = pipeReg2[`csr_write_en      ];
 
 
-   wire	       HELLO;
    assign pc_stage_3 =                 pipeReg3[`PC_reg];
    assign instruction_stage_3 =        pipeReg3[`instruct];
    assign rd_stage3 =                  pipeReg3[`rd];
@@ -968,7 +967,6 @@ module riscv32i_main
    assign alu_result_2_stage3 =        pipeReg3[`alu_res2          ];
    assign write_reg_file_wire_stage3 = pipeReg3[`reg_write_en      ];
    assign write_csr_wire_stage3      = pipeReg3[`csr_write_en      ];
-   assign HELLO      = pipeReg3[`csr_write_en      ];
    assign load_into_reg_stage3       = pipeReg3[`load_reg          ];  
    assign loaded_data_stage3         = pipeReg3[`data_mem_loaded   ];  
 
@@ -1351,7 +1349,7 @@ module inst_mem_bram_wrapper #(  parameter MEM_DEPTH = 1096 ) (
    reg										  rvalid_reg,rvalid_reg_1,rvalid_reg_2,rvalid_reg_3,rvalid_reg_4,rvalid_reg_5,rvalid_reg_6,rvalid_reg_7;
    wire										  rstb_busy;
    assign ins_data_gnt_i     = ins_data_req_o;
-   assign ins_data_rvalid_i  = rvalid_reg;
+   assign ins_data_rvalid_i  = rvalid_reg_3;
    // assign  bram_web = 4'b0;
 
 

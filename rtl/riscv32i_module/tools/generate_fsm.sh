@@ -1,2 +1,0 @@
- python3 tools/fsm_maker.py --verilog ins_mem.v  -o tools/fsm_diagram/ins_mem --title "ins_mem" --label signals --wrap 16
- python3 tools/fsm_maker.py --verilog main.v  -o tools/fsm_diagram/main --title "main" --label signals --wrap 16

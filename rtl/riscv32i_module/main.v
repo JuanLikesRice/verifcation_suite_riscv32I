@@ -2,7 +2,7 @@ module core_controller_fsm (
 			    input wire				      clk,
 			    output wire				      reset, // Reset signal     
 
-			    input wire [`size_X_LEN-1:0]	      control_signal,// implementation of FPGA control signal
+			    input wire [`size_X_LEN-1:0]  control_signal,// implementation of FPGA control signal
 			    input wire				      end_condition,
 			    input wire				      all_ready,
 			    input wire				      ready_for_irq_handler,
@@ -28,7 +28,6 @@ module core_controller_fsm (
 			    output wire [`size_X_LEN-1 :0]	      csrReg_read_src_reg_data,
 			    input wire				      timer_timeout,
 
-
 			    //unused
 			    output wire				      override_all_stop,
 			    output wire				      irq_grant_o, // RET from interrupt executed
@@ -38,23 +37,22 @@ module core_controller_fsm (
    // wire instants// wire mret_inst;// wire mret_inst =   (Single_Instruction_stage2 == `inst_MRET);
    // assign initial_pc_o = initial_pc_i;
    assign initial_pc_o = initial_pc;
-   reg [`size_X_LEN-1:0]					      initial_pc;
+   reg [`size_X_LEN-1:0]        initial_pc;
+   wire						    mstatus_MPIE;
+   wire						    mie_MTIE;
+   wire						    mip_MTIP;
+   wire [`size_X_LEN-3:0]       mtvec_base;
+   wire [1:0]                   mtvec_mode;
+   wire						    Timmer_enable_interrupt;
+   wire						    initate_irq;
+   wire [`size_X_LEN-1:0]       saved_instruction_mepc;
+   wire						    cntrl_csr;
+   reg [`size_X_LEN-1:0]        CSR_FILE[0:`size_CSR_ENTRIES];  // 4096 32-bit registers
+   wire [`size_X_LEN-1:0]       mtvec,mie, mstatus, mcause,mip,mtval;
+   wire						    irq_service_done;
+   wire						    start_program, reset_request, rst_force;
 
-   wire								      mstatus_MPIE;
-   wire								      mie_MTIE;
-   wire								      mip_MTIP;
-   wire [`size_X_LEN-3:0]					      mtvec_base;
-   wire [1:0]							      mtvec_mode;
-   wire								      Timmer_enable_interrupt;
-   wire								      initate_irq;
-   wire [`size_X_LEN-1:0]					      saved_instruction_mepc;
-   wire								      cntrl_csr;
-   reg [`size_X_LEN-1:0]					      CSR_FILE[0:`size_CSR_ENTRIES];  // 4096 32-bit registers
-   wire [`size_X_LEN-1:0]					      mtvec,mie, mstatus, mcause,mip,mtval;
-   wire								      irq_service_done;
-   wire								      start_program, reset_request, rst_force;
-
-   integer							      j;  integer p;  integer i;  integer o;
+   integer                          j;  integer p;  integer i;  integer o;
 
    assign reset = rst_force ||  (state  == FULL_FLUSH_RESET);
 
