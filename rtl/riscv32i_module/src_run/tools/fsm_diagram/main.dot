@@ -1,0 +1,32 @@
+digraph FSM {
+  rankdir=LR;
+  node [shape=circle, fontsize=12];
+  edge [fontsize=12];
+  graph [labelloc="t", label="main", fontsize=14, nodesep=0.7, ranksep=0.8, splines=spline, concentrate=false];
+  "default" [shape=diamond, style=rounded, fontsize=12];
+  "DONE";
+  "FULL_FLUSH_RESET";
+  "IDLE";
+  "IRQ_HANDLE";
+  "PARTIAL_IRQ";
+  "PROGRAM";
+  subgraph cluster_1 {
+    label="state"; labelloc="b"; fontsize=12; style=dashed; color=gray;
+    "IDLE" -> "PROGRAM" [label="start_program"];
+    "PROGRAM" -> "FULL_FLUSH_RESET" [label="reset_request"];
+    "PROGRAM" -> "PARTIAL_IRQ" [label="reset_request,
+initate_irq"];
+    "PROGRAM" -> "DONE" [label="reset_request,
+initate_irq,
+end_condition"];
+    "PARTIAL_IRQ" -> "FULL_FLUSH_RESET" [label="reset_request"];
+    "PARTIAL_IRQ" -> "IRQ_HANDLE" [label="reset_request,
+ready_for_irq_handler"];
+    "IRQ_HANDLE" -> "FULL_FLUSH_RESET" [label="reset_request"];
+    "IRQ_HANDLE" -> "PROGRAM" [label="reset_request,
+irq_service_done"];
+    "FULL_FLUSH_RESET" -> "IDLE" [label="all_ready"];
+    "DONE" -> "FULL_FLUSH_RESET" [label="reset_request"];
+    "default" -> "IDLE" [label="default"];
+  }
+}
