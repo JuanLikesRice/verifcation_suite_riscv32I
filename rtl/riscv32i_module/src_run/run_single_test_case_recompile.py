@@ -113,9 +113,9 @@ def modify_riscv_tb(v_file_path, new_entry_hex):
 #     with open(sim_log_path, 'r') as file:
 #         content = file.read()
 #         if "----TB FINISH:Test Passed----" in content:
-#             print(f"\n\n-----TEST PASSED: success code for test case {test_case_number} found -----\n\n")
+#             print(f"\n\n\n\n-----TEST PASSED: success code for test case {test_case_number} found -----\n\n")
 #         else:
-#             print(f"Test case {test_case_number} did not pass as expected.")
+#             print(f"\n\n\n\n-----TEST PASSED: success code for test case {test_case_number} found -----Test case {test_case_number} did not pass as expected.\n\n\n\n")
 
 def check_sim_log(sim_log_path, test_case_number):
     """
@@ -140,9 +140,11 @@ def check_sim_log(sim_log_path, test_case_number):
                 cycle_count = match.group(1)
     
     if passed:
-        print(f"\n-----TEST PASSED: success code for test case {test_case_number} found. Cycle count: {cycle_count}-----\n")
+        print(f"\n\n-----TEST PASSED: success code for test case {test_case_number} found. Cycle count: {cycle_count}-----\n")
     else:
-        print(f"Test case {test_case_number} did not pass as expected. Cycle count: {cycle_count}")
+        print(f"\n\n-----TEST FAILED: success code for test case {test_case_number} NOT found: {cycle_count}          -----\n\n\n\n")
+
+        # print(f"Test case {test_case_number} did not pass as expected. Cycle count: {cycle_count}")
 
 
 

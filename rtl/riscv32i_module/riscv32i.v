@@ -373,7 +373,6 @@ module riscv32i_main
 
    // param_module params ();
    reg			   halt_i;
-   reg [63:0]		   pipeReg0;
    reg [511:0]		   pipeReg1, pipeReg2, pipeReg3;
 
    wire [63:0]		   pipeReg0_wire;
@@ -384,6 +383,7 @@ module riscv32i_main
    initial begin 
       halt_i          <= 0;
    end
+  wire [`pipe_len-1:0] u_pipeReg1_res;
 
    wire irq_prep;
    wire	enable_design;
@@ -693,7 +693,7 @@ module riscv32i_main
 
    debug # (.Param_delay(5),.regCount(0), .pc_en(1)
             ) debug_0 (.i_clk(clk),.pipeReg({448'b0,pipeReg0_wire_debug}), .pc_o(pc_i), .Cycle_count(Cycle_count));
-   debug # (.Param_delay(10),.regCount(1) ) debug_1 (.i_clk(clk),.pipeReg(pipeReg1));
+   debug # (.Param_delay(10),.regCount(1) ) debug_1 (.i_clk(clk),.pipeReg(u_pipeReg1_res));
    debug # (.Param_delay(15),.regCount(2) ) debug_2 (.i_clk(clk),.pipeReg(pipeReg2));
    debug # (.Param_delay(20),.regCount(3) ) debug_3 (.i_clk(clk),.pipeReg(pipeReg3));
 
@@ -905,32 +905,46 @@ module riscv32i_main
 
 
    assign instruction_stage_0          =  delete_reg1_reg2_reg ? 32'h00000013 : instruction;
-    pipe_ff_fields u_pipep0 (
+    pipe_ff_fields u_pipeReg0 (
         .clk                  (clk),
         .rst                  (reset),
         .flush                (delete_reg1_reg2),
-        .en                   (stage0_IF_valid),
+        .en                   (stage0_IF_valid&&enable_design),
         .i_PC_reg             (pc_i),
         // .i_instruct           (),
         .o_PC_reg             (pc_stage_0)
         // .o_instruct           (instr     `uction_stage_0),
     );
-   // assign instruction_stage_0 =        instruction; //pipeReg0[`instruct];
 
-
-
-
-   assign pc_stage_1 =                 pipeReg1[`PC_reg];
-   assign instruction_stage_1 =        pipeReg1[`instruct];
-   assign rd_stage1 =                  pipeReg1[`rd];
-   assign rs1_stage1 =                 pipeReg1[`opRs1_reg];
-   assign rs2_stage1 =                 pipeReg1[`opRs2_reg];
-   assign csr_stage1 =                 pipeReg1[`csr_reg];
-   assign csr_val_stage1 =             pipeReg1[`csr_reg_val];
-   assign operand1_stage1 =            pipeReg1[`op1_reg];
-   assign operand2_stage1 =            pipeReg1[`op2_reg];
-   assign imm_stage1 =                 pipeReg1[`immediate];
-   assign Single_Instruction_stage1 =  pipeReg1[`Single_Instruction];
+    pipe_ff_fields u_pipeReg1 (
+        .clk                  (clk),
+        .rst                  (reset),
+        .flush                ( (~stage1_DECO_valid && stage2_EXEC_valid) || delete_reg1_reg2),
+        .en                   ( ( stage1_DECO_valid && enable_design)),
+        .o_bus                (u_pipeReg1_res),
+      // inputs
+      .i_PC_reg             (pc_stage_0         ),
+      .i_instruct           (instruction_stage_0        ),
+      .i_rd                 (rd_o            ),
+      .i_opRs1_reg          (rs1_o),
+      .i_opRs2_reg          (rs2_o),
+      .i_op1_reg            (operand1_po),
+      .i_op2_reg            (operand2_po),
+      .i_immediate          (imm_o),
+      .i_Single_Instruction (Single_Instruction_o),
+      .i_csr_reg            (csr_o),
+      .i_csr_reg_val        (csr_regfile_o),
+      .o_PC_reg             (pc_stage_1                 ),        // outputs
+      .o_instruct           (instruction_stage_1        ),
+      .o_rd                 (rd_stage1                  ),
+      .o_opRs1_reg          (rs1_stage1                 ),
+      .o_opRs2_reg          (rs2_stage1                 ),
+      .o_op1_reg            (operand1_stage1            ),
+      .o_op2_reg            (operand2_stage1            ),
+      .o_immediate          (imm_stage1                 ),
+      .o_Single_Instruction (Single_Instruction_stage1  ),
+      .o_csr_reg            (csr_stage1                 ),
+      .o_csr_reg_val        (csr_val_stage1             )    );
 
 
    assign pc_stage_2 =                 pipeReg2[`PC_reg];
@@ -971,34 +985,7 @@ module riscv32i_main
    assign loaded_data_stage3         = pipeReg3[`data_mem_loaded   ];  
 
 
-   assign pipeReg0_wire[`PC_reg]   = pc_i;
-   assign pipeReg0_wire[`instruct] = instruction;
-
-
-   assign pipeReg1_wire[`PC_reg            ] = pc_stage_0;
-   assign pipeReg1_wire[`instruct          ] = instruction_stage_0;
-   assign pipeReg1_wire[`alu_res1          ] = 0;
-   assign pipeReg1_wire[`load_reg          ] = 0;
-   assign pipeReg1_wire[`jump_en           ] = 0;
-   assign pipeReg1_wire[`branch_en         ] = 0;
-   assign pipeReg1_wire[`reg_write_en      ] = 0;
-   assign pipeReg1_wire[`csr_write_en      ] = 0;
-   assign pipeReg1_wire[`LD_ready          ] = 0;
-   assign pipeReg1_wire[`SD_ready          ] = 0;
-   assign pipeReg1_wire[`rd                ] = rd_o;
-   assign pipeReg1_wire[`operand_amt       ] = 0;
-   assign pipeReg1_wire[`opRs1_reg         ] = rs1_o;
-   assign pipeReg1_wire[`opRs2_reg         ] = rs2_o;
-   assign pipeReg1_wire[`csr_reg           ] = csr_o;
-   assign pipeReg1_wire[`csr_reg_val       ] = csr_regfile_o;
-   assign pipeReg1_wire[`op1_reg           ] = operand1_po;
-   assign pipeReg1_wire[`op2_reg           ] = operand2_po;
-   assign pipeReg1_wire[`immediate         ] = imm_o;
-   assign pipeReg1_wire[`alu_res2          ] = 0;
-   assign pipeReg1_wire[`rd_data           ] = 0;
-   assign pipeReg1_wire[`Single_Instruction] = Single_Instruction_o;
-   assign pipeReg1_wire[`data_mem_loaded   ] = 0;
-
+ 
 
 
    assign pipeReg2_wire[`PC_reg            ] = pc_stage_1;
@@ -1074,7 +1061,6 @@ module riscv32i_main
 
    always @(posedge clk)begin
       if (reset) begin 
-	 pipeReg0 <= 64'b0;
 	 pipeReg1 <= 512'b0;
 	 pipeReg2 <= 512'b0;
 	 pipeReg3 <= 512'b0;
@@ -1082,7 +1068,6 @@ module riscv32i_main
 
 	 delete_reg1_reg2_reg <= delete_reg1_reg2;
 	 if  (delete_reg1_reg2) begin 
-	    pipeReg0 <= 64'b0;
 	    pipeReg1 <= 512'b0;
 	    pipeReg2 <= 512'b0;
 
@@ -1093,31 +1078,12 @@ module riscv32i_main
 	    end
 
 	 end else begin 
-
-	    if (stage0_IF_valid) begin 
-               pipeReg0   <= pipeReg0_wire;
-	    end 
-	    // else if (stage_DECO_done) begin 
-	    //     pipeReg0   <= 512'b0;//pipeReg0;
-	    // end 
-	    else begin 
-               pipeReg0   <= pipeReg0;
-	    end
-
 	    if (stage1_DECO_valid) begin
                pipeReg1 <= pipeReg1_wire;
 	    end else if (stage2_EXEC_valid) begin 
                pipeReg1 <= 512'b0;
 	    end
-	    // else if (stage_DECO_done) begin 
-	    //     pipeReg1  <= 512'b0;
-	    // end 
 	    else begin 
-	       // if (pipeReg1[`instruct] != pipeReg1_wire[`instruct] ) begin
-               //     pipeReg1 <= pipeReg1_wire; 
-               // end else begin 
-               //     pipeReg1 <= 512'b0;
-               // end
                pipeReg1 <= pipeReg1;
 	    end
 
@@ -1349,7 +1315,8 @@ module inst_mem_bram_wrapper #(  parameter MEM_DEPTH = 1096 ) (
    reg										  rvalid_reg,rvalid_reg_1,rvalid_reg_2,rvalid_reg_3,rvalid_reg_4,rvalid_reg_5,rvalid_reg_6,rvalid_reg_7;
    wire										  rstb_busy;
    assign ins_data_gnt_i     = ins_data_req_o;
-   assign ins_data_rvalid_i  = rvalid_reg_3;
+   assign ins_data_rvalid_i  = rvalid_reg;
+  //  assign ins_data_rvalid_i  = rvalid_reg_3;
    // assign  bram_web = 4'b0;
 
 
