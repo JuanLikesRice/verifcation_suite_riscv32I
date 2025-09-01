@@ -383,7 +383,7 @@ module riscv32i_main
    initial begin 
       halt_i          <= 0;
    end
-  wire [`pipe_len-1:0] u_pipeReg1_res;
+  wire [`pipe_len-1:0] u_pipeReg1_res, u_pipeReg2_res;
 
    wire irq_prep;
    wire	enable_design;
@@ -694,7 +694,7 @@ module riscv32i_main
    debug # (.Param_delay(5),.regCount(0), .pc_en(1)
             ) debug_0 (.i_clk(clk),.pipeReg({448'b0,pipeReg0_wire_debug}), .pc_o(pc_i), .Cycle_count(Cycle_count));
    debug # (.Param_delay(10),.regCount(1) ) debug_1 (.i_clk(clk),.pipeReg(u_pipeReg1_res));
-   debug # (.Param_delay(15),.regCount(2) ) debug_2 (.i_clk(clk),.pipeReg(pipeReg2));
+   debug # (.Param_delay(15),.regCount(2) ) debug_2 (.i_clk(clk),.pipeReg(u_pipeReg1_res));
    debug # (.Param_delay(20),.regCount(3) ) debug_3 (.i_clk(clk),.pipeReg(pipeReg3));
 
    //MARKER AUTOMATED HERE END
@@ -946,24 +946,61 @@ module riscv32i_main
       .o_csr_reg            (csr_stage1                 ),
       .o_csr_reg_val        (csr_val_stage1             )    );
 
+    pipe_ff_fields u_pipeReg2 (
+        .clk                  (clk),
+        .rst                  (reset),
+        .flush                (  delete_reg1_reg2),
+        .en                   ( ( stage2_EXEC_valid && enable_design)),
+        .o_bus                (u_pipeReg2_res),
 
-   assign pc_stage_2 =                 pipeReg2[`PC_reg];
-   assign instruction_stage_2 =        pipeReg2[`instruct];
-   assign rd_stage2 =                  pipeReg2[`rd];
-   assign rs1_stage2 =                 pipeReg2[`opRs1_reg];
-   assign rs2_stage2 =                 pipeReg2[`opRs2_reg];
-   assign csr_stage2 =                 pipeReg2[`csr_reg];
-   assign csr_val_stage2 =             pipeReg2[`csr_reg_val];
-   assign operand1_stage2 =            pipeReg2[`op1_reg];
-   assign operand2_stage2 =            pipeReg2[`op2_reg];
-   assign imm_stage2 =                 pipeReg2[`immediate];
-   assign Single_Instruction_stage2 =  pipeReg2[`Single_Instruction];
-   assign alu_result_1_stage2 =        pipeReg2[`alu_res1          ];
-   assign alu_result_2_stage2 =        pipeReg2[`alu_res2          ];
-   assign jump_inst_wire_stage2      = pipeReg2[`jump_en           ];  
-   assign branch_inst_wire_stage2    = pipeReg2[`branch_en         ];  
-   assign write_reg_file_wire_stage2 = pipeReg2[`reg_write_en      ];  
-   assign write_csr_wire_stage2      = pipeReg2[`csr_write_en      ];
+        // input
+        .i_PC_reg             (pc_stage_1             ),
+        .i_instruct           (instruction_stage_1    ),
+        .i_alu_res1           (alu_result_1           ),
+        .i_csr_write_en       (write_csr_wire         ),
+        .i_load_reg           (`size_load_reg'b0      ),
+        .i_jump_en            (jump_inst_wire         ),
+        .i_branch_en          (branch_inst_wire       ),
+        .i_reg_write_en       (write_reg_file_wire    ),
+        .i_LD_ready           (`size_LD_ready'b0      ),
+        .i_SD_ready           (`size_SD_ready'b0      ),
+        .i_rd                 (rd_stage1              ),
+        .i_operand_amt        (`size_operand_amt'b0   ),
+        .i_opRs1_reg          (rs1_stage1             ),
+        .i_opRs2_reg          (rs2_stage1             ),
+        .i_op1_reg            (operand1_into_exec     ),
+        .i_op2_reg            (operand2_into_exec     ),
+        .i_immediate          (imm_stage1             ),
+        .i_alu_res2           (alu_result_2           ),
+        .i_rd_data            (`size_rd_data'b0),
+        .i_Single_Instruction (Single_Instruction_stage1),
+        .i_data_mem_loaded    (`size_data_mem_loaded'b0),
+        .i_csr_reg            (csr_stage1             ),
+        .i_csr_reg_val        (alu_result_2           ),
+        // outputs
+        .o_PC_reg             (pc_stage_2             ),
+        .o_instruct           (instruction_stage_2    ),
+        .o_alu_res1           (alu_result_1_stage2    ),
+        .o_csr_write_en       (write_csr_wire_stage2  ),
+        // .o_load_reg           (alu_result_2           ),
+        .o_jump_en            (jump_inst_wire_stage2  ),
+        .o_branch_en          (branch_inst_wire_stage2),
+        .o_reg_write_en       (write_reg_file_wire_stage2),
+        // .o_LD_ready           (                      0),
+        // .o_SD_ready           (                      0),
+        .o_rd                 (rd_stage2              ),
+        // .o_operand_amt        (                      0),
+        .o_opRs1_reg          (rs1_stage2             ),
+        .o_opRs2_reg          (rs2_stage2             ),
+        .o_op1_reg            (operand1_stage2        ),
+        .o_op2_reg            (operand2_stage2        ),
+        .o_immediate          (imm_stage2             ),
+        .o_alu_res2           (alu_result_2_stage2           ),
+        // .o_rd_data            (                      0),
+        .o_Single_Instruction (Single_Instruction_stage2),
+        // .o_data_mem_loaded    (                      0),
+        .o_csr_reg            (csr_stage2             ),
+        .o_csr_reg_val        (csr_val_stage2           ));
 
 
    assign pc_stage_3 =                 pipeReg3[`PC_reg];
@@ -988,30 +1025,6 @@ module riscv32i_main
  
 
 
-   assign pipeReg2_wire[`PC_reg            ] = pc_stage_1;
-   assign pipeReg2_wire[`instruct          ] = instruction_stage_1;
-   assign pipeReg2_wire[`alu_res1          ] = alu_result_1;
-   assign pipeReg2_wire[`load_reg          ] = 0;
-   assign pipeReg2_wire[`jump_en           ] = jump_inst_wire;
-   assign pipeReg2_wire[`branch_en         ] = branch_inst_wire;
-   assign pipeReg2_wire[`reg_write_en      ] = write_reg_file_wire;
-   assign pipeReg2_wire[`csr_write_en      ] = write_csr_wire;
-   assign pipeReg2_wire[`LD_ready          ] = 0;
-   assign pipeReg2_wire[`SD_ready          ] = 0;
-   assign pipeReg2_wire[`rd                ] = rd_stage1;
-   assign pipeReg2_wire[`operand_amt       ] = 0;
-   assign pipeReg2_wire[`opRs1_reg         ] = rs1_stage1;
-   assign pipeReg2_wire[`opRs2_reg         ] = rs2_stage1;
-   assign pipeReg2_wire[`csr_reg           ] = csr_stage1;
-   assign pipeReg2_wire[`csr_reg_val       ] = alu_result_2; 
-
-   assign pipeReg2_wire[`op1_reg           ] = operand1_into_exec;
-   assign pipeReg2_wire[`op2_reg           ] = operand2_into_exec;
-   assign pipeReg2_wire[`immediate         ] = imm_stage1;
-   assign pipeReg2_wire[`alu_res2          ] = alu_result_2;
-   assign pipeReg2_wire[`rd_data           ] = 0;
-   assign pipeReg2_wire[`Single_Instruction] = Single_Instruction_stage1;
-   assign pipeReg2_wire[`data_mem_loaded   ] = 0;
 
 
 
