@@ -1,0 +1,1 @@
+python3 src_run/tools/wire_consolidating.py src_run/tools/risc.v --scope file &> src_run/tools/riscV.v
