@@ -3,8 +3,8 @@
 //  - Load/Store: inst_LB, inst_LH, inst_LW, inst_LBU, inst_LHU, inst_SB, inst_SH, inst_SW
 //  Tests 20–27.
 
-#define PERIPHERAL_SUCCESS 0x00000600
-#define PERIPHERAL_BYTE    0x00000604
+#define PERIPHERAL_SUCCESS 0x00002600
+#define PERIPHERAL_BYTE    0x00002604
 
 // Write a value to a memory-mapped register.
 void write_mmio(unsigned int addr, unsigned int value) {

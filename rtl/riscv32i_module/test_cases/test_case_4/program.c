@@ -6,8 +6,8 @@
 //  - Immediate Arithmetic/Logical: inst_ADDI, inst_XORI, inst_ORI, inst_ANDI (Tests 16–19)
 //  - Other: inst_LUI (Test 36)
 
-#define PERIPHERAL_SUCCESS 0x00000600
-#define PERIPHERAL_BYTE    0x00000604
+#define PERIPHERAL_SUCCESS 0x00002600
+#define PERIPHERAL_BYTE    0x00002604
 
 // Write a value to a memory-mapped register.
 void write_mmio(unsigned int addr, unsigned int value) {

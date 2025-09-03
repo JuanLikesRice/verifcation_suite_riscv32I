@@ -185,6 +185,38 @@ def change_dir_and_run(
 
 # Example usage
 
+import os
+import re
+
+def shift_hex_file(src_path, dst_path, offset=0x2000, allow_negative=False, only_if_ge=False):
+    addr_pat = re.compile(r'^(\s*)@([0-9a-fA-F]+)(\s*)(?:[#;].*)?$')
+
+    with open(src_path, "r") as fin, open(dst_path, "w") as fout:
+        for raw in fin:
+            line = raw.rstrip("\n")
+            m = addr_pat.match(line)
+            if not m:
+                fout.write(raw)
+                continue
+
+            lead, hexstr, trail = m.group(1), m.group(2), m.group(3)
+            width = len(hexstr)
+            addr = int(hexstr, 16)
+
+            if only_if_ge and addr < offset:
+                fout.write(raw)
+                continue
+
+            new_addr = addr - offset
+            if new_addr < 0 and not allow_negative:
+                raise ValueError(
+                    f"Address {addr:#x} becomes negative after subtracting {offset:#x}"
+                )
+
+            hex_new = f"{new_addr & ((1 << (4*width)) - 1):0{width}X}"
+            fout.write(f"{lead}@{hex_new}{trail}\n")
+
+# Example usage in your flow:
 
 
 
@@ -225,6 +257,9 @@ def main():
     # Copy program.hex from the test case directory to the RTL directory.
     src_program_hex = os.path.join(test_case_dir, "program.hex")
     dst_program_hex = os.path.join(rtl_directory, "program.hex")
+    # src_program_hex = os.path.join(test_case_dir, "program.hex")
+    dst_program_hex_l = os.path.join(rtl_directory, "out.hex")
+    shift_hex_file(src_program_hex, dst_program_hex_l, offset=0x2000)
     copy_file(src_program_hex, dst_program_hex)
 
     # Parse compilation.log for entry point address.

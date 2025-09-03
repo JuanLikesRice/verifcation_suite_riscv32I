@@ -119,8 +119,8 @@ module dataMem (
 
 
    addr_range_matcher #(
-			.ADDR_MIN(32'h00000600),
-			.ADDR_MAX(32'h00000800)
+			.ADDR_MIN(32'h00002600),
+			.ADDR_MAX(32'h00002800)
 			) uut (
 			       .addr_in(   address_i),
 			       .in_range(  in_range_peripheral)
@@ -360,7 +360,7 @@ module end_write (
       if (rstb) begin
 	 doutb_reg <= 32'b0;
 	 DMEM <= 32'h00000000;
-      end else if ((enb==1'b1) &&( word_address == 29'h180)) begin
+      end else if ((enb==1'b1) &&( word_address == 29'd2432)) begin
 	 if (web != 4'b0000) begin
             if (web[0]) begin DMEM[ 7: 0]  <=  data_wdata_o[ 7: 0];   end 
             if (web[1]) begin DMEM[15: 8]  <=  data_wdata_o[15: 8];   end 
@@ -383,8 +383,8 @@ endmodule
 
 
 module addr_range_matcher #(
-			    parameter [31:0] ADDR_MIN = 32'h00000600,
-			    parameter [31:0] ADDR_MAX = 32'h00000800
+			    parameter [31:0] ADDR_MIN = 32'h00002600,
+			    parameter [31:0] ADDR_MAX = 32'h00002800
 			    )(
 			      input wire [31:0]	addr_in,
 			      output wire	in_range

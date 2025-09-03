@@ -1,7 +1,7 @@
 // #define PERIPHERAL_BASE   0x000007D0  // Base address for success/failure codes
 // #define PERIPHERAL_RESULT 0x000007D4  // Base address for matrix sum result
-#define PERIPHERAL_BASE           0x00000600  
-#define PERIPHERAL_RESULT         0x00000604
+#define PERIPHERAL_BASE           0x00002600  
+#define PERIPHERAL_RESULT         0x00002604
 // #define PERIPHERAL_SUM_immediate  0x00000608
 
 

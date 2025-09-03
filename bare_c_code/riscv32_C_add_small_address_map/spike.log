@@ -1,0 +1,55 @@
+Warning: the memory at [0x2000, 0x400F] has been realigned
+to the 4 KiB page size: [0x2000, 0x4FFF]
+warning: tohost and fromhost symbols not in ELF; can't communicate with target
+core   0: 0x00001000 (0x00000297) auipc   t0, 0x0
+core   0: 0x00001004 (0x02028593) addi    a1, t0, 32
+core   0: 0x00001008 (0xf1402573) csrr    a0, mhartid
+core   0: 0x0000100c (0x0182a283) lw      t0, 24(t0)
+core   0: 0x00001010 (0x00028067) jr      t0
+core   0: >>>>  $xrv32i2p1_zicsr2p0
+core   0: 0x000020b8 (0x00002117) auipc   sp, 0x2
+core   0: 0x000020bc (0xf4810113) addi    sp, sp, -184
+core   0: 0x000020c0 (0xf81ff0ef) jal     pc - 0x80
+core   0: >>>>  main
+core   0: 0x00002040 (0xfe010113) addi    sp, sp, -32
+core   0: 0x00002044 (0x00112e23) sw      ra, 28(sp)
+core   0: 0x00002048 (0x00812c23) sw      s0, 24(sp)
+core   0: 0x0000204c (0x02010413) addi    s0, sp, 32
+core   0: 0x00002050 (0x000027b7) lui     a5, 0x2
+core   0: 0x00002054 (0x60878793) addi    a5, a5, 1544
+core   0: 0x00002058 (0xfef42623) sw      a5, -20(s0)
+core   0: 0x0000205c (0xfec42783) lw      a5, -20(s0)
+core   0: 0x00002060 (0xffffe737) lui     a4, 0xffffe
+core   0: 0x00002064 (0xead70713) addi    a4, a4, -339
+core   0: 0x00002068 (0x00e79023) sh      a4, 0(a5)
+core   0: 0x0000206c (0xfec42783) lw      a5, -20(s0)
+core   0: 0x00002070 (0x0007d783) lhu     a5, 0(a5)
+core   0: 0x00002074 (0xfef41523) sh      a5, -22(s0)
+core   0: 0x00002078 (0xfea41703) lh      a4, -22(s0)
+core   0: 0x0000207c (0xffffe7b7) lui     a5, 0xffffe
+core   0: 0x00002080 (0xead78793) addi    a5, a5, -339
+core   0: 0x00002084 (0x00f71e63) bne     a4, a5, pc + 28
+core   0: 0x00002088 (0xdeadc7b7) lui     a5, 0xdeadc
+core   0: 0x0000208c (0xeef78593) addi    a1, a5, -273
+core   0: 0x00002090 (0x000027b7) lui     a5, 0x2
+core   0: 0x00002094 (0x60078513) addi    a0, a5, 1536
+core   0: 0x00002098 (0xf69ff0ef) jal     pc - 0x98
+core   0: >>>>  _stext
+core   0: 0x00002000 (0xfd010113) addi    sp, sp, -48
+core   0: 0x00002004 (0x02112623) sw      ra, 44(sp)
+core   0: 0x00002008 (0x02812423) sw      s0, 40(sp)
+core   0: 0x0000200c (0x03010413) addi    s0, sp, 48
+core   0: 0x00002010 (0xfca42e23) sw      a0, -36(s0)
+core   0: 0x00002014 (0xfcb42c23) sw      a1, -40(s0)
+core   0: 0x00002018 (0xfdc42783) lw      a5, -36(s0)
+core   0: 0x0000201c (0xfef42623) sw      a5, -20(s0)
+core   0: 0x00002020 (0xfec42783) lw      a5, -20(s0)
+core   0: 0x00002024 (0xfd842703) lw      a4, -40(s0)
+core   0: 0x00002028 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x0000202c (0x00000013) nop
+core   0: 0x00002030 (0x02c12083) lw      ra, 44(sp)
+core   0: 0x00002034 (0x02812403) lw      s0, 40(sp)
+core   0: 0x00002038 (0x03010113) addi    sp, sp, 48
+core   0: 0x0000203c (0x00008067) ret
+core   0: 0x0000209c (0x0180006f) j       pc + 0x18
+core   0: 0x000020b4 (0x0000006f) j       pc + 0x0

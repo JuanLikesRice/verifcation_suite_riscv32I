@@ -4,10 +4,10 @@ __DYNAMIC = 0;
 MEMORY
 {
     /* Define the memory regions according to the new map */
-    instrram   : ORIGIN = 0x00000000, LENGTH = 1280  /* Instruction Memory:     1280 B */
-    rom        : ORIGIN = 0x00000500, LENGTH =  256  /* ROM (Boot):              256 B */
-    peripheral : ORIGIN = 0x00000600, LENGTH =  512  /* Peripherals:             512 B */
-    dataram    : ORIGIN = 0x00000800, LENGTH = 6144  /* Data Memory:            2048 B */
+    instrram   : ORIGIN = 0x00002000, LENGTH = 1280  /* Instruction Memory:     1280 B */
+    rom        : ORIGIN = 0x00002500, LENGTH =  256  /* ROM (Boot):              256 B */
+    peripheral : ORIGIN = 0x00002600, LENGTH =  512  /* Peripherals:             512 B */
+    dataram    : ORIGIN = 0x00002800, LENGTH = 6144  /* Data Memory:            2048 B */
 }
 
 /* Stack information */

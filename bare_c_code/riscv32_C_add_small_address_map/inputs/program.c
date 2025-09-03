@@ -14,14 +14,14 @@ typedef unsigned long       uintptr;         /* native pointer */
 #define  STR(x)   _STR(x)
 
 /* ---------- MMIO addresses ---------- */
-#define MTIME_LO        (*(volatile uint32 *)0x00000700U)
-#define MTIME_HI        (*(volatile uint32 *)0x00000704U)
-#define MTIMECMP_LO     (*(volatile uint32 *)0x00000708U)
-#define MTIMECMP_HI     (*(volatile uint32 *)0x0000070CU)
+#define MTIME_LO        (*(volatile uint32 *)0x00002700U)
+#define MTIME_HI        (*(volatile uint32 *)0x00002704U)
+#define MTIMECMP_LO     (*(volatile uint32 *)0x00002708U)
+#define MTIMECMP_HI     (*(volatile uint32 *)0x0000270CU)
 
 /* test-bench peripherals (unchanged) */
-#define PERIPHERAL_SUCCESS   0x00000600
-#define PERIPHERAL_BYTE      0x00000604
+#define PERIPHERAL_SUCCESS   0x00002600
+#define PERIPHERAL_BYTE      0x00002604
 
 /* ---------- CSR bit masks ---------- */
 #define MIE_MTIE       (1U << 7)     /* mie  – machine-timer enable   */

@@ -35,18 +35,20 @@ Disassembly of section .data:
   6c:	fe842703          	lw	a4,-24(s0)
   70:	ffffd7b7          	lui	a5,0xffffd
   74:	fc778793          	addi	a5,a5,-57 # 0xffffcfc7
-  78:	00f71c63          	bne	a4,a5,0x90
+  78:	00f71e63          	bne	a4,a5,0x94
   7c:	deadc7b7          	lui	a5,0xdeadc
   80:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
-  84:	60000513          	li	a0,1536
-  88:	f79ff0ef          	jal	0x0
-  8c:	0140006f          	j	0xa0
-  90:	0badf7b7          	lui	a5,0xbadf
-  94:	00d78593          	addi	a1,a5,13 # 0xbadf00d
-  98:	60000513          	li	a0,1536
-  9c:	f65ff0ef          	jal	0x0
-  a0:	0000006f          	j	0xa0
-  a4:	00002117          	auipc	sp,0x2
-  a8:	f5c10113          	addi	sp,sp,-164 # 0x2000
-  ac:	f95ff0ef          	jal	0x40
-  b0:	ff5ff06f          	j	0xa4
+  84:	000027b7          	lui	a5,0x2
+  88:	60078513          	addi	a0,a5,1536 # 0x2600
+  8c:	f75ff0ef          	jal	0x0
+  90:	0180006f          	j	0xa8
+  94:	0badf7b7          	lui	a5,0xbadf
+  98:	00d78593          	addi	a1,a5,13 # 0xbadf00d
+  9c:	000027b7          	lui	a5,0x2
+  a0:	60078513          	addi	a0,a5,1536 # 0x2600
+  a4:	f5dff0ef          	jal	0x0
+  a8:	0000006f          	j	0xa8
+  ac:	00002117          	auipc	sp,0x2
+  b0:	f5410113          	addi	sp,sp,-172 # 0x2000
+  b4:	f8dff0ef          	jal	0x40
+  b8:	ff5ff06f          	j	0xac

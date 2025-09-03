@@ -72,7 +72,7 @@ Disassembly of section .data:
  100:	fdc42783          	lw	a5,-36(s0)
  104:	00078593          	mv	a1,a5
  108:	00070513          	mv	a0,a4
- 10c:	2fc000ef          	jal	0x408
+ 10c:	304000ef          	jal	0x410
  110:	00050793          	mv	a5,a0
  114:	00279793          	slli	a5,a5,0x2
  118:	fb042703          	lw	a4,-80(s0)
@@ -87,7 +87,7 @@ Disassembly of section .data:
  13c:	fdc42783          	lw	a5,-36(s0)
  140:	00078593          	mv	a1,a5
  144:	00070513          	mv	a0,a4
- 148:	2c0000ef          	jal	0x408
+ 148:	2c8000ef          	jal	0x410
  14c:	00050793          	mv	a5,a0
  150:	00279793          	slli	a5,a5,0x2
  154:	fb842703          	lw	a4,-72(s0)
@@ -100,7 +100,7 @@ Disassembly of section .data:
  170:	fd442783          	lw	a5,-44(s0)
  174:	00078593          	mv	a1,a5
  178:	00070513          	mv	a0,a4
- 17c:	28c000ef          	jal	0x408
+ 17c:	294000ef          	jal	0x410
  180:	00050793          	mv	a5,a0
  184:	00279793          	slli	a5,a5,0x2
  188:	fb442703          	lw	a4,-76(s0)
@@ -111,14 +111,14 @@ Disassembly of section .data:
  19c:	0007a783          	lw	a5,0(a5)
  1a0:	00078593          	mv	a1,a5
  1a4:	00098513          	mv	a0,s3
- 1a8:	260000ef          	jal	0x408
+ 1a8:	268000ef          	jal	0x410
  1ac:	00050793          	mv	a5,a0
  1b0:	00078a93          	mv	s5,a5
  1b4:	00048713          	mv	a4,s1
  1b8:	fdc42783          	lw	a5,-36(s0)
  1bc:	00078593          	mv	a1,a5
  1c0:	00070513          	mv	a0,a4
- 1c4:	244000ef          	jal	0x408
+ 1c4:	24c000ef          	jal	0x410
  1c8:	00050793          	mv	a5,a0
  1cc:	00279793          	slli	a5,a5,0x2
  1d0:	fb042703          	lw	a4,-80(s0)
@@ -131,7 +131,7 @@ Disassembly of section .data:
  1ec:	fdc42783          	lw	a5,-36(s0)
  1f0:	00078593          	mv	a1,a5
  1f4:	00070513          	mv	a0,a4
- 1f8:	210000ef          	jal	0x408
+ 1f8:	218000ef          	jal	0x410
  1fc:	00050793          	mv	a5,a0
  200:	00279793          	slli	a5,a5,0x2
  204:	fb042703          	lw	a4,-80(s0)
@@ -193,7 +193,7 @@ Disassembly of section .data:
  2e4:	00e7a023          	sw	a4,0(a5)
  2e8:	fe842583          	lw	a1,-24(s0)
  2ec:	fec42503          	lw	a0,-20(s0)
- 2f0:	118000ef          	jal	0x408
+ 2f0:	120000ef          	jal	0x410
  2f4:	00050793          	mv	a5,a0
  2f8:	00078693          	mv	a3,a5
  2fc:	fec42783          	lw	a5,-20(s0)
@@ -252,23 +252,25 @@ Disassembly of section .data:
  3d0:	fd842783          	lw	a5,-40(s0)
  3d4:	faf740e3          	blt	a4,a5,0x374
  3d8:	fe442583          	lw	a1,-28(s0)
- 3dc:	60400513          	li	a0,1540
- 3e0:	c21ff0ef          	jal	0x0
- 3e4:	deadc7b7          	lui	a5,0xdeadc
- 3e8:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
- 3ec:	60000513          	li	a0,1536
- 3f0:	c11ff0ef          	jal	0x0
- 3f4:	0000006f          	j	0x3f4
- 3f8:	00002117          	auipc	sp,0x2
- 3fc:	c0810113          	addi	sp,sp,-1016 # 0x2000
- 400:	e95ff0ef          	jal	0x294
- 404:	ff5ff06f          	j	0x3f8
- 408:	00050613          	mv	a2,a0
- 40c:	00000513          	li	a0,0
- 410:	0015f693          	andi	a3,a1,1
- 414:	00068463          	beqz	a3,0x41c
- 418:	00c50533          	add	a0,a0,a2
- 41c:	0015d593          	srli	a1,a1,0x1
- 420:	00161613          	slli	a2,a2,0x1
- 424:	fe0596e3          	bnez	a1,0x410
- 428:	00008067          	ret
+ 3dc:	000027b7          	lui	a5,0x2
+ 3e0:	60478513          	addi	a0,a5,1540 # 0x2604
+ 3e4:	c1dff0ef          	jal	0x0
+ 3e8:	deadc7b7          	lui	a5,0xdeadc
+ 3ec:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
+ 3f0:	000027b7          	lui	a5,0x2
+ 3f4:	60078513          	addi	a0,a5,1536 # 0x2600
+ 3f8:	c09ff0ef          	jal	0x0
+ 3fc:	0000006f          	j	0x3fc
+ 400:	00002117          	auipc	sp,0x2
+ 404:	c0010113          	addi	sp,sp,-1024 # 0x2000
+ 408:	e8dff0ef          	jal	0x294
+ 40c:	ff5ff06f          	j	0x400
+ 410:	00050613          	mv	a2,a0
+ 414:	00000513          	li	a0,0
+ 418:	0015f693          	andi	a3,a1,1
+ 41c:	00068463          	beqz	a3,0x424
+ 420:	00c50533          	add	a0,a0,a2
+ 424:	0015d593          	srli	a1,a1,0x1
+ 428:	00161613          	slli	a2,a2,0x1
+ 42c:	fe0596e3          	bnez	a1,0x418
+ 430:	00008067          	ret

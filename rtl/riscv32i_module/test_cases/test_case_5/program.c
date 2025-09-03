@@ -3,8 +3,8 @@
 //  - Branch and Jump: inst_BEQ, inst_BNE, inst_BLT, inst_BGE, inst_BLTU, inst_BGEU, inst_JAL, inst_JALR
 //  Tests 28–35.
 
-#define PERIPHERAL_SUCCESS 0x00000600
-#define PERIPHERAL_BYTE    0x00000604
+#define PERIPHERAL_SUCCESS 0x00002600
+#define PERIPHERAL_BYTE    0x00002604
 
 // Write a value to a memory-mapped register.
 void write_mmio(unsigned int addr, unsigned int value) {

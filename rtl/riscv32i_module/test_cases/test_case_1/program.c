@@ -1,6 +1,7 @@
-#define PERIPHERAL_SUCCESS    0x00000600
-#define PERIPHERAL_BYTE       0x00000604
-#define PERIPHERAL_BYTE_TOTAL 0x00000608
+#define PERIPHERAL_SUCCESS    0x00002600
+#define PERIPHERAL_BYTE       0x00002604
+#define PERIPHERAL_BYTE_TOTAL 0x00002608
+
 
 void write_mmio(unsigned int addr, unsigned int value) {
     volatile unsigned int *ptr = (unsigned int *)addr;

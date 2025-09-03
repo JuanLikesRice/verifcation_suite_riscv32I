@@ -1,4 +1,4 @@
-#define PERIPHERAL_SUCCESS 0x00000600
+#define PERIPHERAL_SUCCESS 0x00002600
 
 // Write a value to a memory-mapped register.
 void write_mmio(unsigned int addr, unsigned int value) {

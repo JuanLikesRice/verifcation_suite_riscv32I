@@ -1,5 +1,5 @@
-#define PERIPHERAL_SUCCESS 0x00000600
-#define PERIPHERAL_BYTE    0x00000604
+#define PERIPHERAL_SUCCESS 0x00002600
+#define PERIPHERAL_BYTE    0x00002604
 
 // Write a value to a memory-mapped register.
 void write_mmio(unsigned int addr, unsigned int value) {
@@ -14,16 +14,6 @@ void fail(int test_index) {
     while (1);
 }
 
-// Branch test functions
-
-// // Test BEQ: if (rs1 == rs2) should branch.
-// int test_beq(void) {
-//     volatile int a = 50, b = 50;  // Equal values
-//     if (a == b)
-//         return 1;
-//     else
-//         return 0;
-// }
 
 int test_beq(void) {
     volatile int a = 50, b = 50;

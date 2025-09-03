@@ -7,7 +7,7 @@ module riscv32iTB
     parameter success_code = 32'hDEADBEEF,
     parameter cycles_timeout      = 20000,
     // parameter cycles_timeout = 700,
-    parameter initial_pc    = 32'h0000016C
+    parameter initial_pc    = 32'h000023AC
     )
    (
 
@@ -226,7 +226,7 @@ module riscv32iTB
 						  );
 
 
-   bram_ins #(.MEM_DEPTH(1096) ) ins_mem_bram (
+   bram_ins #(.MEM_DEPTH(8192) ) ins_mem_bram (
 					       .clkb(       ins_mem_clkb),
 					       .enb(        ins_mem_enb),
 					       .rstb(       ins_mem_rstb),
@@ -281,8 +281,12 @@ module bram_pmem #(  parameter MEM_DEPTH = 1096 ) (
    wire [ 1:0]							      byte_address;
    // wire [31:0] addrb_aligned;
    wire [31:0]							      addrb;
-   assign addrb = addrb_pre_aligned - 32'h00000600; // memory offset
-
+   assign addrb = addrb_pre_aligned - 32'h00002600; // memory offset
+   // wire sub_condition;
+   // assign sub_condition = (addrb > 32'h2000):
+   // assign address_translation = sub_condition ? addrb - 32'h2000: 32'h0000;
+   // assign word_address = address_translation[31:2];  
+   // assign byte_address = address_translation[ 1:0];
    assign word_address = addrb[31:2];  
    assign byte_address = addrb[ 1:0];
 
@@ -416,7 +420,13 @@ module bram_mem #(  parameter MEM_DEPTH = 1096 ) (
    wire [ 1:0]							     byte_address;
    // wire [31:0] addrb_aligned;
    wire [31:0]							     addrb;
-   assign addrb = addrb_pre_aligned - 32'h00000600; // memory offset
+   assign addrb = addrb_pre_aligned - 32'h00002600; // memory offset
+
+   // wire sub_condition;
+   // assign sub_condition = (addrb > 32'h2000):
+   // assign address_translation = sub_condition ? addrb - 32'h2000: 32'h0000;
+   // assign word_address = address_translation[31:2];  
+   // assign byte_address = address_translation[ 1:0];
 
    assign word_address = addrb[31:2];  
    assign byte_address = addrb[ 1:0];
@@ -531,8 +541,12 @@ module bram_ins #(  parameter MEM_DEPTH = 1096 ) (
    wire [29:0]							     word_address;
    wire [ 1:0]							     byte_address;
 
-   assign word_address = addrb[31:2];  
-   assign byte_address = addrb[ 1:0];
+   wire [31:0] address_translation;
+   wire sub_condition;
+   assign sub_condition = (addrb > 32'h2000);
+   assign address_translation = sub_condition ? (addrb - 32'h2000): 32'h0000;
+   assign word_address = address_translation[31:2];  
+   assign byte_address = address_translation[ 1:0];
 
    integer							     i;
 
@@ -546,6 +560,7 @@ module bram_ins #(  parameter MEM_DEPTH = 1096 ) (
 
       // $readmemh("sanity.hex", memory);  // Load the program into memory
       $readmemh("program.hex", DMEM);  
+      $readmemh("out.hex", DMEM);  
    end
 
 

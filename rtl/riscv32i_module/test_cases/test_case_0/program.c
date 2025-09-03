@@ -1,7 +1,7 @@
-#define PERIPHERAL_BASE           0x00000600  
-#define PERIPHERAL_SUM            0x00000604
-#define PERIPHERAL_SUM_immediate  0x00000608
-#define PERIPHERAL_SUM_i           0x0000060C
+#define PERIPHERAL_BASE           0x00002600  
+#define PERIPHERAL_SUM            0x00002604
+#define PERIPHERAL_SUM_immediate  0x00002608
+#define PERIPHERAL_SUM_i          0x0000260C
 
 
 void write_to_peripheral(int address, int value) {

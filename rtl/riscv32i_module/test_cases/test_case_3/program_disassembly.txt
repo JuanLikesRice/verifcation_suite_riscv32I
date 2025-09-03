@@ -25,30 +25,33 @@ Disassembly of section .data:
   44:	00112e23          	sw	ra,28(sp)
   48:	00812c23          	sw	s0,24(sp)
   4c:	02010413          	addi	s0,sp,32
-  50:	60800793          	li	a5,1544
-  54:	fef42623          	sw	a5,-20(s0)
-  58:	fec42783          	lw	a5,-20(s0)
-  5c:	ffffe737          	lui	a4,0xffffe
-  60:	ead70713          	addi	a4,a4,-339 # 0xffffdead
-  64:	00e79023          	sh	a4,0(a5)
-  68:	fec42783          	lw	a5,-20(s0)
-  6c:	0007d783          	lhu	a5,0(a5)
-  70:	fef41523          	sh	a5,-22(s0)
-  74:	fea41703          	lh	a4,-22(s0)
-  78:	ffffe7b7          	lui	a5,0xffffe
-  7c:	ead78793          	addi	a5,a5,-339 # 0xffffdead
-  80:	00f71c63          	bne	a4,a5,0x98
-  84:	deadc7b7          	lui	a5,0xdeadc
-  88:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
-  8c:	60000513          	li	a0,1536
-  90:	f71ff0ef          	jal	0x0
-  94:	0140006f          	j	0xa8
-  98:	0badf7b7          	lui	a5,0xbadf
-  9c:	00d78593          	addi	a1,a5,13 # 0xbadf00d
-  a0:	60000513          	li	a0,1536
-  a4:	f5dff0ef          	jal	0x0
-  a8:	0000006f          	j	0xa8
-  ac:	00002117          	auipc	sp,0x2
-  b0:	f5410113          	addi	sp,sp,-172 # 0x2000
-  b4:	f8dff0ef          	jal	0x40
-  b8:	ff5ff06f          	j	0xac
+  50:	000027b7          	lui	a5,0x2
+  54:	60878793          	addi	a5,a5,1544 # 0x2608
+  58:	fef42623          	sw	a5,-20(s0)
+  5c:	fec42783          	lw	a5,-20(s0)
+  60:	ffffe737          	lui	a4,0xffffe
+  64:	ead70713          	addi	a4,a4,-339 # 0xffffdead
+  68:	00e79023          	sh	a4,0(a5)
+  6c:	fec42783          	lw	a5,-20(s0)
+  70:	0007d783          	lhu	a5,0(a5)
+  74:	fef41523          	sh	a5,-22(s0)
+  78:	fea41703          	lh	a4,-22(s0)
+  7c:	ffffe7b7          	lui	a5,0xffffe
+  80:	ead78793          	addi	a5,a5,-339 # 0xffffdead
+  84:	00f71e63          	bne	a4,a5,0xa0
+  88:	deadc7b7          	lui	a5,0xdeadc
+  8c:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
+  90:	000027b7          	lui	a5,0x2
+  94:	60078513          	addi	a0,a5,1536 # 0x2600
+  98:	f69ff0ef          	jal	0x0
+  9c:	0180006f          	j	0xb4
+  a0:	0badf7b7          	lui	a5,0xbadf
+  a4:	00d78593          	addi	a1,a5,13 # 0xbadf00d
+  a8:	000027b7          	lui	a5,0x2
+  ac:	60078513          	addi	a0,a5,1536 # 0x2600
+  b0:	f51ff0ef          	jal	0x0
+  b4:	0000006f          	j	0xb4
+  b8:	00002117          	auipc	sp,0x2
+  bc:	f4810113          	addi	sp,sp,-184 # 0x2000
+  c0:	f81ff0ef          	jal	0x40
+  c4:	ff5ff06f          	j	0xb8
