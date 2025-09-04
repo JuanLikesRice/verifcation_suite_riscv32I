@@ -14,16 +14,16 @@ typedef unsigned long       uintptr;         /* native pointer */
 #define  STR(x)   _STR(x)
 
 /* ---------- MMIO addresses ---------- */
-#define MTIME_LO        (*(volatile uint32 *)0x00002700U)
-#define MTIME_HI        (*(volatile uint32 *)0x00002704U)
-#define MTIMECMP_LO     (*(volatile uint32 *)0x00002708U)
-#define MTIMECMP_HI     (*(volatile uint32 *)0x0000270CU)
+// #define MTIME_LO        (*(volatile uint32 *)0x00002700U)
+// #define MTIME_HI        (*(volatile uint32 *)0x00002704U)
+// #define MTIMECMP_LO     (*(volatile uint32 *)0x00002708U)
+// #define MTIMECMP_HI     (*(volatile uint32 *)0x0000270CU)
 
-// #define CLINT_BASE   0x02000000UL
-// #define MTIMECMP_LO  (*(volatile uint32 *)(CLINT_BASE + 0x4000))
-// #define MTIMECMP_HI  (*(volatile uint32 *)(CLINT_BASE + 0x4004))
-// #define MTIME_LO     (*(volatile uint32 *)(CLINT_BASE + 0xBFF8))
-// #define MTIME_HI     (*(volatile uint32 *)(CLINT_BASE + 0xBFFC))
+#define CLINT_BASE   0x02000000UL
+#define MTIMECMP_LO  (*(volatile uint32 *)(CLINT_BASE + 0x4000))
+#define MTIMECMP_HI  (*(volatile uint32 *)(CLINT_BASE + 0x4004))
+#define MTIME_LO     (*(volatile uint32 *)(CLINT_BASE + 0xBFF8))
+#define MTIME_HI     (*(volatile uint32 *)(CLINT_BASE + 0xBFFC))
 
 
 /* test-bench peripherals (unchanged) */

@@ -21,6 +21,9 @@ riscv32-unknown-elf-readelf -h program.elf
 riscv32-unknown-elf-objdump -D -b binary -m riscv:rv32 program.bin > program_disassembly.txt
 riscv32-unknown-elf-objdump -D program.elf &> instrictions.log
 riscv32-unknown-elf-objcopy -O verilog program.elf program_incorrect.hex
+
+timeout -s INT -k 1s 3s stdbuf -oL -eL spike -l --isa=RV32I_zicsr -m0x2000:0x2010 program.elf &> spike.log
+
 echo "Complilation run, python next step"
 cd - || exits
 python3 hex_parser.py

@@ -1,5 +1,7 @@
 
-module reg_file(
+module reg_file #(
+        parameter debug_param = 1
+)(
 		input wire	   clk,
 		input wire	   reset, 
 		input wire [4:0]   reg1_pi, 
@@ -89,7 +91,7 @@ module reg_file(
 
 
 
-
+if (debug_param) begin
    //MARKER AUTOMATED HERE START
    integer k;
    integer n;
@@ -128,7 +130,7 @@ module reg_file(
    end
 
    //MARKER AUTOMATED HERE END
-
+end
 
 
 endmodule

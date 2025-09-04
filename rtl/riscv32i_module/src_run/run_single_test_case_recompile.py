@@ -3,6 +3,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 
 def copy_file(src, dst):
     """Copy a file from src to dst, overwriting if it exists."""
@@ -272,7 +273,10 @@ def main():
     modify_riscv_tb(riscv_tb_path, entry_point_hex)
 
     # Run the "./run" command in the RTL directory.
+    start_time = time.time()
     run_command("./run", rtl_directory)
+    end_time = time.time()
+    print(f"run_command('./run') took {end_time - start_time:.2f} seconds.")
 
     # Parse sim.log for the success message.
     sim_log_path = os.path.join(rtl_directory, "sim.log")

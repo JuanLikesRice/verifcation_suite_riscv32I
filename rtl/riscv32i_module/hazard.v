@@ -1,4 +1,6 @@
-module hazard (
+module hazard #(
+        parameter debug_param = 1
+)(
 
 
 	       input wire	  clk, 
@@ -90,6 +92,7 @@ module hazard (
 
    //MARKER AUTOMATED HERE START
 
+if (debug_param == 1) begin
    always @(negedge clk) begin
       #25
 
@@ -119,7 +122,7 @@ module hazard (
       end
    end
    //MARKER AUTOMATED HERE END
-
+end
 
 
 endmodule

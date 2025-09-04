@@ -1,4 +1,6 @@
-module pc(
+module pc  #(
+        parameter debug_param = 1
+)(
 	  input wire			clk_i,
 	  input wire			reset_i,
 	  input wire			stage_IF_ready,
@@ -55,18 +57,15 @@ module pc(
       end
    end
 
-
+if (debug_param == 1) begin 
    //MARKER AUTOMATED HERE START
-
    always @(negedge clk_i) begin
       #30
 	if (jump_inst_wire)    begin $write("\nPC_module: JUMP!   Next cycle, New PC: %8h, Destroyed PC %8h", targetPC_i,PC + 4);end
       if (branch_inst_wire ) begin $write("\nPC_module: BRANCH! Next cycle, New PC: %8h, Destroyed PC %8h", targetPC_i,PC + 4);end
-
    end
-
    //MARKER AUTOMATED HERE END
-
+end
 
    
 endmodule

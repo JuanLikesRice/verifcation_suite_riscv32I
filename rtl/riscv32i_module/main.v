@@ -1,4 +1,6 @@
-module core_controller_fsm (
+module main_fsm #(
+        parameter debug_param = 1
+) (
 			    input wire				      clk,
 			    output wire				      reset, // Reset signal     
 
@@ -206,6 +208,7 @@ module core_controller_fsm (
       endcase
    end
 
+if (debug_param == 1) begin 
 
    //MARKER AUTOMATED HERE START
    integer k;
@@ -228,7 +231,7 @@ module core_controller_fsm (
 	 end
       end
    end
-
+end
 
 
 endmodule

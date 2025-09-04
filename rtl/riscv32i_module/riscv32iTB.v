@@ -6,8 +6,10 @@ module riscv32iTB
     parameter memory_offset_param = 32'h00000000,
     parameter success_code = 32'hDEADBEEF,
     parameter cycles_timeout      = 20000,
+    parameter debug_param               = 0,
+    parameter dispatch_print            = 0,
     // parameter cycles_timeout = 700,
-    parameter initial_pc    = 32'h000023AC
+    parameter initial_pc    = 32'h00002400
     )
    (
 
@@ -73,7 +75,8 @@ module riscv32iTB
 
    riscv32i
      // `ifndef GATESIM
-     #(    .N_param(N_param)
+     #(    .N_param(N_param),
+           .debug_param(debug_param)
 	   ) 
    // `endif
    dut (
@@ -200,7 +203,7 @@ module riscv32iTB
 
 
    // BRAM PORTS data mem
-   bram_mem #(.MEM_DEPTH(6656))  data_mem_bram (
+   bram_mem #(.MEM_DEPTH(6656),.debug_param(debug_param))  data_mem_bram (
 						// bram_mem #(.MEM_DEPTH(8192))  data_mem_bram (
 						.clkb(                  data_mem_clkb     ),
 						.addrb_pre_aligned(     data_mem_addrb    ),
@@ -212,7 +215,7 @@ module riscv32iTB
 						.rstb_busy(             data_mem_rstb_busy )
 						);
 
-   bram_pmem #(.MEM_DEPTH(1024))  data_pmem_bram (
+   bram_pmem #(.MEM_DEPTH(1024),.debug_param(debug_param))  data_pmem_bram (
 						  // bram_mem #(.MEM_DEPTH(8192))  data_mem_bram (
 						  .clkb(                  peripheral_mem_clkb     ),
 						  .addrb_pre_aligned(     peripheral_mem_addrb    ),
@@ -226,7 +229,7 @@ module riscv32iTB
 						  );
 
 
-   bram_ins #(.MEM_DEPTH(8192) ) ins_mem_bram (
+   bram_ins #(.MEM_DEPTH(8192),.debug_param(debug_param) ) ins_mem_bram (
 					       .clkb(       ins_mem_clkb),
 					       .enb(        ins_mem_enb),
 					       .rstb(       ins_mem_rstb),
@@ -259,7 +262,7 @@ endmodule
 
 
 
-module bram_pmem #(  parameter MEM_DEPTH = 1096 ) (
+module bram_pmem #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 ) (
 						   input wire	      clkb,
 						   input wire	      enb,
 						   input wire	      rstb,
@@ -344,7 +347,7 @@ module bram_pmem #(  parameter MEM_DEPTH = 1096 ) (
       end
    end
    
-
+if (debug_param == 1) begin 
    integer M,n;
    always @(negedge clkb) begin
       #115
@@ -374,7 +377,7 @@ module bram_pmem #(  parameter MEM_DEPTH = 1096 ) (
 
       end
    end 
-
+end
 
    wire [31:0] timer_val,timer_cmp;
 
@@ -399,7 +402,7 @@ endmodule
 
 
 
-module bram_mem #(  parameter MEM_DEPTH = 1096 ) (
+module bram_mem #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 ) (
 						  input wire	     clkb,
 						  input wire	     enb,
 						  input wire	     rstb,
@@ -485,7 +488,7 @@ module bram_mem #(  parameter MEM_DEPTH = 1096 ) (
       end
    end
    
-
+if (debug_param == 1) begin 
    integer M,n;
    always @(negedge clkb) begin
       #120
@@ -515,14 +518,14 @@ module bram_mem #(  parameter MEM_DEPTH = 1096 ) (
 
       end
    end 
-
+end
 
 endmodule
 
 
 
 
-module bram_ins #(  parameter MEM_DEPTH = 1096 ) (
+module bram_ins #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 ) (
 						  input wire	     clkb,
 						  input wire	     enb,
 						  input wire	     rstb,

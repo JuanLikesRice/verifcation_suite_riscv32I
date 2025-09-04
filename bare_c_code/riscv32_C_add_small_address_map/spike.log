@@ -7,49 +7,1935 @@ core   0: 0x00001008 (0xf1402573) csrr    a0, mhartid
 core   0: 0x0000100c (0x0182a283) lw      t0, 24(t0)
 core   0: 0x00001010 (0x00028067) jr      t0
 core   0: >>>>  $xrv32i2p1_zicsr2p0
-core   0: 0x000020b8 (0x00002117) auipc   sp, 0x2
-core   0: 0x000020bc (0xf4810113) addi    sp, sp, -184
-core   0: 0x000020c0 (0xf81ff0ef) jal     pc - 0x80
+core   0: 0x000023ac (0x00002117) auipc   sp, 0x2
+core   0: 0x000023b0 (0xc5410113) addi    sp, sp, -940
+core   0: 0x000023b4 (0xfcdff0ef) jal     pc - 0x34
 core   0: >>>>  main
-core   0: 0x00002040 (0xfe010113) addi    sp, sp, -32
-core   0: 0x00002044 (0x00112e23) sw      ra, 28(sp)
-core   0: 0x00002048 (0x00812c23) sw      s0, 24(sp)
-core   0: 0x0000204c (0x02010413) addi    s0, sp, 32
-core   0: 0x00002050 (0x000027b7) lui     a5, 0x2
-core   0: 0x00002054 (0x60878793) addi    a5, a5, 1544
-core   0: 0x00002058 (0xfef42623) sw      a5, -20(s0)
-core   0: 0x0000205c (0xfec42783) lw      a5, -20(s0)
-core   0: 0x00002060 (0xffffe737) lui     a4, 0xffffe
-core   0: 0x00002064 (0xead70713) addi    a4, a4, -339
-core   0: 0x00002068 (0x00e79023) sh      a4, 0(a5)
-core   0: 0x0000206c (0xfec42783) lw      a5, -20(s0)
-core   0: 0x00002070 (0x0007d783) lhu     a5, 0(a5)
-core   0: 0x00002074 (0xfef41523) sh      a5, -22(s0)
-core   0: 0x00002078 (0xfea41703) lh      a4, -22(s0)
-core   0: 0x0000207c (0xffffe7b7) lui     a5, 0xffffe
-core   0: 0x00002080 (0xead78793) addi    a5, a5, -339
-core   0: 0x00002084 (0x00f71e63) bne     a4, a5, pc + 28
-core   0: 0x00002088 (0xdeadc7b7) lui     a5, 0xdeadc
-core   0: 0x0000208c (0xeef78593) addi    a1, a5, -273
-core   0: 0x00002090 (0x000027b7) lui     a5, 0x2
-core   0: 0x00002094 (0x60078513) addi    a0, a5, 1536
-core   0: 0x00002098 (0xf69ff0ef) jal     pc - 0x98
-core   0: >>>>  _stext
-core   0: 0x00002000 (0xfd010113) addi    sp, sp, -48
-core   0: 0x00002004 (0x02112623) sw      ra, 44(sp)
-core   0: 0x00002008 (0x02812423) sw      s0, 40(sp)
-core   0: 0x0000200c (0x03010413) addi    s0, sp, 48
-core   0: 0x00002010 (0xfca42e23) sw      a0, -36(s0)
-core   0: 0x00002014 (0xfcb42c23) sw      a1, -40(s0)
-core   0: 0x00002018 (0xfdc42783) lw      a5, -36(s0)
-core   0: 0x0000201c (0xfef42623) sw      a5, -20(s0)
-core   0: 0x00002020 (0xfec42783) lw      a5, -20(s0)
-core   0: 0x00002024 (0xfd842703) lw      a4, -40(s0)
-core   0: 0x00002028 (0x00e7a023) sw      a4, 0(a5)
-core   0: 0x0000202c (0x00000013) nop
-core   0: 0x00002030 (0x02c12083) lw      ra, 44(sp)
-core   0: 0x00002034 (0x02812403) lw      s0, 40(sp)
-core   0: 0x00002038 (0x03010113) addi    sp, sp, 48
-core   0: 0x0000203c (0x00008067) ret
-core   0: 0x0000209c (0x0180006f) j       pc + 0x18
-core   0: 0x000020b4 (0x0000006f) j       pc + 0x0
+core   0: 0x00002380 (0xff010113) addi    sp, sp, -16
+core   0: 0x00002384 (0x00112623) sw      ra, 12(sp)
+core   0: 0x00002388 (0x00812423) sw      s0, 8(sp)
+core   0: 0x0000238c (0x01010413) addi    s0, sp, 16
+core   0: 0x00002390 (0xf69ff0ef) jal     pc - 0x98
+core   0: >>>>  init_mtvec
+core   0: 0x000022f8 (0xfe010113) addi    sp, sp, -32
+core   0: 0x000022fc (0x00112e23) sw      ra, 28(sp)
+core   0: 0x00002300 (0x00812c23) sw      s0, 24(sp)
+core   0: 0x00002304 (0x02010413) addi    s0, sp, 32
+core   0: 0x00002308 (0x000027b7) lui     a5, 0x2
+core   0: 0x0000230c (0x1f478793) addi    a5, a5, 500
+core   0: 0x00002310 (0xffc7f793) andi    a5, a5, -4
+core   0: 0x00002314 (0xfef42623) sw      a5, -20(s0)
+core   0: 0x00002318 (0xfec42503) lw      a0, -20(s0)
+core   0: 0x0000231c (0xe31ff0ef) jal     pc - 0x1d0
+core   0: >>>>  csr_write_mtvec
+core   0: 0x0000214c (0xfe010113) addi    sp, sp, -32
+core   0: 0x00002150 (0x00112e23) sw      ra, 28(sp)
+core   0: 0x00002154 (0x00812c23) sw      s0, 24(sp)
+core   0: 0x00002158 (0x02010413) addi    s0, sp, 32
+core   0: 0x0000215c (0xfea42623) sw      a0, -20(s0)
+core   0: 0x00002160 (0xfec42783) lw      a5, -20(s0)
+core   0: 0x00002164 (0x30579073) csrw    mtvec, a5
+core   0: 0x00002168 (0x00000013) nop
+core   0: 0x0000216c (0x01c12083) lw      ra, 28(sp)
+core   0: 0x00002170 (0x01812403) lw      s0, 24(sp)
+core   0: 0x00002174 (0x02010113) addi    sp, sp, 32
+core   0: 0x00002178 (0x00008067) ret
+core   0: 0x00002320 (0x00000013) nop
+core   0: 0x00002324 (0x01c12083) lw      ra, 28(sp)
+core   0: 0x00002328 (0x01812403) lw      s0, 24(sp)
+core   0: 0x0000232c (0x02010113) addi    sp, sp, 32
+core   0: 0x00002330 (0x00008067) ret
+core   0: 0x00002394 (0xde9ff0ef) jal     pc - 0x218
+core   0: >>>>  enable_timer_interrupts
+core   0: 0x0000217c (0xff010113) addi    sp, sp, -16
+core   0: 0x00002180 (0x00112623) sw      ra, 12(sp)
+core   0: 0x00002184 (0x00812423) sw      s0, 8(sp)
+core   0: 0x00002188 (0x01010413) addi    s0, sp, 16
+core   0: 0x0000218c (0x08000793) li      a5, 128
+core   0: 0x00002190 (0x3047a073) csrs    mie, a5
+core   0: 0x00002194 (0x00800793) li      a5, 8
+core   0: 0x00002198 (0x3007a073) csrs    mstatus, a5
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+(spike) core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16
+core   0: 0x000021b4 (0x00112623) sw      ra, 12(sp)
+core   0: 0x000021b8 (0x00812423) sw      s0, 8(sp)
+core   0: 0x000021bc (0x01010413) addi    s0, sp, 16
+core   0: 0x000021c0 (0x000027b7) lui     a5, 0x2
+core   0: 0x000021c4 (0x60078793) addi    a5, a5, 1536
+core   0: 0x000021c8 (0xdeadc737) lui     a4, 0xdeadc
+core   0: 0x000021cc (0xeef70713) addi    a4, a4, -273
+core   0: 0x000021d0 (0x00e7a023) sw      a4, 0(a5)
+core   0: 0x000021d4 (0x000037b7) lui     a5, 0x3
+core   0: 0x000021d8 (0x00100713) li      a4, 1
+core   0: 0x000021dc (0x80e7a023) sw      a4, -2048(a5)
+core   0: 0x000021e0 (0x00000013) nop
+core   0: 0x000021e4 (0x00c12083) lw      ra, 12(sp)
+core   0: 0x000021e8 (0x00812403) lw      s0, 8(sp)
+core   0: 0x000021ec (0x01010113) addi    sp, sp, 16
+core   0: 0x000021f0 (0x00008067) ret
+core   0: 0x00002274 (0x07412203) lw      tp, 116(sp)
+core   0: 0x00002278 (0x07012183) lw      gp, 112(sp)
+core   0: 0x0000227c (0x06c12883) lw      a7, 108(sp)
+core   0: 0x00002280 (0x06812803) lw      a6, 104(sp)
+core   0: 0x00002284 (0x06412783) lw      a5, 100(sp)
+core   0: 0x00002288 (0x06012703) lw      a4, 96(sp)
+core   0: 0x0000228c (0x05c12683) lw      a3, 92(sp)
+core   0: 0x00002290 (0x05812603) lw      a2, 88(sp)
+core   0: 0x00002294 (0x05412583) lw      a1, 84(sp)
+core   0: 0x00002298 (0x05012503) lw      a0, 80(sp)
+core   0: 0x0000229c (0x04c12f83) lw      t6, 76(sp)
+core   0: 0x000022a0 (0x04812f03) lw      t5, 72(sp)
+core   0: 0x000022a4 (0x04412e83) lw      t4, 68(sp)
+core   0: 0x000022a8 (0x04012e03) lw      t3, 64(sp)
+core   0: 0x000022ac (0x03c12d83) lw      s11, 60(sp)
+core   0: 0x000022b0 (0x03812d03) lw      s10, 56(sp)
+core   0: 0x000022b4 (0x03412c83) lw      s9, 52(sp)
+core   0: 0x000022b8 (0x03012c03) lw      s8, 48(sp)
+core   0: 0x000022bc (0x02c12b83) lw      s7, 44(sp)
+core   0: 0x000022c0 (0x02812b03) lw      s6, 40(sp)
+core   0: 0x000022c4 (0x02412a83) lw      s5, 36(sp)
+core   0: 0x000022c8 (0x02012a03) lw      s4, 32(sp)
+core   0: 0x000022cc (0x01c12983) lw      s3, 28(sp)
+core   0: 0x000022d0 (0x01812903) lw      s2, 24(sp)
+core   0: 0x000022d4 (0x01412483) lw      s1, 20(sp)
+core   0: 0x000022d8 (0x01012403) lw      s0, 16(sp)
+core   0: 0x000022dc (0x00c12383) lw      t2, 12(sp)
+core   0: 0x000022e0 (0x00812303) lw      t1, 8(sp)
+core   0: 0x000022e4 (0x00412283) lw      t0, 4(sp)
+core   0: 0x000022e8 (0x00012083) lw      ra, 0(sp)
+core   0: 0x000022ec (0x08010113) addi    sp, sp, 128
+core   0: 0x000022f0 (0x30200073) mret
+core   0: exception interrupt #7, epc 0x0000219c
+core   0: >>>>  trap_handler
+core   0: 0x000021f4 (0xf8010113) addi    sp, sp, -128
+core   0: 0x000021f8 (0x00112023) sw      ra, 0(sp)
+core   0: 0x000021fc (0x00512223) sw      t0, 4(sp)
+core   0: 0x00002200 (0x00612423) sw      t1, 8(sp)
+core   0: 0x00002204 (0x00712623) sw      t2, 12(sp)
+core   0: 0x00002208 (0x00812823) sw      s0, 16(sp)
+core   0: 0x0000220c (0x00912a23) sw      s1, 20(sp)
+core   0: 0x00002210 (0x01212c23) sw      s2, 24(sp)
+core   0: 0x00002214 (0x01312e23) sw      s3, 28(sp)
+core   0: 0x00002218 (0x03412023) sw      s4, 32(sp)
+core   0: 0x0000221c (0x03512223) sw      s5, 36(sp)
+core   0: 0x00002220 (0x03612423) sw      s6, 40(sp)
+core   0: 0x00002224 (0x03712623) sw      s7, 44(sp)
+core   0: 0x00002228 (0x03812823) sw      s8, 48(sp)
+core   0: 0x0000222c (0x03912a23) sw      s9, 52(sp)
+core   0: 0x00002230 (0x03a12c23) sw      s10, 56(sp)
+core   0: 0x00002234 (0x03b12e23) sw      s11, 60(sp)
+core   0: 0x00002238 (0x05c12023) sw      t3, 64(sp)
+core   0: 0x0000223c (0x05d12223) sw      t4, 68(sp)
+core   0: 0x00002240 (0x05e12423) sw      t5, 72(sp)
+core   0: 0x00002244 (0x05f12623) sw      t6, 76(sp)
+core   0: 0x00002248 (0x04a12823) sw      a0, 80(sp)
+core   0: 0x0000224c (0x04b12a23) sw      a1, 84(sp)
+core   0: 0x00002250 (0x04c12c23) sw      a2, 88(sp)
+core   0: 0x00002254 (0x04d12e23) sw      a3, 92(sp)
+core   0: 0x00002258 (0x06e12023) sw      a4, 96(sp)
+core   0: 0x0000225c (0x06f12223) sw      a5, 100(sp)
+core   0: 0x00002260 (0x07012423) sw      a6, 104(sp)
+core   0: 0x00002264 (0x07112623) sw      a7, 108(sp)
+core   0: 0x00002268 (0x06312823) sw      gp, 112(sp)
+core   0: 0x0000226c (0x06412a23) sw      tp, 116(sp)
+core   0: 0x00002270 (0xf41ff0ef) jal     pc - 0xc0
+core   0: >>>>  on_timer_irq
+core   0: 0x000021b0 (0xff010113) addi    sp, sp, -16

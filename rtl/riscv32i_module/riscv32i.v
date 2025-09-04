@@ -3,7 +3,10 @@
 
 module riscv32i
   # (
-     parameter N_param = 32
+     parameter N_param = 32,
+     parameter debug_param    = 0,
+     parameter dispatch_print = 0
+     
      )     (
 	    input wire	       clk,
 	    input wire [31:0]  GPIO0_R0_CH1, // control signals
@@ -135,8 +138,8 @@ module riscv32i
 	 if (cycle_to_end >= 30) begin
             stop_design <= 1'b1;
             
-	    //MARKER AUTOMATED HERE START
-            
+	   //  MARKER AUTOMATED HERE START
+	   $write("\nCycle_count %5d,\n",Cycle_count);
 	    $display("\n\n\n\n----TB FINISH:Test Passed----\n\n\n\n\nTEST FINISHED by success write :%h \n\n\n\n\n",success_code);
 	    
 	    //MARKER AUTOMATED HERE END
@@ -148,7 +151,9 @@ module riscv32i
    wire Dmem_clk, Imem_clk, Pmem_clk;
    // Instantiation of riscv32i_main
    riscv32i_main #(
-		   .N_param(32)
+		   .N_param(32),
+         .debug_param(debug_param),
+         .dispatch_print(dispatch_print)
 		   ) u_riscv32i_main (
 				      .clk(             clk),
 				      // .reset(           reset),
@@ -287,7 +292,11 @@ endmodule
 
 module riscv32i_main 
   # (
-     parameter N_param = 32
+     parameter N_param = 32,
+      parameter debug_param = 0,
+      parameter dispatch_print = 0
+      
+
      ) (
 	input wire	   clk,
 	// input  wire reset,
@@ -444,13 +453,13 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    assign pipeReg0_wire_debug[31:0] = pc_stage_0;
    assign pipeReg0_wire_debug[`instruct] = instruction_stage_0;
    // assign pipeReg0_wire_debug[511:64] = pipeReg1[511:64];
-
+if (debug_param == 1) begin 
    debug # (.Param_delay(5),.regCount(0), .pc_en(1)
             ) debug_0 (.i_clk(clk),.pipeReg({448'b0,pipeReg0_wire_debug}), .pc_o(pc_i), .Cycle_count(Cycle_count));
    debug # (.Param_delay(10),.regCount(1) ) debug_1 (.i_clk(clk), .pipeReg(u_pipeReg1_res));
    debug # (.Param_delay(15),.regCount(2) ) debug_2 (.i_clk(clk), .pipeReg(u_pipeReg1_res));
    debug # (.Param_delay(20),.regCount(3) ) debug_3 (.i_clk(clk), .pipeReg(u_pipeReg3_res));
-
+end
    //MARKER AUTOMATED HERE END
 
 
@@ -461,7 +470,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 					      .out( pulsed_irq_prep)
 					      );
 
-   core_controller_fsm core_controller_fsm (
+   main_fsm #(.debug_param(debug_param)) main_fsm (
 					    .clk(                         clk),
 					    .control_signal(              control_signal),
 					    // .initate_irq(                 initate_irq),
@@ -496,7 +505,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 
 
 					    );
-   pc pc  (
+   pc #(.debug_param(debug_param) ) pc  (
            .clk_i(clk),
            .reset_i(reset),
            .stage_IF_ready(stage_IF_ready),
@@ -548,7 +557,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 
 
 
-   reg_file reg_file(
+   reg_file #(.debug_param(debug_param))reg_file(
 		     .clk(clk),
 		     .reset(reset), 
 		     .reg1_pi(rs1_o), 
@@ -576,7 +585,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       .opcode_o(opcode_o),
       .Single_Instruction_o(Single_Instruction_o)
       );
-   execute  #(.N_param(`size_X_LEN)) execute 
+   execute  #(.N_param(`size_X_LEN), .debug_param(debug_param)) execute 
      (.i_clk(clk),    
       .Single_Instruction_i(Single_Instruction_stage1),
       .operand1_pi(operand1_into_exec),
@@ -627,7 +636,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 
 
       );
-   hazard hazard (
+   hazard #(.debug_param(debug_param)) hazard (
 		  .clk(clk),
 		  .rs1_stage1(rs1_stage1),
 		  .rs2_stage1(rs2_stage1),

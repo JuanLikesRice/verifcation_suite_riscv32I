@@ -1,6 +1,7 @@
 module execute 
   # (
-     parameter N_param = 32   ) (
+     parameter N_param = 32,
+	 parameter debug_param = 1   ) (
 				 input wire	    i_clk,
 				 input wire	    i_en,
 				 // input  wire [N_param-1:0]  instruction,
@@ -462,13 +463,9 @@ module execute
 
 
    //MARKER AUTOMATED HERE START
-
-
-   wire debug_i;
-   assign debug_i = 1;
+   if (debug_param == 1) begin 
    always @(negedge i_clk) begin 
       #11
-	if (debug_i) begin
 	   $write("\nEXEC      PC: %h: I:{%h}    ",pc_i,  instruction   );
 
 	   case(Single_Instruction_i)
@@ -634,10 +631,8 @@ module execute
 	   endcase
 	   $write("rd_i_a %4d rs1_a %4d rs2_a %4d  rs1_d %8h rs2_d %8h  result {%4H}",rd_i,rs1_i,rs2_i,operand1_pi,operand2_pi,result);  $write(" imm_i %h", $signed(imm_i));
 	end
-
-   end
    //MARKER AUTOMATED HERE END
-
+end
 
 
 endmodule
