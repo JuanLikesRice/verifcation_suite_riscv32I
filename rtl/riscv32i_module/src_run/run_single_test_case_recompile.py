@@ -164,16 +164,6 @@ def change_dir_and_run(
         print(f"Changing directory to: {target_dir}")
         os.chdir(target_dir)
 
-        # Backup and swap files
-        # if files_to_swap:
-        #     for src, dest in files_to_swap:
-        #         if os.path.exists(dest):
-        #             backup_name = dest + backup_suffix
-        #             print(f"Backing up {dest} to {backup_name}")
-        #             shutil.move(dest, backup_name)
-        #         print(f"Copying {src} to {dest}")
-        #         shutil.copy(src, dest)
-
         # Run the shell script
         print(f"Running script: {shell_script}")
         subprocess.run(["bash", shell_script], check=True)
@@ -221,7 +211,7 @@ def shift_hex_file(src_path, dst_path, offset=0x2000, allow_negative=False, only
 
 
 
-def main():
+def main(vlt=False,recompile_on=True):
     rtl_directory = os.getcwd()
     assembly_code_dir = os.path.join(rtl_directory, "assembly_code")
     test_case_number_file = os.path.join(assembly_code_dir, "test_case_number.txt")
@@ -249,9 +239,12 @@ def main():
     copy_directory(test_case_dir, assembly_code_dir)
     write_test_case_number(test_case_number_file, test_case_number)
 
-    change_dir_and_run( 
-    target_dir="../../", 
-    shell_script="update_directory_automatically.sh")
+    if recompile_on:
+        change_dir_and_run( 
+        target_dir="../../", 
+        shell_script="update_directory_automatically.sh")
+
+
     copy_directory(assembly_code_dir, test_case_dir)
 
 
@@ -271,13 +264,18 @@ def main():
     # Modify riscv32iTB.v with the new entry point address.
     riscv_tb_path = os.path.join(rtl_directory, "riscv32iTB.v")
     modify_riscv_tb(riscv_tb_path, entry_point_hex)
-
-    # Run the "./run" command in the RTL directory.
-    start_time = time.time()
-    run_command("./run", rtl_directory)
-    end_time = time.time()
-    print(f"run_command('./run') took {end_time - start_time:.2f} seconds.")
-
+    if vlt:
+        # run_command = "./run_vlt"
+        start_time = time.time()
+        run_command("./run_vlt", rtl_directory)
+        end_time = time.time()
+        print(f"run_command('./run') took {end_time - start_time:.2f} seconds.")
+    else:
+        start_time = time.time()
+        run_command("./run", rtl_directory)
+        end_time = time.time()
+        print(f"run_command('./run') took {end_time - start_time:.2f} seconds.")
+ 
     # Parse sim.log for the success message.
     sim_log_path = os.path.join(rtl_directory, "sim.log")
 
@@ -295,4 +293,6 @@ def main():
     check_sim_log(sim_log_path, test_case_number)
 
 if __name__ == "__main__":
-    main()
+    vlt = True
+    recompile_on=False
+    main(vlt=vlt,recompile_on=recompile_on)

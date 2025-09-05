@@ -7,6 +7,7 @@ import sys
 import shutil
 import argparse
 import re
+import time
 
 def clear_output_files(test_case):
     """
@@ -107,8 +108,12 @@ def main():
         test_cases = [str(i) for i in range(num_test_cases+1)]
     
     # Run each test case.
+    start_time = time.time()
     for tc in test_cases:
         run_test_case(tc,recompile=recompile)
+    end_time = time.time()
+    print(f"\n\n ---ALL tests took {end_time - start_time:.2f} seconds.--- \n\n")
+
     
     print("\n--- Test Results Summary ---")
     # After running all test cases, check sim.log for each.

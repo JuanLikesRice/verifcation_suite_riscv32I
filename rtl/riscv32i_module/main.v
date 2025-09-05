@@ -99,7 +99,7 @@ module main_fsm #(
    always @(posedge clk) begin
       if (reset) begin 
          for (o=0; o < 4096; o=o+1) begin
-            CSR_FILE[o] <= 32'b0;
+            CSR_FILE[o] = 32'b0;
          end
       end else begin 
          if (write_csr) begin

@@ -1,4 +1,4 @@
-.PHONY: all sim synth clean
+.PHONY: all sim synth clean  sim_vlt build_vlt lint_vlt vlt_clean
 
 SHELL := /bin/bash -o pipefail
 
@@ -43,4 +43,40 @@ clean:
 	$(RM) riscv32i.netlist.v synth.log
 	
 	
-# $(RM) -r XilinxUnisimLibrary
+# # $(RM) -r XilinxUnisimLibrary
+
+
+TB ?= riscv32iTB.v
+
+VERILATOR ?= verilator
+VLT_FLAGS  = -Wall --sv --binary --timing --trace-fst -j 0
+VLT_FLAGS += -Wno-fatal              # don't exit on warnings
+# Optional targeted mutes as you fix code:
+# VLT_FLAGS += -Wno-ASSIGNIN -Wno-UNOPTFLAT -Wno-UNUSED -Wno-UNDRIVEN -Wno-WIDTH
+
+RTL := main.v pipe.v ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v
+
+sim_vlt: build_vlt
+	./obj_dir/Vriscv32iTB +VCDFILE=sim.fst +VCDLEVEL=5 &> sim.log
+
+build_vlt: riscv32iTB.v ${DUT} $(RTL)
+	$(VERILATOR) $(VLT_FLAGS) -top-module riscv32iTB $^
+
+lint_vlt:
+	$(VERILATOR) --lint-only -Wall --sv $(TB) ${DUT} $(RTL) 2> lint_vlt.log
+
+vlt_clean:
+	$(RM) -r obj_dir sim_vlt.log sim.vcd
+
+
+# VERILATOR ?= verilator
+# RTL := $(DUT) main.v pipe.v ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v
+# VLT_FLAGS = -Wall --sv --binary --timing --trace-vcd -j 0 -Wno-fatal
+
+# sim_vlt: build_vlt
+# 	./obj_dir/Vriscv32iTB +VCDFILE=sim.vcd +VCDLEVEL=5 &> sim.log
+
+# build_vlt: $(TB) $(RTL)
+# 	$(VERILATOR) $(VLT_FLAGS) -top-module riscv32iTB $^
+
+

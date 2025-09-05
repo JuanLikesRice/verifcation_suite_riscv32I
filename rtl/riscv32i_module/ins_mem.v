@@ -188,7 +188,7 @@ module ins_mem (
 
 
         S_ABORT_RVALID: begin
-           instruction_o               <= 32'h00000013; // Cant service new request, so you dont care about the instruction
+           instruction_o               = 32'h00000013; // Cant service new request, so you dont care about the instruction
            if (data_rvalid_i && ~stall_i_EXEC) begin // request satisfied but thrown away can recive new request from PC
               if (pc_i_valid) begin // begin new request // Fetch  is active // DECODE is not Active
                  data_req_o         = 1'b1;        
@@ -233,7 +233,7 @@ module ins_mem (
 
       if (reset) begin
          current_state        <= S_IDLE;
-         instruction_o        <= 32'h00000013;
+         instruction_o        = 32'h00000013;
          instruction_o_backup <= 32'h00000013;
          // prev_cycle_stall_i   <= 1'b0; 
          PC_requested         <= 32'h0;

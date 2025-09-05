@@ -1,8 +1,7 @@
-VCD info: dumpfile sim.vcd opened for output.
                    0: starting stream stimulus
                    0: TEST PASSED
 
-Cycle_count   100,
+Cycle_count 15422,
 
 
 
@@ -22,5 +21,5 @@ TEST FINISHED by success write :deadbeef
 
 
 
-             1265000: STOP_sim signal received
-riscv32iTB.v:198: $finish called at 1265000 (1ps)
+           154475000: STOP_sim signal received
+- riscv32iTB.v:198: Verilog $finish

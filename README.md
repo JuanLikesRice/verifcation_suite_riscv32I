@@ -15,6 +15,16 @@ Make
 gtkwave
 iverilog
 
+what to install for verilator:
+sudo apt update
+sudo apt install -y git make autoconf g++ flex bison \
+                    perl python3 zlib1g zlib1g-dev libfl-dev \
+                    help2man gtkwave
+sudo apt install verilator
+
+
+
+
 
 #### How to run rtl simulation
 Make sure you have installed tools from above

@@ -545,7 +545,7 @@ end
 
 
 		    // Memory interface signals
-		    .data_clk             (Imem_clk),
+		   //  .data_clk             (Imem_clk),
 		    .data_req_o_w         (ins_data_req_o),
 		    .data_addr_o_w        (ins_data_addr_o),
 		    .data_we_o_w          (ins_data_we_o),
