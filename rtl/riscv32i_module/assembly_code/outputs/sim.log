@@ -1,9 +1,8 @@
-ERROR: riscv32iTB.v:565: $readmemh(program.hex): address (0x2000) is out of range [0x0:0x1fff]
 VCD info: dumpfile sim.vcd opened for output.
                    0: starting stream stimulus
                    0: TEST PASSED
 
-Cycle_count 15422,
+Cycle_count   100,
 
 
 
@@ -23,5 +22,5 @@ TEST FINISHED by success write :deadbeef
 
 
 
-           154485000: STOP_sim signal received
-riscv32iTB.v:198: $finish called at 154485000 (1ps)
+             1265000: STOP_sim signal received
+riscv32iTB.v:198: $finish called at 1265000 (1ps)

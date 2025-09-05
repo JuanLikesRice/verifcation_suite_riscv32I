@@ -5,11 +5,11 @@ module riscv32iTB
     parameter N_param = 32, 
     parameter memory_offset_param = 32'h00000000,
     parameter success_code = 32'hDEADBEEF,
-    parameter cycles_timeout      = 20000,
+    parameter cycles_timeout      = 16000,
     parameter debug_param               = 0,
     parameter dispatch_print            = 0,
     // parameter cycles_timeout = 700,
-    parameter initial_pc    = 32'h00002400
+    parameter initial_pc    = 32'h00002178
     )
    (
 
@@ -562,7 +562,7 @@ module bram_ins #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 )
       end
 
       // $readmemh("sanity.hex", memory);  // Load the program into memory
-      $readmemh("program.hex", DMEM);  
+      // $readmemh("program.hex", DMEM);  
       $readmemh("out.hex", DMEM);  
    end
 

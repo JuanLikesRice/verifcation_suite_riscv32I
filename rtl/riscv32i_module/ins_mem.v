@@ -2,8 +2,11 @@ module ins_mem (
 		input wire	                  clk,
 		input wire	                  reset,
 
+      // From PC  
 		input wire [`size_X_LEN-1:0]  pc_i,
 		input wire	                  pc_i_valid, // request valid from PC
+      // to PC
+
 		output wire	                  STALL_IF_not_ready_w, // stall signal for IF stage (PC module is stalled)
 		output wire	                  STALL_ID_not_ready_w, // stall signal for DECO stage (Decode module is stalled, exec doesnt get new value)
 		output wire [`size_X_LEN-1:0] instruction_o_w,

@@ -437,11 +437,14 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    assign stage_DECO_done   = ~STALL_ID_not_ready_w;
    assign stage_EXEC_ready  = stage2_EXEC_valid; // 
    assign stage1_DECO_valid = stage_EXEC_ready & stage_DECO_done;
+
    assign stage_IF_done     = ~STALL_IF_not_ready_w;
    assign stage_DECO_ready  = stage1_DECO_valid; // 
    assign stage0_IF_valid   = stage_DECO_ready & stage_IF_done;
-   //for PC counter 
    assign stage_IF_ready   = stage0_IF_valid; // 
+
+   //for PC counter 
+
    assign instruction_stage_0          =  delete_reg1_reg2_reg ? 32'h00000013 : instruction;
    assign     exec_stall = ~stage_EXEC_ready;
    assign       pc_i_valid = 1'b1;
@@ -518,14 +521,12 @@ end
            .pc_valid(pc_valid),
 
            .nextPC_o(                                nextPC_o),
-           .change_PC_condition_for_jump_or_branch(  change_PC_condition_for_jump_or_branch),
+           .PC_jump_or_branch(  change_PC_condition_for_jump_or_branch),
            .interrupt_vector_i(                      interrupt_vector_i),
            .irq_prep(                                irq_prep),
            .mret_inst(                               mret_inst),
            .mepc(                                    mepc)
 	   );
-
-
 
    ins_mem ins_mem (
 		    .clk                 (clk),
