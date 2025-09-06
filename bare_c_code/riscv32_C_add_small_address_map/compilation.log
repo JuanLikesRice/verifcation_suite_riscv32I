@@ -9,16 +9,16 @@ ELF Header:
   Type:                              EXEC (Executable file)
   Machine:                           RISC-V
   Version:                           0x1
-  Entry point address:               0x2400
+  Entry point address:               0x2178
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          7704 (bytes into file)
+  Start of section headers:          6992 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
   Number of program headers:         4
   Size of section headers:           40 (bytes)
-  Number of section headers:         17
-  Section header string table index: 16
+  Number of section headers:         11
+  Section header string table index: 10
 Complilation run, python next step
 /mnt/c/Users/Turog/Documents/GitHub/verifcation_suite_riscv32I/bare_c_code/riscv32_C_add_small_address_map
 PC: 00000000, Instruction: xxxxxxxx, word in processor 00000000

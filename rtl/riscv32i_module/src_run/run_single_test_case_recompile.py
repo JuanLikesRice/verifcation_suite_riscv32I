@@ -293,6 +293,12 @@ def main(vlt=False,recompile_on=True):
     check_sim_log(sim_log_path, test_case_number)
 
 if __name__ == "__main__":
-    vlt = True
+    # vlt = True
+    vlt = False
+    # recompile_on=True
     recompile_on=False
+    mainstart_time = time.time()
     main(vlt=vlt,recompile_on=recompile_on)
+    mainend_time = time.time()
+    print(f"TESTCASE SCRIPT took {mainend_time - mainstart_time:.2f} seconds.")
+

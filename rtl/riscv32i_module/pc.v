@@ -51,12 +51,14 @@ module pc  #(
 	 		if (state_r) begin
 	 		   PC 		<= initial_pc_i; // start of new code
 	 		   state_r <= 1'b0;
-	 		end else if (pc_valid_next)  begin
-     		       PC <= nextPC;
-	 		   		pc_valid_r <= 1'b1;
-	 		end else begin
-	    	pc_valid_r <= 1'b0;
-	 		end
+	 		end 
+			else if (pc_valid_next)  begin
+     		    PC <= nextPC;
+	 		   	pc_valid_r <= 1'b1;
+	 		end 
+				else begin
+				pc_valid_r <= 1'b0;
+				end
     	end
 	end
 

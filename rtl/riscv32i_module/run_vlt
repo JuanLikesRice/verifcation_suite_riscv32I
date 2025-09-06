@@ -1,1 +1,2 @@
+rm sim.log
 make sim_vlt

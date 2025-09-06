@@ -7,13 +7,14 @@ module ins_mem (
 		input wire	                  pc_i_valid, // request valid from PC
       // to PC
 
-		output wire	                  STALL_IF_not_ready_w, // stall signal for IF stage (PC module is stalled)
-		output wire	                  STALL_ID_not_ready_w, // stall signal for DECO stage (Decode module is stalled, exec doesnt get new value)
-		output wire [`size_X_LEN-1:0] instruction_o_w,
-		input wire	                  stall_i_EXEC,  
-		input wire	                  abort_rvalid,
-		input wire	                  stop_request_overide,
-		output wire	                  reset_able,
+		output wire	                  STALL_IF_not_ready_w,   // stall signal for IF stage (PC module is stalled)
+		output wire	                  STALL_ID_not_ready_w,   // stall signal for DECO stage (Decode module is stalled, exec doesnt get new value)
+		
+      output wire [`size_X_LEN-1:0] instruction_o_w,        // final instruction
+		input wire	                  stall_in,               // stall from Decond 
+		input wire	                  abort_rvalid,           // Abort from FSM reset, Jump, valid etc
+		input wire	                  stop_request_overide,   
+		output wire	                  reset_able,             
 
 		// Memory interface
 		output wire	                  data_clk,
@@ -41,14 +42,12 @@ module ins_mem (
 				               S_ABORT_RVALID = 2'b11; // waiting for request to be satsisfied which is thrown away since aborted,
    // if satsitisfied can accept new request from PC
 
-   reg [1:0]			   current_state, next_state;
+   reg [1:0]			               current_state, next_state;
    reg [`size_X_LEN-1:0]			   pc_decode;
    reg [`size_X_LEN-1:0]			   current_PC_wating_rvalid, instruction_o_backup;
    reg [`size_X_LEN-1:0]			   PC_requested;
-   wire				   backup_used;
-   wire				   new_request_from_PC_accept;
-
-
+   wire				                  backup_used;
+   wire				                  new_request_from_PC_accept;
 
    assign data_we_o_w          =   `size_X_LEN'b0;     // We are not writing data, so this is always 0
    assign data_be_o_w          =   4'b1111;            // We always want the entire word;
@@ -57,14 +56,12 @@ module ins_mem (
    assign data_addr_o_w        =   data_addr_o;
 
    assign STALL_IF_not_ready_w = STALL_IF_not_ready;
-   // assign STALL_IF_not_ready_w = STALL_ID_not_ready;
    
    assign STALL_ID_not_ready_w = STALL_ID_not_ready;
    assign instruction_o_w      = saved_instruction_from_stall ? instruction_o_backup : instruction_o; // Default instruction if reset is high
-   assign backup_used          = ~stall_i_EXEC && saved_instruction_from_stall;
-   assign new_request_from_PC_accept   = pc_i_valid && (~abort_rvalid) && ~(stall_i_EXEC) && ~stall_i_EXEC && ~stop_request_overide; 
+   assign backup_used          = ~stall_in && saved_instruction_from_stall;
+   assign new_request_from_PC_accept   = pc_i_valid && (~abort_rvalid) && ~(stall_in);
    assign reset_able                   = (current_state == S_IDLE) && ~new_request_from_PC_accept; // Reset is not able if stop_request_overide is high
-
 
       // Outputs changed in FSM
       // instruction_o 
@@ -103,7 +100,7 @@ module ins_mem (
         S_WAIT_GNT: begin // request is being  // Fetch  is active, its waiting for gnt // DECODE is not Active
            instruction_o   = 32'h00000013;
            if (~abort_rvalid) begin // accpet another request after granting
-              if (~stall_i_EXEC) begin 
+              if (~stall_in) begin 
                  data_req_o                   = 1'b1;
                  data_addr_o                  = pc_i; // PC_requested is the last requested address
                  if (data_gnt_i) begin 
@@ -136,7 +133,7 @@ module ins_mem (
               if (data_rvalid_i) begin
                  instruction_o = data_rdata_i;
 
-                 if (~stall_i_EXEC) begin
+                 if (~stall_in) begin
                     if (pc_i_valid) begin // accpet another request after granting
                        data_req_o         = 1'b1;        
                        data_addr_o        = pc_i;        
@@ -189,7 +186,7 @@ module ins_mem (
 
         S_ABORT_RVALID: begin
            instruction_o               = 32'h00000013; // Cant service new request, so you dont care about the instruction
-           if (data_rvalid_i && ~stall_i_EXEC) begin // request satisfied but thrown away can recive new request from PC
+           if (data_rvalid_i && ~stall_in) begin // request satisfied but thrown away can recive new request from PC
               if (pc_i_valid) begin // begin new request // Fetch  is active // DECODE is not Active
                  data_req_o         = 1'b1;        
                  data_addr_o        = pc_i;
@@ -243,7 +240,7 @@ module ins_mem (
          current_state <= next_state; // Update the state
          case(current_state)
            S_WAIT_RVALID: begin
-              if (pc_i_valid && stall_i_EXEC && ~abort_rvalid) begin 
+              if (pc_i_valid && stall_in && ~abort_rvalid) begin 
                  instruction_o_backup         <= data_rdata_i; // Store the requested PC   
                  saved_instruction_from_stall <= 1'b1; // Store the requested PC   
               end 

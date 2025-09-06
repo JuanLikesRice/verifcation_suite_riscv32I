@@ -428,6 +428,8 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    assign data_rdata_i      = in_range_peripheral  ? Pmem_data_rdata_i             : Dmem_data_rdata_i     ;
    assign data_rvalid_i     = in_range_peripheral  ? Pmem_data_rvalid_i            : Dmem_data_rvalid_i    ;
    assign data_gnt_i        = in_range_peripheral  ? Pmem_data_gnt_i               : Dmem_data_gnt_i       ;
+
+   
    assign stage_MEM_done    = ~stall_mem_not_avalible;
    assign stage_WB_ready    = 1'b1;
    assign stage3_MEM_valid  = stage_WB_ready & stage_MEM_done;
@@ -448,7 +450,6 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    assign instruction_stage_0          =  delete_reg1_reg2_reg ? 32'h00000013 : instruction;
    assign     exec_stall = ~stage_EXEC_ready;
    assign       pc_i_valid = 1'b1;
-   assign stall_i = ~stage0_IF_valid;
 
 //MARKER AUTOMATED HERE START
 
@@ -536,10 +537,9 @@ end
 		    .STALL_IF_not_ready_w(STALL_IF_not_ready_w),
 		    .STALL_ID_not_ready_w(STALL_ID_not_ready_w),
 		    .instruction_o_w     (instruction),
-		    .stall_i_EXEC        (exec_stall),
+		    .stall_in             (exec_stall),
 		    .abort_rvalid(        delete_reg1_reg2),
-
-		    .stop_request_overide(      stop_request_overide_insmem),
+		   //  .stop_request_overide(      stop_request_overide_insmem),
 		    .reset_able(                reset_able_insmem),
 
 
