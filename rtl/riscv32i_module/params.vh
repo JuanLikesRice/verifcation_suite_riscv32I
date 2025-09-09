@@ -31,6 +31,7 @@
 `define size_data_mem_loaded    `size_X_LEN      // 383:352  
 `define size_csr_reg            12              // 395:384 //[11:0]
 `define size_csr_reg_val        `size_X_LEN      // 427:396 //[31:0]
+`define size_rst_bit            1      // 427:396 //[31:0]
 
 
 `define PC_reg_end          `size_PC_reg
@@ -94,6 +95,10 @@
 `define csr_reg                  (`csr_reg_end-1):`data_mem_loaded_end
 `define csr_reg_val_end          (`size_csr_reg_val + `csr_reg_end)
 `define csr_reg_val              (`csr_reg_val_end-1):`csr_reg_end
+
+`define rst_bit_end          (`size_rst_bit+`csr_reg_val_end)
+`define rst_bit               `rst_bit_end-1
+// `define rst_bit              (`rst_bit_end-1):`csr_reg_val_end
 
 // `define immediate          223:192 //[31:0]
 // `define alu_res2           255:224 //[31:0]

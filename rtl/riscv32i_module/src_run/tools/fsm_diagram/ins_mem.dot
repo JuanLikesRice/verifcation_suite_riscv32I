@@ -10,39 +10,28 @@ digraph FSM {
   "S_WAIT_RVALID";
   subgraph cluster_1 {
     label="current_state"; labelloc="b"; fontsize=12; style=dashed; color=gray;
-    "S_IDLE" -> "S_WAIT_RVALID" [label="new_request_from_PC_accept,
+    "S_IDLE" -> "S_WAIT_RVALID" [label="accept_PC_req,
 data_gnt_i"];
     "S_IDLE" -> "S_WAIT_GNT" [label="data_gnt_i"];
     "S_IDLE" -> "S_IDLE" [label="data_gnt_i"];
+    "S_WAIT_GNT" -> "S_IDLE" [label="abort_rvalid"];
     "S_WAIT_GNT" -> "S_WAIT_RVALID" [label="abort_rvalid,
-stall_i_EXEC,
-data_gnt_i"];
-    "S_WAIT_GNT" -> "S_WAIT_GNT" [label="abort_rvalid,
 data_gnt_i"];
     "S_WAIT_GNT" -> "S_WAIT_GNT" [label="data_gnt_i"];
-    "S_WAIT_GNT" -> "S_IDLE" [label="data_gnt_i"];
-    "S_WAIT_RVALID" -> "S_WAIT_RVALID" [label="abort_rvalid,
-data_rvalid_i,
-stall_i_EXEC,
-pc_i_valid,
+    "S_WAIT_RVALID" -> "S_WAIT_RVALID" [label="data_rvalid_i,
+accept_PC_req,
+STALL_DECODE,
 data_gnt_i"];
-    "S_WAIT_RVALID" -> "S_WAIT_GNT" [label="abort_rvalid,
-data_rvalid_i,
-stall_i_EXEC,
-data_gnt_i"];
-    "S_WAIT_RVALID" -> "S_IDLE" [label="abort_rvalid,
+    "S_WAIT_RVALID" -> "S_WAIT_GNT" [label="data_rvalid_i,
 data_gnt_i"];
     "S_WAIT_RVALID" -> "S_IDLE" [label="data_gnt_i"];
-    "S_WAIT_RVALID" -> "S_WAIT_RVALID" [label="data_gnt_i"];
-    "S_WAIT_RVALID" -> "S_IDLE" [label="data_gnt_i,
-data_rvalid_i"];
-    "S_WAIT_RVALID" -> "S_ABORT_RVALID" [label="data_rvalid_i"];
+    "S_WAIT_RVALID" -> "S_ABORT_RVALID" [label="data_gnt_i,
+abort_rvalid"];
+    "S_WAIT_RVALID" -> "S_WAIT_RVALID" [label="abort_rvalid"];
     "S_ABORT_RVALID" -> "S_WAIT_RVALID" [label="data_rvalid_i,
-stall_i_EXEC,
 pc_i_valid,
 data_gnt_i"];
     "S_ABORT_RVALID" -> "S_WAIT_GNT" [label="data_rvalid_i,
-stall_i_EXEC,
 data_gnt_i"];
     "S_ABORT_RVALID" -> "S_IDLE" [label="data_gnt_i"];
     "S_ABORT_RVALID" -> "S_ABORT_RVALID" [label="data_gnt_i"];

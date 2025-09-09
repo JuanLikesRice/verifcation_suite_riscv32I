@@ -56,7 +56,7 @@ module main_fsm #(
 
    integer                          j;  integer p;  integer i;  integer o;
 
-   assign reset = rst_force ||  (state  == FULL_FLUSH_RESET);
+   assign reset = rst_force ||  (current_state  == FULL_FLUSH_RESET);
 
    initial begin 
       for (p=0; p <4096; p=p+1) begin
@@ -86,7 +86,7 @@ module main_fsm #(
 
 
    always @( posedge clk) begin
-      if ( (state  == PARTIAL_IRQ) && ready_for_irq_handler) begin 
+      if ( (current_state  == PARTIAL_IRQ) && ready_for_irq_handler) begin 
          CSR_FILE[12'h341] <= saved_instruction_mepc; // mepc
          // CSR_FILE[12'h342] <= 32'b0;     // Clear mcause
          // CSR_FILE[12'h343] <= saved_instruction_mepc;     // Clear mtval
@@ -110,20 +110,20 @@ module main_fsm #(
 
 
 
-   reg [2:0] state, next_state;    // Internal state register
-   assign program_finished = (state == DONE);
+   reg [2:0] current_state, next_state;    // Internal current_state register
+   assign program_finished = (current_state == DONE);
    
-   // State register
+   // current_state register
    always @(posedge clk) begin
       if (rst_force) begin 
-         state <= IDLE;
+         current_state <= IDLE;
       end else begin 
-         state <= next_state;
+         current_state <= next_state;
       end
    end
 
    // always @(posedge clk) begin
-   //     if ((state == IDLE)&&(start_program)) begin 
+   //     if ((current_state == IDLE)&&(start_program)) begin 
    //         initial_pc <= initial_pc_i;
    //     end 
    // end
@@ -150,19 +150,20 @@ module main_fsm #(
    assign reset_request    = control_signal[1];
    assign rst_force        = control_signal[2];    
 
-   // assign enable_design    = (state  != IDLE)       && (state  != PARTIAL_IRQ);
-   assign enable_design    = (state  != IDLE);
-   assign irq_prep         = (state  == PARTIAL_IRQ);
-   // assign enable_design = (state != IDLE);
+   // assign enable_design    = (current_state  != IDLE)       && (current_state  != PARTIAL_IRQ);
+   assign enable_design    = (current_state  != IDLE);
+   assign irq_prep         = (current_state  == PARTIAL_IRQ);
+   // assign enable_design = (current_state != IDLE);
 
    always @(*) begin
-      next_state = state;
-      case (state)
+      next_state = current_state;
+      case (current_state)
         IDLE: begin
            if (start_program) begin         
               next_state = PROGRAM;
            end 
         end
+        
         PROGRAM: begin
            if (reset_request) begin 
               next_state = FULL_FLUSH_RESET;

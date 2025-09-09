@@ -205,6 +205,30 @@ module riscv32i
 				      );
 
 
+  ri5cy_lsu_mem_bfm #(
+    .MEM_WORDS      (MEM_WORDS),
+    .GRANT_MIN_CYC  (1),   // dummy; overridden below
+    .GRANT_MAX_CYC  (1),
+    .RESP_MIN_CYC   (1),
+    .RESP_MAX_CYC   (1),
+    .OUTSTANDING_MAX(OUTSTANDING_MAX),
+    .INIT_HEX       (INIT_HEX)
+  ) u_bfm (
+    .clk            (clk),
+    .rst_n          (~reset),
+   //  .seed_valid_i   (seed_valid),
+   //  .seed_i         (seed_value),
+    .data_req_i     (Dmem_data_req_o),
+    .data_addr_i    (Dmem_data_addr_o),
+    .data_we_i      (Dmem_data_we_o),
+    .data_be_i      (Dmem_data_be_o),
+    .data_wdata_i   (Dmem_data_wdata_o),
+
+    .data_gnt_o     (Dmem_data_gnt_i),
+    .data_rvalid_o  (Dmem_data_rvalid_i),
+    .data_rdata_o   (Dmem_data_rdata_i)
+  );
+
 
    data_mem_bram_wrapper  data_mem_bram_wrapper (
 						 .clk               (    clk),
@@ -355,12 +379,12 @@ wire [4:0] rd_o, rs1_o, rs2_o;
 wire [ 4:0] rd_stage1, rd_stage2, rd_stage3, rs1_stage1, rs1_stage2, rs2_stage1, rs2_stage2;
 wire [6:0] fun7_o, INST_typ_o, opcode_o;
 wire [11:0] csr_o, csr_stage1, csr_stage2, csr_stage3;
-wire [31:0] alu_result_1, alu_result_1_stage2, alu_result_1_stage3, alu_result_2, alu_result_2_stage2, alu_result_2_stage3, csr_into_exec, csr_regfile_o, csr_val_stage1, csr_val_stage2, csr_val_stage3, csrData_pi, data_addr_o, data_rdata_i, data_wdata_o, final_value, imm_o, imm_stage1, imm_stage2, imm_stage3, instruction_stage_0, instruction_stage_1, instruction_stage_2, instruction_stage_3, interrupt_vector_i, irq_addr_i, loaded_data, loaded_data_stage3, mepc, nextPC_o, operand1_into_exec, operand1_po, operand1_stage1, operand1_stage2, operand1_stage3, operand2_into_exec, operand2_po, operand2_stage1, operand2_stage2, operand2_stage3, pc_i, pc_o, pc_stage_0, pc_stage_1, pc_stage_2, pc_stage_3, rd_result_stage2, writeData_pi;
+wire [31:0] alu_result_1, alu_result_1_stage2, alu_result_1_stage3, alu_result_2, alu_result_2_stage2, alu_result_2_stage3, csr_into_exec, csr_regfile_o, csr_val_stage1, csr_val_stage2, csr_val_stage3, csrData_pi, data_addr_o, data_rdata_i, data_wdata_o, final_value, imm_o, imm_stage1, imm_stage2, imm_stage3, instruction_stage_0, instruction_stage_1, instruction_stage_2, instruction_stage_3, interrupt_vector_i, irq_addr_i, loaded_data, loaded_data_stage3, mepc, nextPC_o, operand1_into_exec, operand1_po, operand1_stage1, operand1_stage2, operand1_stage3, operand2_into_exec, operand2_po, operand2_stage1, operand2_stage2, operand2_stage3, pc_i,pc_o, pc_stage_0, pc_stage_1, pc_stage_2, pc_stage_3, rd_result_stage2, writeData_pi;
 wire [63:0] pipeReg0_wire, Single_Instruction_o, Single_Instruction_stage1, Single_Instruction_stage2, Single_Instruction_stage3;
 reg  [511:0] pipeReg1, pipeReg2, pipeReg3;
 wire [511:0] pipeReg1_wire, pipeReg2_wire, pipeReg3_wire;
 reg delete_reg1_reg2_reg, halt_i;
-wire all_ready, branch_inst_wire, branch_inst_wire_stage2, change_PC_condition_for_jump_or_branch, data_clk, data_gnt_i, data_req_o, data_req_o_intermediate, data_rvalid_i, data_we_o, delete_reg1_reg2, enable_design, end_condition, exec_stall, i_en, in_range_peripheral, initate_irq, irq_grant_o, irq_prep, irq_req_i, irq_service_done, jump_inst_wire, jump_inst_wire_stage2, load_into_reg, load_into_reg_stage3, mret_inst, override_all_stop, pc_i_valid, pc_valid, pulsed_irq_prep, ready_for_irq_handler, reset, stall_i, STALL_ID_not_ready_w, STALL_IF_not_ready_w, stall_mem_not_avalible, we_pi, write_csr_wire, write_csr_wire_stage2, write_csr_wire_stage3, write_reg_file_wire, write_reg_file_wire_stage2, write_reg_file_wire_stage3, write_reg_stage3;
+wire all_ready, branch_inst_wire, branch_inst_wire_stage2, change_PC_condition_for_jump_or_branch, data_clk, data_gnt_i, data_req_o, data_req_o_intermediate, data_rvalid_i, data_we_o, delete_reg1_reg2, enable_design, end_condition, exec_stall, i_en, in_range_peripheral, initate_irq, irq_grant_o, irq_prep, irq_req_i, irq_service_done, jump_inst_wire, jump_inst_wire_stage2, load_into_reg, load_into_reg_stage3, mret_inst, override_all_stop, pc_i_valid, pc_valid, pulsed_irq_prep, ready_for_irq_handler, reset, stall_i, STALL_DECODE, STALL_FETCH, stall_MEMSTAGE, we_pi, write_csr_wire, write_csr_wire_stage2, write_csr_wire_stage3, write_reg_file_wire, write_reg_file_wire_stage2, write_reg_file_wire_stage3, write_reg_stage3;
 wire [N_param-1:0] instruction;
 wire [`pipe_len-1:0] u_pipeReg1_res, u_pipeReg2_res, u_pipeReg3_res;
 wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
@@ -380,17 +404,17 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    wire	       stage_IF_ready;   // IF  ready for PC register
    wire	       stop_request_overide_datamem, reset_able_datamem;  
    wire	       stop_request_overide_insmem, reset_able_insmem;  
-
-   initial begin 
-      halt_i          <= 0;
-   end
-
+ 
+   wire stage0_reg_empty, stage1_reg_empty, stage2_reg_empty, stage3_reg_empty;
+   wire stage0_en,stage1_en,stage2_en,stage3_en;
+   wire stage0_flush,stage1_flush,stage2_flush,stage3_flush;
+   wire insM_ivalid;
 
    assign  initate_irq             = 1'b0;  
    assign  end_condition           = (final_value == success_code);  
    assign  all_ready               = 1'b0;  
    // assign  ready_for_irq_handler   = 1'b1;  //reset_able_datamem & reset_able_datamem;
-     assign  ready_for_irq_handler   = reset_able_datamem & reset_able_datamem;
+   assign  ready_for_irq_handler   = reset_able_datamem & reset_able_datamem;
 
    assign  irq_service_done        = 1'b0;  
    assign  irq_req_i               = 1'b0;  
@@ -429,42 +453,33 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    assign data_rvalid_i     = in_range_peripheral  ? Pmem_data_rvalid_i            : Dmem_data_rvalid_i    ;
    assign data_gnt_i        = in_range_peripheral  ? Pmem_data_gnt_i               : Dmem_data_gnt_i       ;
 
+         //   .en                   ( ( stage3_MEM_valid && enable_design)),
+   assign stage3_en           =  stage3_MEM_valid;
+   assign stage3_flush        =   1'b0 ;
    
-   assign stage_MEM_done    = ~stall_mem_not_avalible;
-   assign stage_WB_ready    = 1'b1;
-   assign stage3_MEM_valid  = stage_WB_ready & stage_MEM_done;
-   assign stage_EXEC_done   = 1'b1;
-   assign stage_MEM_ready   = stage3_MEM_valid; // 
-   assign stage2_EXEC_valid = stage_MEM_ready & stage_EXEC_done;
-   assign stage_DECO_done   = ~STALL_ID_not_ready_w;
-   assign stage_EXEC_ready  = stage2_EXEC_valid; // 
-   assign stage1_DECO_valid = stage_EXEC_ready & stage_DECO_done;
+   assign stage_MEM_done    = ~stall_MEMSTAGE;
+   assign stage3_MEM_valid  = stage_MEM_done;
+   assign stage_MEM_ready   = stage3_MEM_valid || stage2_reg_empty; // 
 
-   assign stage_IF_done     = ~STALL_IF_not_ready_w;
-   assign stage_DECO_ready  = stage1_DECO_valid; // 
-   assign stage0_IF_valid   = stage_DECO_ready & stage_IF_done;
-   assign stage_IF_ready   = stage0_IF_valid; // 
+   assign stage2_en           =  ~stage1_reg_empty && stage_MEM_ready;
+   assign stage2_flush        =  delete_reg1_reg2 || (stage1_reg_empty && stage_MEM_ready) ;
+   
+   assign stage_EXEC_done   = 1'b1;
+   assign stage2_EXEC_valid = (stage_MEM_ready && stage_EXEC_done);
+   assign stage_EXEC_ready  = stage2_EXEC_valid || stage1_reg_empty; // 
+   
+   assign stage1_en           =  ~stage0_reg_empty && stage_EXEC_ready; // no decode valid, its always valid
+   assign stage1_flush        =  delete_reg1_reg2 || (stage0_reg_empty && stage_EXEC_ready) ;
+
+   assign STALL_DECODE        = 1'b0;
+   assign stage_DECO_ready    = (~STALL_DECODE && stage_EXEC_ready) || stage0_reg_empty; // 
+
+   assign stage0_en           =  (insM_ivalid && stage_DECO_ready )&& enable_design;
+   assign stage0_flush        =  delete_reg1_reg2 || (~insM_ivalid && stage_DECO_ready) ;
 
    //for PC counter 
+   assign stage_IF_ready      = ~STALL_FETCH; // ready for PC reg to update
 
-   assign instruction_stage_0          =  delete_reg1_reg2_reg ? 32'h00000013 : instruction;
-   assign     exec_stall = ~stage_EXEC_ready;
-   assign       pc_i_valid = 1'b1;
-
-//MARKER AUTOMATED HERE START
-
-   wire [63:0] pipeReg0_wire_debug;
-   assign pipeReg0_wire_debug[31:0] = pc_stage_0;
-   assign pipeReg0_wire_debug[`instruct] = instruction_stage_0;
-   // assign pipeReg0_wire_debug[511:64] = pipeReg1[511:64];
-if (debug_param == 1) begin 
-   debug # (.Param_delay(5),.regCount(0), .pc_en(1)
-            ) debug_0 (.i_clk(clk),.pipeReg({448'b0,pipeReg0_wire_debug}), .pc_o(pc_i), .Cycle_count(Cycle_count));
-   debug # (.Param_delay(10),.regCount(1) ) debug_1 (.i_clk(clk), .pipeReg(u_pipeReg1_res));
-   debug # (.Param_delay(15),.regCount(2) ) debug_2 (.i_clk(clk), .pipeReg(u_pipeReg1_res));
-   debug # (.Param_delay(20),.regCount(3) ) debug_3 (.i_clk(clk), .pipeReg(u_pipeReg3_res));
-end
-   //MARKER AUTOMATED HERE END
 
 
    
@@ -509,42 +524,44 @@ end
 
 
 					    );
-   pc #(.debug_param(debug_param) ) pc  (
-           .clk_i(clk),
-           .reset_i(reset),
-           .stage_IF_ready(stage_IF_ready),
-           .jump_inst_wire(jump_inst_wire_stage2),
-           .branch_inst_wire(branch_inst_wire_stage2),
-           .targetPC_i(alu_result_2_stage2),
-           .enable_design(enable_design),
-           .pc_o(pc_i),
-           .initial_pc_i(main2pc_initial_pc_i),
-           .pc_valid(pc_valid),
 
-           .nextPC_o(                                nextPC_o),
-           .PC_jump_or_branch(  change_PC_condition_for_jump_or_branch),
-           .interrupt_vector_i(                      interrupt_vector_i),
-           .irq_prep(                                irq_prep),
-           .mret_inst(                               mret_inst),
-           .mepc(                                    mepc)
+// FIXME  pc_valid_r in case of enable design OFF, then on again
+   pc #(.debug_param(debug_param) ) pc  (
+           .clk_i(               clk),
+           .reset_i(             reset),
+           .Fetch_wants_next_PC(    stage_IF_ready),
+           .jump_inst_wire(         jump_inst_wire_stage2),
+           .branch_inst_wire(       branch_inst_wire_stage2),
+           .targetPC_i(             alu_result_2_stage2),
+           .enable_design(          enable_design),
+           .pc_o(                   pc_i),
+           .initial_pc_i(           main2pc_initial_pc_i),
+           .pc_valid(               pc_valid),
+
+           .nextPC_o(               nextPC_o),
+           .PC_jump_or_branch(      change_PC_condition_for_jump_or_branch),
+           .interrupt_vector_i(     interrupt_vector_i),
+           .irq_prep(               irq_prep),
+           .mret_inst(              mret_inst),
+           .mepc(                   mepc)
 	   );
 
    ins_mem ins_mem (
-		    .clk                 (clk),
-		    .reset               (reset),
-		    .pc_i                (pc_i),
-		    .pc_i_valid          (pc_valid),
-		    .STALL_IF_not_ready_w(STALL_IF_not_ready_w),
-		    .STALL_ID_not_ready_w(STALL_ID_not_ready_w),
-		    .instruction_o_w     (instruction),
-		    .stall_in             (exec_stall),
-		    .abort_rvalid(        delete_reg1_reg2),
-		   //  .stop_request_overide(      stop_request_overide_insmem),
-		    .reset_able(                reset_able_insmem),
-
-
-
-		    // Memory interface signals
+		    .clk                 ( clk),
+		    .reset               ( reset),
+		    .pc_i                ( pc_i),
+		    .pc_i_valid          ( pc_valid),
+		    .STALL_FETCH(          STALL_FETCH),
+		    .STALL_DECODE(         ~stage_DECO_ready),
+		    .instruction_o_w(      instruction),
+		    .abort_rvalid(         delete_reg1_reg2),
+		    .reset_able(           reset_able_insmem),
+         .instruction_valid(     insM_ivalid),
+         .pc_o(pc_o),
+         .enable_design(enable_design),
+         //  .stop_request_overide(      stop_request_overide_insmem),
+		   //  .stall_in             (exec_stall),
+		   // Memory interface signals
 		   //  .data_clk             (Imem_clk),
 		    .data_req_o_w         (ins_data_req_o),
 		    .data_addr_o_w        (ins_data_addr_o),
@@ -556,7 +573,17 @@ end
 		    .data_gnt_i           (ins_data_gnt_i)
 		    );
 
-
+    pipe_ff_fields u_pipeReg0 (
+        .clk                  (clk),
+        .rst                  (reset),
+        .flush                (stage0_flush),
+        .en                   (stage0_en   ),
+        .i_PC_reg             (pc_o),
+        .i_instruct           (instruction),
+        .o_PC_reg             (pc_stage_0),
+        .o_instruct           (instruction_stage_0),
+        .o_rst_value          (stage0_reg_empty)
+    );
 
    reg_file #(.debug_param(debug_param))reg_file(
 		     .clk(clk),
@@ -586,6 +613,39 @@ end
       .opcode_o(opcode_o),
       .Single_Instruction_o(Single_Instruction_o)
       );
+
+    pipe_ff_fields u_pipeReg1 (
+        .clk                  (clk),
+        .rst                  (reset),
+        .flush                (stage1_flush),// (~stage1_DECO_valid && stage2_EXEC_valid) || delete_reg1_reg2),
+        .en                   (stage1_en   ),// ( stage1_DECO_valid && enable_design)),
+        .o_bus                (u_pipeReg1_res),
+      // inputs
+      .i_PC_reg             (pc_stage_0         ),
+      .i_instruct           (instruction_stage_0        ),
+      .i_rd                 (rd_o            ),
+      .i_opRs1_reg          (rs1_o),
+      .i_opRs2_reg          (rs2_o),
+      .i_op1_reg            (operand1_po),
+      .i_op2_reg            (operand2_po),
+      .i_immediate          (imm_o),
+      .i_Single_Instruction (Single_Instruction_o),
+      .i_csr_reg            (csr_o),
+      .i_csr_reg_val        (csr_regfile_o),
+      .o_PC_reg             (pc_stage_1                 ),        // outputs
+      .o_instruct           (instruction_stage_1        ),
+      .o_rd                 (rd_stage1                  ),
+      .o_opRs1_reg          (rs1_stage1                 ),
+      .o_opRs2_reg          (rs2_stage1                 ),
+      .o_op1_reg            (operand1_stage1            ),
+      .o_op2_reg            (operand2_stage1            ),
+      .o_immediate          (imm_stage1                 ),
+      .o_Single_Instruction (Single_Instruction_stage1  ),
+      .o_csr_reg            (csr_stage1                 ),
+      .o_csr_reg_val        (csr_val_stage1             ),
+      .o_rst_value          (stage1_reg_empty)
+          );
+
    execute  #(.N_param(`size_X_LEN), .debug_param(debug_param)) execute 
      (.i_clk(clk),    
       .Single_Instruction_i(Single_Instruction_stage1),
@@ -607,6 +667,8 @@ end
       .write_csr_wire(         write_csr_wire)
       
       );
+
+
    dataMem dataMem 
      (
       .final_value(               final_value),
@@ -618,7 +680,7 @@ end
       .pc_i(                      pc_stage_2),
       .loadData_w(                loaded_data),
       .memory_offset(             memory_offset),
-      .stall_mem_not_avalible(    stall_mem_not_avalible),
+      .stall_mem_not_avalible(    stall_MEMSTAGE),
       .load_into_reg(             load_into_reg),
       .stop_request_overide(      stop_request_overide_datamem),
       .reset_able(                reset_able_datamem),
@@ -670,52 +732,15 @@ end
 
 		  );
 
-    pipe_ff_fields u_pipeReg0 (
-        .clk                  (clk),
-        .rst                  (reset),
-        .flush                (delete_reg1_reg2),
-        .en                   (stage0_IF_valid&&enable_design),
-        .i_PC_reg             (pc_i),
-        // .i_instruct           (),
-        .o_PC_reg             (pc_stage_0)
-        // .o_instruct           (instr     `uction_stage_0),
-    );
 
-    pipe_ff_fields u_pipeReg1 (
-        .clk                  (clk),
-        .rst                  (reset),
-        .flush                ( (~stage1_DECO_valid && stage2_EXEC_valid) || delete_reg1_reg2),
-        .en                   ( ( stage1_DECO_valid && enable_design)),
-        .o_bus                (u_pipeReg1_res),
-      // inputs
-      .i_PC_reg             (pc_stage_0         ),
-      .i_instruct           (instruction_stage_0        ),
-      .i_rd                 (rd_o            ),
-      .i_opRs1_reg          (rs1_o),
-      .i_opRs2_reg          (rs2_o),
-      .i_op1_reg            (operand1_po),
-      .i_op2_reg            (operand2_po),
-      .i_immediate          (imm_o),
-      .i_Single_Instruction (Single_Instruction_o),
-      .i_csr_reg            (csr_o),
-      .i_csr_reg_val        (csr_regfile_o),
-      .o_PC_reg             (pc_stage_1                 ),        // outputs
-      .o_instruct           (instruction_stage_1        ),
-      .o_rd                 (rd_stage1                  ),
-      .o_opRs1_reg          (rs1_stage1                 ),
-      .o_opRs2_reg          (rs2_stage1                 ),
-      .o_op1_reg            (operand1_stage1            ),
-      .o_op2_reg            (operand2_stage1            ),
-      .o_immediate          (imm_stage1                 ),
-      .o_Single_Instruction (Single_Instruction_stage1  ),
-      .o_csr_reg            (csr_stage1                 ),
-      .o_csr_reg_val        (csr_val_stage1             )    );
+
+
 
     pipe_ff_fields u_pipeReg2 (
         .clk                  (clk),
         .rst                  (reset),
-        .flush                (  delete_reg1_reg2),
-        .en                   ( ( stage2_EXEC_valid && enable_design)),
+        .flush                (stage2_flush),//  delete_reg1_reg2),
+        .en                   (stage2_en   ),// ( stage2_EXEC_valid && enable_design)),
         .o_bus                (u_pipeReg2_res),
 
         // input
@@ -765,13 +790,15 @@ end
         .o_Single_Instruction (Single_Instruction_stage2),
         // .o_data_mem_loaded    (                      0),
         .o_csr_reg            (csr_stage2             ),
-        .o_csr_reg_val        (csr_val_stage2           ));
+        .o_csr_reg_val        (csr_val_stage2           ),
+      .o_rst_value          (stage2_reg_empty)
+        );
 
     pipe_ff_fields u_pipeReg3 (
         .clk                  (clk),
         .rst                  (reset),
-        .flush                (1'b0),
-        .en                   ( ( stage3_MEM_valid && enable_design)),
+        .flush                (stage3_flush),//1'b0),
+        .en                   (stage3_en   ),// ( stage3_MEM_valid && enable_design)),
         .o_bus                (u_pipeReg3_res),
 
         // input 
@@ -821,7 +848,9 @@ end
         .o_Single_Instruction (Single_Instruction_stage3),
         .o_data_mem_loaded    (     loaded_data_stage3),
         .o_csr_reg            (csr_stage3             ),
-        .o_csr_reg_val        (csr_val_stage3           ));
+        .o_csr_reg_val        (csr_val_stage3           ),
+        .o_rst_value          (stage3_reg_empty)
+        );
 
 
 always @(posedge clk)begin
@@ -831,6 +860,23 @@ always @(posedge clk)begin
     delete_reg1_reg2_reg <= delete_reg1_reg2;
   end 
 end 
+
+
+
+//MARKER AUTOMATED HERE START
+
+   wire [63:0] pipeReg0_wire_debug;
+   assign pipeReg0_wire_debug[31:0] = pc_stage_0;
+   assign pipeReg0_wire_debug[`instruct] = instruction_stage_0;
+   // assign pipeReg0_wire_debug[511:64] = pipeReg1[511:64];
+if (debug_param == 1) begin 
+   debug # (.Param_delay(5),.regCount(0), .pc_en(1)
+            ) debug_0 (.i_clk(clk),.pipeReg({448'b0,pipeReg0_wire_debug}), .pc_o(pc_i), .Cycle_count(Cycle_count));
+   debug # (.Param_delay(10),.regCount(1) ) debug_1 (.i_clk(clk), .pipeReg(u_pipeReg1_res));
+   debug # (.Param_delay(15),.regCount(2) ) debug_2 (.i_clk(clk), .pipeReg(u_pipeReg1_res));
+   debug # (.Param_delay(20),.regCount(3) ) debug_3 (.i_clk(clk), .pipeReg(u_pipeReg3_res));
+end
+   //MARKER AUTOMATED HERE END
 
 
 

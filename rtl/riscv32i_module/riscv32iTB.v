@@ -5,11 +5,11 @@ module riscv32iTB
     parameter N_param = 32, 
     parameter memory_offset_param = 32'h00000000,
     parameter success_code = 32'hDEADBEEF,
-    parameter cycles_timeout      = 16000,
+    parameter cycles_timeout      = 18000,
     parameter debug_param               = 0,
     parameter dispatch_print            = 0,
     // parameter cycles_timeout = 700,
-    parameter initial_pc    = 32'h00002178
+    parameter initial_pc    = 32'h000023AC
     )
    (
 
@@ -179,15 +179,15 @@ module riscv32iTB
       #7000
         repeat (10) @(posedge tb_clk);
       GPIO0_R0_CH1 <= 32'b00; // control signals
-      repeat (1) @(posedge tb_clk);
-      repeat (1) @(posedge tb_clk);
-      repeat (1) @(posedge tb_clk);
+      repeat (3) @(posedge tb_clk);
       GPIO0_R0_CH1 <= 32'b01; // control signals
       repeat (1) @(posedge tb_clk);
 
       // HERE CHANGE THIS VALUE TO DERTMINE CLOCK CYCLES
       repeat (cycles_timeout) @(posedge tb_clk);
-      $display("\n\n\n\n%t: STOP, cycle timeout", $time);
+      	   // $write("\nCycle_count %5d,\n",Cycle_count);
+
+      $display("\n\n\n\n%t: STOP, cycle timeout at Cycle_count %5d,\n", $time,cycles_timeout);
       repeat (1) @(posedge tb_clk);
       repeat (1) @(posedge tb_clk);
 

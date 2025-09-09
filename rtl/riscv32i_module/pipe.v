@@ -79,7 +79,8 @@ module pipe_ff_fields #(
     output wire [`size_Single_Instruction -1:0] o_Single_Instruction,
     output wire [`size_data_mem_loaded    -1:0] o_data_mem_loaded,
     output wire [`size_csr_reg            -1:0] o_csr_reg,
-    output wire [`size_csr_reg_val        -1:0] o_csr_reg_val
+    output wire [`size_csr_reg_val        -1:0] o_csr_reg_val,
+    output wire [`size_rst_bit            -1:0] o_rst_value
 );
     // build input bus
     wire [WIDTH-1:0] din;
@@ -106,6 +107,7 @@ module pipe_ff_fields #(
     assign din[`data_mem_loaded    ] = i_data_mem_loaded;
     assign din[`csr_reg            ] = i_csr_reg;
     assign din[`csr_reg_val        ] = i_csr_reg_val;
+    assign din[`rst_bit            ] = 1'b0;
 
     // register
     reg [WIDTH-1:0] q;
@@ -136,6 +138,7 @@ module pipe_ff_fields #(
             q[`data_mem_loaded    ] <= RST_data_mem_loaded;
             q[`csr_reg            ] <= RST_csr_reg;
             q[`csr_reg_val        ] <= RST_csr_reg_val;
+            q[`rst_bit            ] <= 1'b1;
         end else if (en) begin
             q <= din;
         end
@@ -165,6 +168,9 @@ module pipe_ff_fields #(
     assign o_data_mem_loaded     = q[`data_mem_loaded];
     assign o_csr_reg             = q[`csr_reg];
     assign o_csr_reg_val         = q[`csr_reg_val];
+    assign o_rst_value           = q[`rst_bit];
+
+
 endmodule
 
 
