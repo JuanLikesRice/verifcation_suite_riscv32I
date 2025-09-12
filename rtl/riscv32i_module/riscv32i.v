@@ -206,24 +206,29 @@ module riscv32i
 
 
   ri5cy_lsu_mem_bfm #(
-    .MEM_WORDS      (MEM_WORDS),
-    .GRANT_MIN_CYC  (1),   // dummy; overridden below
-    .GRANT_MAX_CYC  (1),
-    .RESP_MIN_CYC   (1),
-    .RESP_MAX_CYC   (1),
-    .OUTSTANDING_MAX(OUTSTANDING_MAX),
-    .INIT_HEX       (INIT_HEX)
-  ) u_bfm (
+    .MEM_WORDS      (6532),
+   //  .GRANT_MIN_CYC  (1),   // dummy; overridden below
+   //  .GRANT_MAX_CYC  (1),
+   //  .RESP_MIN_CYC   (1),
+   //  .RESP_MAX_CYC   (1),
+    .OUTSTANDING_MAX(8),
+    .DEBUG(debug_param),
+    .INIT_HEX       (""),
+   //  .RESET_MEM_PARAM(32'h00000013),
+    .ADDR_OFFSET(32'h00002600)
+
+
+  ) u_data_mem (
     .clk            (clk),
     .rst_n          (~reset),
-   //  .seed_valid_i   (seed_valid),
-   //  .seed_i         (seed_value),
+   //  .seed_i         ( 32'h2975bc20),
+    .seed_i         ( 32'h2975bc21),
+    .seed_valid_i   (1'b1),
     .data_req_i     (Dmem_data_req_o),
     .data_addr_i    (Dmem_data_addr_o),
     .data_we_i      (Dmem_data_we_o),
     .data_be_i      (Dmem_data_be_o),
     .data_wdata_i   (Dmem_data_wdata_o),
-
     .data_gnt_o     (Dmem_data_gnt_i),
     .data_rvalid_o  (Dmem_data_rvalid_i),
     .data_rdata_o   (Dmem_data_rdata_i)
@@ -234,14 +239,14 @@ module riscv32i
 						 .clk               (    clk),
 						 .reset             (    reset),
 
-						 .ins_data_req_o    (    Dmem_data_req_o),
-						 .ins_data_addr_o   (    Dmem_data_addr_o),
-						 .ins_data_we_o     (    Dmem_data_we_o),
-						 .ins_data_be_o     (    Dmem_data_be_o),
-						 .ins_data_wdata_o  (    Dmem_data_wdata_o),
-						 .ins_data_rdata_i  (    Dmem_data_rdata_i),
-						 .ins_data_rvalid_i (    Dmem_data_rvalid_i),
-						 .ins_data_gnt_i    (    Dmem_data_gnt_i),
+						//  .ins_data_req_o    (    Dmem_data_req_o),
+						//  .ins_data_addr_o   (    Dmem_data_addr_o),
+						//  .ins_data_we_o     (    Dmem_data_we_o),
+						//  .ins_data_be_o     (    Dmem_data_be_o),
+						//  .ins_data_wdata_o  (    Dmem_data_wdata_o),
+						//  .ins_data_rdata_i  (    Dmem_data_rdata_i),
+						//  .ins_data_rvalid_i (    Dmem_data_rvalid_i),
+						//  .ins_data_gnt_i    (    Dmem_data_gnt_i),
 
 
 						 // .data_clk(Imem_clk),
@@ -284,18 +289,44 @@ module riscv32i
 							     );
 
 
+  ri5cy_lsu_mem_bfm #(
+    .MEM_WORDS      (8192),
+   //  .GRANT_MIN_CYC  (1),   // dummy; overridden below
+   //  .GRANT_MAX_CYC  (1),
+   //  .RESP_MIN_CYC   (1),
+   //  .RESP_MAX_CYC   (1),
+    .OUTSTANDING_MAX(8),
+    .DEBUG(0), // NEVER PRINT
+    .INIT_HEX       ("out.hex"),
+    .RESET_MEM_PARAM(32'h00000013),
+    .ADDR_OFFSET(32'h00002000)
+  ) u_ins_mem (
+    .clk            (clk),
+    .rst_n          (~reset),
+   //  .seed_i         ( 32'h2975bc20),
+    .seed_i         ( 32'h2975bc21),
+    .seed_valid_i   (1'b1),
+    .data_req_i     (ins_data_req_o),
+    .data_addr_i    (ins_data_addr_o),
+    .data_we_i      (ins_data_we_o),
+    .data_be_i      (ins_data_be_o),
+    .data_wdata_i   (ins_data_wdata_o),
+    .data_gnt_o     (ins_data_gnt_i),
+    .data_rvalid_o  (ins_data_rvalid_i),
+    .data_rdata_o   (ins_data_rdata_i)
+  );
 
    inst_mem_bram_wrapper  inst_mem_bram_wrapper (
 						 .clk               (clk),
 						 .reset             (reset),
-						 .ins_data_req_o    (ins_data_req_o),
-						 .ins_data_addr_o   (ins_data_addr_o),
-						 .ins_data_we_o     (ins_data_we_o),
-						 .ins_data_be_o     (ins_data_be_o),
-						 .ins_data_wdata_o  (ins_data_wdata_o),
-						 .ins_data_rdata_i  (ins_data_rdata_i),
-						 .ins_data_rvalid_i (ins_data_rvalid_i),
-						 .ins_data_gnt_i    (ins_data_gnt_i),
+						//  .ins_data_req_o    (ins_data_req_o),
+						//  .ins_data_addr_o   (ins_data_addr_o),
+						//  .ins_data_we_o     (ins_data_we_o),
+						//  .ins_data_be_o     (ins_data_be_o),
+						//  .ins_data_wdata_o  (ins_data_wdata_o),
+						//  .ins_data_rdata_i  (ins_data_rdata_i),
+						//  .ins_data_rvalid_i (ins_data_rvalid_i),
+						//  .ins_data_gnt_i    (ins_data_gnt_i),
 						 // .data_clk(Imem_clk),
 						 .ins_mem_clkb (ins_mem_clkb),
 						 .ins_mem_enb (ins_mem_enb),
@@ -881,3 +912,4 @@ end
 
 
 endmodule
+
