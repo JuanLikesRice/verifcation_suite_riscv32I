@@ -1,0 +1,31 @@
+0  - Array sum (10) 
+1  - Mem test case, load byte,half etc on array
+2  - slli, srai, sign extension
+3  - explicit mem test short
+4  - Arithemtic test cases (XOR, OR, AND SLL SRL SRA SLLI SRLI SRAI SLT SLTU SLTIU ORI XORI ANDI LUI )
+5  - BRANCHES, JALR  JAL
+6  - LB LH LW LBU LHU SB SH SW 
+7  - More airthimetic OR XOR  but immediate focus
+8  - SIGN extension and loading / storing 
+9  - signed comparisons
+10 - SRA SRL with signed comps
+11 - SRL and shift for comp
+12 - Explicit asm Branches 
+13 - Explicit asm Branches  (neg comps)
+14 - CSR w/r instruction for mtvec
+15 - Array sum (30)
+16 - array pointers
+17 - CSR w/r test 
+18 - Matrix mult
+19 - Timmer Interrupt
+20 - Mult test
+21 -
+22 -
+23 -
+24 -
+25 -
+26 -
+27 -
+28 -
+29 -
+

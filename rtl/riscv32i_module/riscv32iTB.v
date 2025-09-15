@@ -5,10 +5,11 @@ module riscv32iTB
     parameter N_param = 32, 
     parameter memory_offset_param = 32'h00000000,
     parameter success_code = 32'hDEADBEEF,
-   //  parameter cycles_timeout      = 200,
+   //  parameter cycles_timeout      = 5000,
     parameter cycles_timeout      = 300000,
    //  parameter debug_param               = 1,
     parameter debug_param               = 0,
+    parameter debug_param_vcd           = 1,
     parameter dispatch_print            = 0,
     // parameter cycles_timeout = 700,
     parameter initial_pc    = 32'h000023AC
@@ -75,7 +76,7 @@ module riscv32iTB
 
 
 
-   riscv32i
+   riscv32i_wrap
      // `ifndef GATESIM
      #(    .N_param(N_param),
            .debug_param(debug_param)
@@ -150,6 +151,7 @@ module riscv32iTB
    //     if ($value$plusargs("VCDLEVEL=%d",vcdlevel))
    //         $dumpvars(vcdlevel);
    //         end
+      if (debug_param_vcd) begin 
 
    initial begin 
       // reg [8*128-1:0] vcdfile;  // A reg-based string: 128 characters
@@ -157,7 +159,8 @@ module riscv32iTB
       // if ($value$plusargs("VCDFILE=%s", vcdfile))
       $dumpfile("sim.vcd");
       // if ($value$plusargs("VCDLEVEL=%d", vcdlevel))
-      $dumpvars(5);
+      $dumpvars(5); 
+   end
    end
 
 

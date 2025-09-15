@@ -1,0 +1,31 @@
+18. Executing HIERARCHY pass (managing design hierarchy).
+
+18.1. Analyzing design hierarchy..
+Top module:  \riscv32i
+Used module:     \dataMem
+Used module:         \end_write
+Used module:         $paramod$1091af51fb8c6cf6809359edc44cf666a4173727\addr_range_matcher
+Used module:     $paramod\decode\N_param=s32'00000000000000000000000000100000
+Used module:     $paramod$6b98f34987397a995b813ca9227c24c2fb806f6e\execute
+Used module:     $paramod\hazard\debug_param=s32'00000000000000000000000000000000
+Used module:     \ins_mem
+Used module:     $paramod\main_fsm\debug_param=s32'00000000000000000000000000000000
+Used module:     $paramod\pc\debug_param=s32'00000000000000000000000000000000
+Used module:     $paramod\reg_file\debug_param=s32'00000000000000000000000000000000
+Used module:     \pipe_ff_fields
+
+18.2. Analyzing design hierarchy..
+Top module:  \riscv32i
+Used module:     \dataMem
+Used module:         \end_write
+Used module:         $paramod$1091af51fb8c6cf6809359edc44cf666a4173727\addr_range_matcher
+Used module:     $paramod\decode\N_param=s32'00000000000000000000000000100000
+Used module:     $paramod$6b98f34987397a995b813ca9227c24c2fb806f6e\execute
+Used module:     $paramod\hazard\debug_param=s32'00000000000000000000000000000000
+Used module:     \ins_mem
+Used module:     $paramod\main_fsm\debug_param=s32'00000000000000000000000000000000
+Used module:     $paramod\pc\debug_param=s32'00000000000000000000000000000000
+Used module:     $paramod\reg_file\debug_param=s32'00000000000000000000000000000000
+Used module:     \pipe_ff_fields
+Removing unused module `\pulse_generator_1bit'.
+Removed 1 unused modules.

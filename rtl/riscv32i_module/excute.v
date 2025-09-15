@@ -46,9 +46,39 @@ module execute
    end 
 
 
+// // place near ALU inputs
+// wire [31:0] operand1_pi = operand1_pi;
+// wire [31:0] operand2_pi = operand2_pi;
+
+	wire signed [63:0] op1_sx = $signed({{32{operand1_pi[31]}}, operand1_pi});
+	wire signed [63:0] op2_sx = $signed({{32{operand2_pi[31]}}, operand2_pi});
+	wire        [63:0] op1_ux = {32'b0, operand1_pi};
+	wire        [63:0] op2_ux = {32'b0, operand2_pi};
+
+	wire        [63:0] prod_uu  = op1_ux * op2_ux;         // unsigned * unsigned
+	wire signed [63:0] prod_ss  = op1_sx * op2_sx;         // signed   * signed
+	wire signed [63:0] prod_su  = op1_sx * $signed(op2_ux);// signed   * unsigned
+
+
+	wire signed [31:0] s1 = operand1_pi;
+	wire signed [31:0] s2 = operand2_pi;
+	wire signed [63:0] prod_ss_i = $signed(s1) * $signed(s2);
+
+
    wire signed [31:0] operand1_pi_signed = operand1_pi;
    wire signed [31:0] operand2_pi_signed = operand2_pi; 
    wire signed [31:0] imm_i_signed       = imm_i; 
+
+	// wire signed [31:0] operand1_pi_signed = operand1_pi;
+	// wire signed [31:0] operand2_pi_signed = operand2_pi;
+	wire div_by_zero = (operand2_pi == 32'b0);
+	wire div_overflow = (operand1_pi == 32'h8000_0000) && (operand2_pi == 32'hFFFF_FFFF);
+	// Signed
+	wire [31:0] q_div  = div_by_zero ? 32'hFFFF_FFFF : div_overflow ? 32'h8000_0000 : $signed(operand1_pi_signed / operand2_pi_signed);
+	wire [31:0] r_div  = div_by_zero ?   operand1_pi : div_overflow ? 32'h0000_0000 : $signed(operand1_pi_signed % operand2_pi_signed);
+	// Unsigned
+	wire [31:0] q_divu = div_by_zero ? 32'hFFFF_FFFF : (operand1_pi / operand2_pi);
+	wire [31:0] r_divu = div_by_zero ? operand1_pi   : (operand1_pi % operand2_pi);
 
 
    assign write_csr_wire                 = write_csr;
@@ -450,6 +480,71 @@ module execute
 	   write_reg_file <= 1'b1;
 	   write_csr <= 1'b0;
 	end
+	{`inst_MUL  }: begin 
+	   result              <=prod_ss[31:0];
+	   result_secondary    <=0;
+	   branch_inst         <=0;
+	   jump_inst           <=0;
+	   write_reg_file      <= 1'b1;
+	   write_csr           <= 1'b0;
+	end
+	{`inst_MULH }: begin 
+	   result              <=(prod_ss_i >>> 32);
+	   result_secondary    <=0;
+	   branch_inst         <=0;
+	   jump_inst           <=0;
+	   write_reg_file      <= 1'b1;
+	   write_csr           <= 1'b0;
+	end
+	{`inst_MULSU}: begin 
+	   result              <=prod_su[63:32];
+	   result_secondary    <=0;
+	   branch_inst         <=0;
+	   jump_inst           <=0;
+	   write_reg_file      <= 1'b1;
+	   write_csr           <= 1'b0;
+	end
+	{`inst_MULU }: begin 
+	   result              <=prod_uu[31:0];
+	   result_secondary    <=0;
+	   branch_inst         <=0;
+	   jump_inst           <=0;
+	   write_reg_file      <= 1'b1;
+	   write_csr           <= 1'b0;
+	end
+	{`inst_DIV  }: begin 
+	   result              <=q_div;
+	   result_secondary    <=0;
+	   branch_inst         <=0;
+	   jump_inst           <=0;
+	   write_reg_file      <= 1'b1;
+	   write_csr           <= 1'b0;
+	end
+	{`inst_DIVU }: begin 
+	   result              <=q_divu;
+	   result_secondary    <=0;
+	   branch_inst         <=0;
+	   jump_inst           <=0;
+	   write_reg_file      <= 1'b1;
+	   write_csr           <= 1'b0;
+	end
+	{`inst_REM  }: begin 
+	   result              <=r_div;
+	   result_secondary    <=0;
+	   branch_inst         <=0;
+	   jump_inst           <=0;
+	   write_reg_file      <= 1'b1;
+	   write_csr           <= 1'b0;
+	end
+	{`inst_REMU }: begin 
+	   result              <=r_divu;
+	   result_secondary    <=0;
+	   branch_inst         <=0;
+	   jump_inst           <=0;
+	   write_reg_file      <= 1'b1;
+	   write_csr           <= 1'b0;
+	end
+
 	default: begin 
 	   result              <=0;
 	   result_secondary    <=0;
@@ -625,6 +720,30 @@ module execute
 	     {`inst_WFI}:begin 
 		$write("inst_WFI ");
 	     end
+		 {`inst_MUL  }:begin 
+		$write("inst_MUL      ");
+		end
+		 {`inst_MULH }:begin 
+		$write("inst_MULH     ");
+		end
+		 {`inst_MULSU}:begin 
+		$write("inst_MULSU    ");
+		end
+		 {`inst_MULU }:begin 
+		$write("inst_MULU     ");
+		end
+		 {`inst_DIV  }:begin 
+		$write("inst_DIV      ");
+		end
+		 {`inst_DIVU }:begin 
+		$write("inst_DIVU     ");
+		end
+		 {`inst_REM  }:begin 
+		$write("inst_REM      ");
+		end
+		 {`inst_REMU }:begin 
+		$write("inst_REMU     ");
+		end
 	     default: begin 
 		$write("not_encoded instruction   ");
 	     end

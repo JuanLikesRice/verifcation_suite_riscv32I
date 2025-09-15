@@ -1,63 +1,35 @@
-// Typedefs (since stdint.h is not used)
-typedef unsigned int    uint32;
-typedef unsigned long   uint64;
-typedef unsigned long   uintptr;
+#define PERIPHERAL_SUCCESS 0x00002600
+#define PERIPHERAL_BYTE    0x00002604
 
-#define CLINT_BASE      0x02000000UL
-#define MTIMECMP        (*(volatile uint64*)(CLINT_BASE + 0x4000))
-#define MTIME           (*(volatile uint64*)(CLINT_BASE + 0xBFF8))
-
-#define MIE_MTIE        (1 << 7)
-#define MSTATUS_MIE     (1 << 3)
-
-volatile uint32 timer_triggered = 0;
-
-// Forward declaration
-void trap_handler(void);
-
-// Set mtvec to our trap handler address
-void init_mtvec() {
-    uintptr trap_addr = (uintptr)&trap_handler;
-    asm volatile("csrw mtvec, %0" :: "r"(trap_addr));
+// Write a value to a memory-mapped register.
+void write_mmio(unsigned int addr, unsigned int value) {
+    volatile unsigned int *ptr = (volatile unsigned int *)addr;
+    *ptr = value;
 }
 
-// Enable timer interrupt
-void enable_timer_interrupt() {
-    asm volatile("csrs mie, %0" :: "r"(MIE_MTIE));
-    asm volatile("csrs mstatus, %0" :: "r"(MSTATUS_MIE));
+// Called when a test fails; test_index indicates the failing instruction.
+void fail(int test_index) {
+    write_mmio(PERIPHERAL_BYTE, test_index);
+    write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
+    while (1);
 }
 
-// Set timer for future interrupt (e.g., 1 million cycles ahead)
-void set_timer(uint64 delta) {
-    uint64 now = MTIME;
-    MTIMECMP = now + delta;
-}
+int main(void) {
+    // declare operands as volatile so the compiler must read them
+    volatile int a1 = 5,      b1 = 7;
+    volatile int a2 = 32652,  b2 = 4678;
+    volatile int a3 = 32652,  b3 = -4678;
+    volatile int a4 = -32652, b4 = 4678;
+    volatile int a5 = -32652, b5 = -4678;
 
-// Trap handler (called on interrupt)
-void trap_handler() {
-    set_timer(1000000);  // Set next timer interrupt
-    timer_triggered = 1;
-}
+    // --- Arithmetic Operations ---
+    if ((a1 * b1) != 35)           { fail(1); }
+    if ((a2 * b2) != 152746056)    { fail(2); }
+    if ((a3 * b3) != -152746056)   { fail(3); }
+    if ((a4 * b4) != -152746056)   { fail(4); }
+    if ((a5 * b5) != 152746056)    { fail(5); }
 
-// Dumb delay loop (for blinking or polling effect)
-void delay() {
-    volatile uint32 i;
-    for (i = 0; i < 100000; i++) {
-        // prevent optimization
-        asm volatile("");
-    }
-}
-
-// Main entry point (from startup.S, sets _start to call this)
-void main() {
-    init_mtvec();
-    enable_timer_interrupt();
-    set_timer(1000000);
-
-    while (1) {
-        if (timer_triggered) {
-            timer_triggered = 0;
-        }
-        delay();
-    }
+    write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
+    while (1);
+    return 0;
 }

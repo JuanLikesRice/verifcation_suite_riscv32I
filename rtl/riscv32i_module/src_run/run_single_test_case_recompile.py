@@ -295,8 +295,8 @@ def main(vlt=False,recompile_on=True):
 if __name__ == "__main__":
     # vlt = True
     vlt = False
-    # recompile_on=True
-    recompile_on=False
+    recompile_on=True
+    # recompile_on=False
     mainstart_time = time.time()
     main(vlt=vlt,recompile_on=recompile_on)
     mainend_time = time.time()

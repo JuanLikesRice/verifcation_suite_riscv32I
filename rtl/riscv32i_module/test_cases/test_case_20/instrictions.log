@@ -4,118 +4,126 @@ program.elf:     file format elf32-littleriscv
 
 Disassembly of section .text:
 
-00000000 <init_mtvec>:
-   0:	fe010113          	addi	sp,sp,-32
-   4:	00112e23          	sw	ra,28(sp)
-   8:	00812c23          	sw	s0,24(sp)
-   c:	02010413          	addi	s0,sp,32
-  10:	0b400793          	li	a5,180
-  14:	fef42623          	sw	a5,-20(s0)
-  18:	fec42783          	lw	a5,-20(s0)
-  1c:	30579073          	csrw	mtvec,a5
-  20:	00000013          	nop
-  24:	01c12083          	lw	ra,28(sp)
-  28:	01812403          	lw	s0,24(sp)
-  2c:	02010113          	addi	sp,sp,32
-  30:	00008067          	ret
+00002000 <write_mmio>:
+    2000:	fd010113          	addi	sp,sp,-48
+    2004:	02112623          	sw	ra,44(sp)
+    2008:	02812423          	sw	s0,40(sp)
+    200c:	03010413          	addi	s0,sp,48
+    2010:	fca42e23          	sw	a0,-36(s0)
+    2014:	fcb42c23          	sw	a1,-40(s0)
+    2018:	fdc42783          	lw	a5,-36(s0)
+    201c:	fef42623          	sw	a5,-20(s0)
+    2020:	fec42783          	lw	a5,-20(s0)
+    2024:	fd842703          	lw	a4,-40(s0)
+    2028:	00e7a023          	sw	a4,0(a5)
+    202c:	00000013          	nop
+    2030:	02c12083          	lw	ra,44(sp)
+    2034:	02812403          	lw	s0,40(sp)
+    2038:	03010113          	addi	sp,sp,48
+    203c:	00008067          	ret
 
-00000034 <enable_timer_interrupt>:
-  34:	ff010113          	addi	sp,sp,-16
-  38:	00112623          	sw	ra,12(sp)
-  3c:	00812423          	sw	s0,8(sp)
-  40:	01010413          	addi	s0,sp,16
-  44:	08000793          	li	a5,128
-  48:	3047a073          	csrs	mie,a5
-  4c:	00800793          	li	a5,8
-  50:	3007a073          	csrs	mstatus,a5
-  54:	00000013          	nop
-  58:	00c12083          	lw	ra,12(sp)
-  5c:	00812403          	lw	s0,8(sp)
-  60:	01010113          	addi	sp,sp,16
-  64:	00008067          	ret
+00002040 <fail>:
+    2040:	fe010113          	addi	sp,sp,-32
+    2044:	00112e23          	sw	ra,28(sp)
+    2048:	00812c23          	sw	s0,24(sp)
+    204c:	02010413          	addi	s0,sp,32
+    2050:	fea42623          	sw	a0,-20(s0)
+    2054:	fec42783          	lw	a5,-20(s0)
+    2058:	00078593          	mv	a1,a5
+    205c:	000027b7          	lui	a5,0x2
+    2060:	60478513          	addi	a0,a5,1540 # 2604 <_etext+0x440>
+    2064:	f9dff0ef          	jal	2000 <write_mmio>
+    2068:	0badf7b7          	lui	a5,0xbadf
+    206c:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbadb00d>
+    2070:	000027b7          	lui	a5,0x2
+    2074:	60078513          	addi	a0,a5,1536 # 2600 <_etext+0x43c>
+    2078:	f89ff0ef          	jal	2000 <write_mmio>
+    207c:	0000006f          	j	207c <fail+0x3c>
 
-00000068 <set_timer>:
-  68:	fd010113          	addi	sp,sp,-48
-  6c:	02112623          	sw	ra,44(sp)
-  70:	02812423          	sw	s0,40(sp)
-  74:	03010413          	addi	s0,sp,48
-  78:	fca42e23          	sw	a0,-36(s0)
-  7c:	0200c7b7          	lui	a5,0x200c
-  80:	ff878793          	addi	a5,a5,-8 # 200bff8 <_stack_start+0x2009ff8>
-  84:	0007a783          	lw	a5,0(a5)
-  88:	fef42623          	sw	a5,-20(s0)
-  8c:	020047b7          	lui	a5,0x2004
-  90:	fec42683          	lw	a3,-20(s0)
-  94:	fdc42703          	lw	a4,-36(s0)
-  98:	00e68733          	add	a4,a3,a4
-  9c:	00e7a023          	sw	a4,0(a5) # 2004000 <_stack_start+0x2002000>
-  a0:	00000013          	nop
-  a4:	02c12083          	lw	ra,44(sp)
-  a8:	02812403          	lw	s0,40(sp)
-  ac:	03010113          	addi	sp,sp,48
-  b0:	00008067          	ret
+00002080 <main>:
+    2080:	fc010113          	addi	sp,sp,-64
+    2084:	02112e23          	sw	ra,60(sp)
+    2088:	02812c23          	sw	s0,56(sp)
+    208c:	04010413          	addi	s0,sp,64
+    2090:	00500793          	li	a5,5
+    2094:	fef42623          	sw	a5,-20(s0)
+    2098:	00700793          	li	a5,7
+    209c:	fef42423          	sw	a5,-24(s0)
+    20a0:	000087b7          	lui	a5,0x8
+    20a4:	f8c78793          	addi	a5,a5,-116 # 7f8c <_stack_start+0x3f8c>
+    20a8:	fef42223          	sw	a5,-28(s0)
+    20ac:	000017b7          	lui	a5,0x1
+    20b0:	24678793          	addi	a5,a5,582 # 1246 <_min_stack+0xa46>
+    20b4:	fef42023          	sw	a5,-32(s0)
+    20b8:	000087b7          	lui	a5,0x8
+    20bc:	f8c78793          	addi	a5,a5,-116 # 7f8c <_stack_start+0x3f8c>
+    20c0:	fcf42e23          	sw	a5,-36(s0)
+    20c4:	fffff7b7          	lui	a5,0xfffff
+    20c8:	dba78793          	addi	a5,a5,-582 # ffffedba <_stack_start+0xffffadba>
+    20cc:	fcf42c23          	sw	a5,-40(s0)
+    20d0:	ffff87b7          	lui	a5,0xffff8
+    20d4:	07478793          	addi	a5,a5,116 # ffff8074 <_stack_start+0xffff4074>
+    20d8:	fcf42a23          	sw	a5,-44(s0)
+    20dc:	000017b7          	lui	a5,0x1
+    20e0:	24678793          	addi	a5,a5,582 # 1246 <_min_stack+0xa46>
+    20e4:	fcf42823          	sw	a5,-48(s0)
+    20e8:	ffff87b7          	lui	a5,0xffff8
+    20ec:	07478793          	addi	a5,a5,116 # ffff8074 <_stack_start+0xffff4074>
+    20f0:	fcf42623          	sw	a5,-52(s0)
+    20f4:	fffff7b7          	lui	a5,0xfffff
+    20f8:	dba78793          	addi	a5,a5,-582 # ffffedba <_stack_start+0xffffadba>
+    20fc:	fcf42423          	sw	a5,-56(s0)
+    2100:	fec42703          	lw	a4,-20(s0)
+    2104:	fe842783          	lw	a5,-24(s0)
+    2108:	02f70733          	mul	a4,a4,a5
+    210c:	02300793          	li	a5,35
+    2110:	00f70663          	beq	a4,a5,211c <main+0x9c>
+    2114:	00100513          	li	a0,1
+    2118:	f29ff0ef          	jal	2040 <fail>
+    211c:	fe442703          	lw	a4,-28(s0)
+    2120:	fe042783          	lw	a5,-32(s0)
+    2124:	02f70733          	mul	a4,a4,a5
+    2128:	091ac7b7          	lui	a5,0x91ac
+    212c:	84878793          	addi	a5,a5,-1976 # 91ab848 <_stack_start+0x91a7848>
+    2130:	00f70663          	beq	a4,a5,213c <main+0xbc>
+    2134:	00200513          	li	a0,2
+    2138:	f09ff0ef          	jal	2040 <fail>
+    213c:	fdc42703          	lw	a4,-36(s0)
+    2140:	fd842783          	lw	a5,-40(s0)
+    2144:	02f70733          	mul	a4,a4,a5
+    2148:	f6e547b7          	lui	a5,0xf6e54
+    214c:	7b878793          	addi	a5,a5,1976 # f6e547b8 <_stack_start+0xf6e507b8>
+    2150:	00f70663          	beq	a4,a5,215c <main+0xdc>
+    2154:	00300513          	li	a0,3
+    2158:	ee9ff0ef          	jal	2040 <fail>
+    215c:	fd442703          	lw	a4,-44(s0)
+    2160:	fd042783          	lw	a5,-48(s0)
+    2164:	02f70733          	mul	a4,a4,a5
+    2168:	f6e547b7          	lui	a5,0xf6e54
+    216c:	7b878793          	addi	a5,a5,1976 # f6e547b8 <_stack_start+0xf6e507b8>
+    2170:	00f70663          	beq	a4,a5,217c <main+0xfc>
+    2174:	00400513          	li	a0,4
+    2178:	ec9ff0ef          	jal	2040 <fail>
+    217c:	fcc42703          	lw	a4,-52(s0)
+    2180:	fc842783          	lw	a5,-56(s0)
+    2184:	02f70733          	mul	a4,a4,a5
+    2188:	091ac7b7          	lui	a5,0x91ac
+    218c:	84878793          	addi	a5,a5,-1976 # 91ab848 <_stack_start+0x91a7848>
+    2190:	00f70663          	beq	a4,a5,219c <main+0x11c>
+    2194:	00500513          	li	a0,5
+    2198:	ea9ff0ef          	jal	2040 <fail>
+    219c:	deadc7b7          	lui	a5,0xdeadc
+    21a0:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead7eef>
+    21a4:	000027b7          	lui	a5,0x2
+    21a8:	60078513          	addi	a0,a5,1536 # 2600 <_etext+0x43c>
+    21ac:	e55ff0ef          	jal	2000 <write_mmio>
+    21b0:	0000006f          	j	21b0 <main+0x130>
 
-000000b4 <trap_handler>:
-  b4:	ff010113          	addi	sp,sp,-16
-  b8:	00112623          	sw	ra,12(sp)
-  bc:	00812423          	sw	s0,8(sp)
-  c0:	01010413          	addi	s0,sp,16
-  c4:	000f47b7          	lui	a5,0xf4
-  c8:	24078513          	addi	a0,a5,576 # f4240 <_stack_start+0xf2240>
-  cc:	f9dff0ef          	jal	68 <set_timer>
-  d0:	000017b7          	lui	a5,0x1
-  d4:	00100713          	li	a4,1
-  d8:	80e7a023          	sw	a4,-2048(a5) # 800 <timer_triggered>
-  dc:	00000013          	nop
-  e0:	00c12083          	lw	ra,12(sp)
-  e4:	00812403          	lw	s0,8(sp)
-  e8:	01010113          	addi	sp,sp,16
-  ec:	00008067          	ret
-
-000000f0 <delay>:
-  f0:	fe010113          	addi	sp,sp,-32
-  f4:	00112e23          	sw	ra,28(sp)
-  f8:	00812c23          	sw	s0,24(sp)
-  fc:	02010413          	addi	s0,sp,32
- 100:	fe042623          	sw	zero,-20(s0)
- 104:	0100006f          	j	114 <delay+0x24>
- 108:	fec42783          	lw	a5,-20(s0)
- 10c:	00178793          	addi	a5,a5,1
- 110:	fef42623          	sw	a5,-20(s0)
- 114:	fec42703          	lw	a4,-20(s0)
- 118:	000187b7          	lui	a5,0x18
- 11c:	69f78793          	addi	a5,a5,1695 # 1869f <_stack_start+0x1669f>
- 120:	fee7f4e3          	bgeu	a5,a4,108 <delay+0x18>
- 124:	00000013          	nop
- 128:	00000013          	nop
- 12c:	01c12083          	lw	ra,28(sp)
- 130:	01812403          	lw	s0,24(sp)
- 134:	02010113          	addi	sp,sp,32
- 138:	00008067          	ret
-
-0000013c <main>:
- 13c:	ff010113          	addi	sp,sp,-16
- 140:	00112623          	sw	ra,12(sp)
- 144:	00812423          	sw	s0,8(sp)
- 148:	01010413          	addi	s0,sp,16
- 14c:	eb5ff0ef          	jal	0 <init_mtvec>
- 150:	ee5ff0ef          	jal	34 <enable_timer_interrupt>
- 154:	000f47b7          	lui	a5,0xf4
- 158:	24078513          	addi	a0,a5,576 # f4240 <_stack_start+0xf2240>
- 15c:	f0dff0ef          	jal	68 <set_timer>
- 160:	000017b7          	lui	a5,0x1
- 164:	8007a783          	lw	a5,-2048(a5) # 800 <timer_triggered>
- 168:	00078663          	beqz	a5,174 <main+0x38>
- 16c:	000017b7          	lui	a5,0x1
- 170:	8007a023          	sw	zero,-2048(a5) # 800 <timer_triggered>
- 174:	f7dff0ef          	jal	f0 <delay>
- 178:	fe9ff06f          	j	160 <main+0x24>
-
-0000017c <_start>:
- 17c:	00002117          	auipc	sp,0x2
- 180:	e8410113          	addi	sp,sp,-380 # 2000 <_stack_start>
- 184:	fb9ff0ef          	jal	13c <main>
- 188:	ff5ff06f          	j	17c <_start>
+000021b4 <_start>:
+    21b4:	00002117          	auipc	sp,0x2
+    21b8:	e4c10113          	addi	sp,sp,-436 # 4000 <_stack_start>
+    21bc:	ec5ff0ef          	jal	2080 <main>
+    21c0:	ff5ff06f          	j	21b4 <_start>
 
 Disassembly of section .comment:
 
@@ -136,12 +144,12 @@ Disassembly of section .comment:
 Disassembly of section .riscv.attributes:
 
 00000000 <.riscv.attributes>:
-   0:	2841                	.insn	2, 0x2841
+   0:	3241                	.insn	2, 0x3241
    2:	0000                	.insn	2, 0x
    4:	7200                	.insn	2, 0x7200
    6:	7369                	.insn	2, 0x7369
-   8:	01007663          	bgeu	zero,a6,14 <init_mtvec+0x14>
-   c:	001e                	.insn	2, 0x001e
+   8:	01007663          	bgeu	zero,a6,14 <__DYNAMIC+0x14>
+   c:	0028                	.insn	2, 0x0028
    e:	0000                	.insn	2, 0x
   10:	1004                	.insn	2, 0x1004
   12:	7205                	.insn	2, 0x7205
@@ -149,10 +157,13 @@ Disassembly of section .riscv.attributes:
   16:	6932                	.insn	2, 0x6932
   18:	7032                	.insn	2, 0x7032
   1a:	5f31                	.insn	2, 0x5f31
-  1c:	697a                	.insn	2, 0x697a
-  1e:	32727363          	bgeu	tp,t2,344 <_etext+0x1b8>
-  22:	3070                	.insn	2, 0x3070
-  24:	0800                	.insn	2, 0x0800
-  26:	0a01                	.insn	2, 0x0a01
-  28:	Address 0x28 is out of bounds.
-
+  1c:	326d                	.insn	2, 0x326d
+  1e:	3070                	.insn	2, 0x3070
+  20:	7a5f 6369 7273      	.insn	6, 0x727363697a5f
+  26:	7032                	.insn	2, 0x7032
+  28:	5f30                	.insn	2, 0x5f30
+  2a:	6d7a                	.insn	2, 0x6d7a
+  2c:	756d                	.insn	2, 0x756d
+  2e:	316c                	.insn	2, 0x316c
+  30:	3070                	.insn	2, 0x3070
+	...

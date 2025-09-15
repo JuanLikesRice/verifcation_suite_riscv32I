@@ -263,6 +263,30 @@ module debug # (
 	   $write("inst_WFI ");
 	   
 	end
+		 {`inst_MUL  }:begin 
+		$write("inst_MUL      ");
+		end
+		 {`inst_MULH }:begin 
+		$write("inst_MULH     ");
+		end
+		 {`inst_MULSU}:begin 
+		$write("inst_MULSU    ");
+		end
+		 {`inst_MULU }:begin 
+		$write("inst_MULU     ");
+		end
+		 {`inst_DIV  }:begin 
+		$write("inst_DIV      ");
+		end
+		 {`inst_DIVU }:begin 
+		$write("inst_DIVU     ");
+		end
+		 {`inst_REM  }:begin 
+		$write("inst_REM      ");
+		end
+		 {`inst_REMU }:begin 
+		$write("inst_REMU     ");
+		end
 	default: begin 
 	   $write("not_encoded  ");
 

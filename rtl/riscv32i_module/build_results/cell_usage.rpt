@@ -1,0 +1,343 @@
+17. Printing statistics.
+
+=== $paramod$1091af51fb8c6cf6809359edc44cf666a4173727\addr_range_matcher ===
+
+   Number of wires:                  4
+   Number of wire bits:             35
+   Number of public wires:           2
+   Number of public wire bits:      33
+   Number of ports:                  2
+   Number of port bits:             33
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  3
+     $ge                             1
+     $logic_and                      1
+     $lt                             1
+
+=== $paramod$6b98f34987397a995b813ca9227c24c2fb806f6e\execute ===
+
+   Number of wires:                153
+   Number of wire bits:           2256
+   Number of public wires:          45
+   Number of public wire bits:    1226
+   Number of ports:                 20
+   Number of port bits:            354
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                125
+     $add                            4
+     $and                            6
+     $div                            2
+     $eq                            58
+     $ge                             2
+     $logic_and                      1
+     $logic_not                      2
+     $lt                             4
+     $mod                            2
+     $mul                            3
+     $mux                           14
+     $ne                             1
+     $not                            3
+     $or                             4
+     $pmux                           2
+     $reduce_or                      8
+     $shl                            2
+     $shr                            2
+     $sshr                           2
+     $sub                            1
+     $xor                            2
+
+=== $paramod\decode\N_param=s32'00000000000000000000000000100000 ===
+
+   Number of wires:                113
+   Number of wire bits:           1309
+   Number of public wires:          25
+   Number of public wire bits:     336
+   Number of ports:                 14
+   Number of port bits:            185
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                100
+     $and                            9
+     $dlatch                         1
+     $eq                            48
+     $logic_not                      4
+     $mux                            8
+     $not                            8
+     $pmux                          14
+     $reduce_or                      8
+
+=== $paramod\hazard\debug_param=s32'00000000000000000000000000000000 ===
+
+   Number of wires:                 46
+   Number of wire bits:            597
+   Number of public wires:          34
+   Number of public wire bits:     489
+   Number of ports:                 25
+   Number of port bits:            477
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 24
+     $eq                             6
+     $logic_and                      6
+     $mux                           12
+
+=== $paramod\main_fsm\debug_param=s32'00000000000000000000000000000000 ===
+
+   Number of wires:              86496
+   Number of wire bits:         1868944
+   Number of public wires:        8240
+   Number of public wire bits:  262838
+   Number of ports:                 28
+   Number of port bits:            423
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              86463
+     $add                            1
+     $and                        33145
+     $dff                         8192
+     $dffe                           1
+     $eq                            34
+     $logic_and                      3
+     $logic_not                      1
+     $logic_or                       1
+     $mux                        45074
+     $ne                             6
+     $or                             1
+     $pmux                           1
+     $reduce_and                     1
+     $reduce_bool                    1
+     $sdffe                          1
+
+=== $paramod\pc\debug_param=s32'00000000000000000000000000000000 ===
+
+   Number of wires:                 32
+   Number of wire bits:            435
+   Number of public wires:          23
+   Number of public wire bits:     333
+   Number of ports:                 16
+   Number of port bits:            202
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 17
+     $add                            1
+     $mux                            7
+     $or                             4
+     $reduce_and                     1
+     $reduce_bool                    1
+     $sdffe                          3
+
+=== $paramod\reg_file\debug_param=s32'00000000000000000000000000000000 ===
+
+   Number of wires:                396
+   Number of wire bits:           5708
+   Number of public wires:          50
+   Number of public wire bits:    1293
+   Number of ports:                 14
+   Number of port bits:            203
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                382
+     $and                          198
+     $dff                           32
+     $eq                            13
+     $logic_and                      3
+     $mux                          135
+     $reduce_bool                    1
+
+=== dataMem ===
+
+   Number of wires:                109
+   Number of wire bits:            984
+   Number of public wires:          45
+   Number of public wire bits:     637
+   Number of ports:                 23
+   Number of port bits:            368
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 85
+     $and                            6
+     $dlatch                         5
+     $eq                            16
+     $logic_and                      4
+     $logic_not                      3
+     $logic_or                       7
+     $mux                           19
+     $not                            9
+     $paramod$1091af51fb8c6cf6809359edc44cf666a4173727\addr_range_matcher      1
+     $pmux                          10
+     $reduce_or                      2
+     $sdff                           1
+     $sub                            1
+     end_write                       1
+
+=== end_write ===
+
+   Number of wires:                 20
+   Number of wire bits:            179
+   Number of public wires:          13
+   Number of public wire bits:     172
+   Number of ports:                  9
+   Number of port bits:            105
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 13
+     $eq                             1
+     $logic_and                      2
+     $mux                            1
+     $reduce_and                     4
+     $reduce_bool                    1
+     $sdffe                          4
+
+=== ins_mem ===
+
+   Number of wires:                 82
+   Number of wire bits:            715
+   Number of public wires:          33
+   Number of public wire bits:     348
+   Number of ports:                 22
+   Number of port bits:            211
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 63
+     $eq                             3
+     $logic_and                      8
+     $logic_not                      1
+     $logic_or                       2
+     $mux                           32
+     $not                            4
+     $pmux                           5
+     $reduce_and                     1
+     $reduce_bool                    1
+     $reduce_or                      2
+     $sdff                           1
+     $sdffe                          3
+
+=== pipe_ff_fields ===
+
+   Number of wires:                 57
+   Number of wire bits:           2388
+   Number of public wires:          54
+   Number of public wire bits:    2385
+   Number of ports:                 52
+   Number of port bits:           1361
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 28
+     $dffe                           1
+     $not                            1
+     $or                             1
+     $reduce_and                     1
+     $sdffe                         24
+
+=== pulse_generator_1bit ===
+
+   Number of wires:                  7
+   Number of wire bits:              7
+   Number of public wires:           5
+   Number of public wire bits:       5
+   Number of ports:                  3
+   Number of port bits:              3
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  4
+     $and                            1
+     $dff                            2
+     $not                            1
+
+=== riscv32i ===
+
+   Number of wires:                184
+   Number of wire bits:           4101
+   Number of public wires:         174
+   Number of public wire bits:    4091
+   Number of ports:                 35
+   Number of port bits:            478
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 44
+     $eq                             2
+     $logic_and                      7
+     $logic_or                       6
+     $mux                            7
+     $not                            6
+     $or                             4
+     $paramod$6b98f34987397a995b813ca9227c24c2fb806f6e\execute      1
+     $paramod\decode\N_param=s32'00000000000000000000000000100000      1
+     $paramod\hazard\debug_param=s32'00000000000000000000000000000000      1
+     $paramod\main_fsm\debug_param=s32'00000000000000000000000000000000      1
+     $paramod\pc\debug_param=s32'00000000000000000000000000000000      1
+     $paramod\reg_file\debug_param=s32'00000000000000000000000000000000      1
+     dataMem                         1
+     ins_mem                         1
+     pipe_ff_fields                  4
+
+=== design hierarchy ===
+
+   riscv32i                          1
+     $paramod$6b98f34987397a995b813ca9227c24c2fb806f6e\execute      1
+     $paramod\decode\N_param=s32'00000000000000000000000000100000      1
+     $paramod\hazard\debug_param=s32'00000000000000000000000000000000      1
+     $paramod\main_fsm\debug_param=s32'00000000000000000000000000000000      1
+     $paramod\pc\debug_param=s32'00000000000000000000000000000000      1
+     $paramod\reg_file\debug_param=s32'00000000000000000000000000000000      1
+     dataMem                         1
+       $paramod$1091af51fb8c6cf6809359edc44cf666a4173727\addr_range_matcher      1
+       end_write                     1
+     ins_mem                         1
+     pipe_ff_fields                  4
+
+   Number of wires:              87863
+   Number of wire bits:         1894815
+   Number of public wires:        8900
+   Number of public wire bits:  281336
+   Number of ports:                416
+   Number of port bits:           8483
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              87417
+     $add                            6
+     $and                        33364
+     $dff                         8224
+     $dffe                           5
+     $div                            2
+     $dlatch                         6
+     $eq                           181
+     $ge                             3
+     $logic_and                     35
+     $logic_not                     11
+     $logic_or                      16
+     $lt                             5
+     $mod                            2
+     $mul                            3
+     $mux                        45309
+     $ne                             7
+     $not                           34
+     $or                            17
+     $pmux                          32
+     $reduce_and                    11
+     $reduce_bool                    5
+     $reduce_or                     20
+     $sdff                           2
+     $sdffe                        107
+     $shl                            2
+     $shr                            2
+     $sshr                           2
+     $sub                            2
+     $xor                            2
+

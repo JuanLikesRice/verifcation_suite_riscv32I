@@ -224,6 +224,16 @@
 `define inst_WFI        64'h0002_0000_0000_0000
 
 
+`define inst_MUL        64'h0004_0000_0000_0000 //  mul  
+`define inst_MULH       64'h0008_0000_0000_0000 //  mulh 
+`define inst_MULSU      64'h0010_0000_0000_0000 //  mulsu
+`define inst_MULU       64'h0020_0000_0000_0000 //  mulu 
+`define inst_DIV        64'h0040_0000_0000_0000 //  div  
+`define inst_DIVU       64'h0080_0000_0000_0000 //  divu 
+`define inst_REM        64'h0100_0000_0000_0000 //  rem  
+`define inst_REMU       64'h0200_0000_0000_0000 //  remu 
+
+
 
 `define CSR_MSTATUS 12'h300  
 // Machine Status Register (mstatus)

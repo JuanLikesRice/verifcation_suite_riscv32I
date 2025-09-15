@@ -11,7 +11,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x2110
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          6928 (bytes into file)
+  Start of section headers:          6956 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)

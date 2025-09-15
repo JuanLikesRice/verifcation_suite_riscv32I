@@ -180,11 +180,36 @@ module decode
              {7'b0000000,3'b111}: begin  //AND 
 		Single_Instruction <= `inst_AND;
              end 
+             {7'b0000001,3'b000}: begin  // MUL
+		Single_Instruction <= `inst_MUL  ;
+      end
+             {7'b0000001,3'b001}: begin  // MULH
+		Single_Instruction <= `inst_MULH ;
+      end
+             {7'b0000001,3'b010}: begin  // MULSU
+		Single_Instruction <= `inst_MULSU;
+      end
+             {7'b0000001,3'b011}: begin  // MULU
+		Single_Instruction <= `inst_MULU ;
+      end
+             {7'b0000001,3'b100}: begin  // DIV
+		Single_Instruction <= `inst_DIV  ;
+      end
+             {7'b0000001,3'b101}: begin  // DIVU
+		Single_Instruction <= `inst_DIVU ;
+      end
+             {7'b0000001,3'b110}: begin  // REM
+		Single_Instruction <= `inst_REM  ;
+      end
+             {7'b0000001,3'b111}: begin  // REMU
+		Single_Instruction <= `inst_REMU ;
+      end
              default: begin  //UNKNOWN 
 		Single_Instruction <= `inst_UNKNOWN;
              end 
            endcase
         end
+
         `INST_typ_U:  begin 
            case(opcode)
              `U_Type_auipc:begin 
