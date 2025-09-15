@@ -13,7 +13,7 @@ XilinxUnisimLibrary/
 **/**/**/gatesim.vcd
 **/**/**/gatesim.log
 **/**/**/*-gatesim
-**/**/**/synth.log
+# **/**/**/synth.log
 **/**/**/sanity.hex
 **/test_cases_original
 riscof/test/riscv-arch-test/*
