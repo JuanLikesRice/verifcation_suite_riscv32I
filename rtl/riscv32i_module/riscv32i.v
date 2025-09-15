@@ -5,6 +5,8 @@ module riscv32i
   # (
      parameter N_param = 32,
       parameter debug_param = 0,
+      parameter ADR_PMEM_START = 32'h00002600,
+      parameter ADR_DMEM_START = 32'h00002800,
       parameter dispatch_print = 0
       
 
@@ -356,7 +358,11 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       );
 
 
-   dataMem dataMem 
+   dataMem #(
+      .ADR_PMEM_START(ADR_PMEM_START),
+      .ADR_DMEM_START(ADR_DMEM_START)
+   )
+    dataMem 
      (
       .final_value(               final_value),
       .clk(                       clk),

@@ -4,7 +4,14 @@
 module riscv32i_wrap
   # (
      parameter N_param = 32,
+     parameter ADR_IMEM_START = 32'h00002000,
+     parameter ADR_PMEM_START = 32'h00002600,
+     parameter ADR_DMEM_START = 32'h00002600,
+     parameter ADR_IMEM_SIZE  = 4096,
+     parameter ADR_PMEM_SIZE  = 1024,
+     parameter ADR_DMEM_SIZE  = 6656,
      parameter debug_param    = 0,
+     parameter BRAM1_TBMEM0_PARAM = 1,
      parameter dispatch_print = 0
      
      )     (
@@ -56,45 +63,70 @@ module riscv32i_wrap
    reg			       stop_design;
    wire			       enable_design;
    wire			       start_design , reset;
-   reg [31:0]		       cycle_to_end;
-   wire [31:0]		       control_signals_in;
-   reg [31:0]		       Cycle_count  ;
+   reg [31:0]		   cycle_to_end;
+   wire [31:0]		 control_signals_in;
+   reg [31:0]      Cycle_count  ;
    wire [31:0]		       memory_offset;
    wire [31:0]		       initial_pc_i ;
    wire [31:0]		       success_code  ;
    wire [31:0]		       final_value  ;
 
 
-   wire			       ins_data_req_o;
-   wire [31:0]		       ins_data_addr_o;
-   wire			       ins_data_we_o;
-   wire [ 3:0]		       ins_data_be_o;
-   wire [31:0]		       ins_data_wdata_o;
-   wire [31:0]		       ins_data_rdata_i;
-   wire			       ins_data_rvalid_i;
-   wire			       ins_data_gnt_i;
+   wire			       ins_data_req_o     ;
+   wire [31:0]		 ins_data_addr_o    ;
+   wire			       ins_data_we_o      ;
+   wire [ 3:0]		 ins_data_be_o      ;
+   wire [31:0]		 ins_data_wdata_o   ;
+   wire [31:0]		 ins_data_rdata_i   ;
+   wire			       ins_data_rvalid_i  ;
+   wire			       ins_data_gnt_i     ;  
+
+   wire			       Dmem_data_req_o    ;
+   wire [31:0]     Dmem_data_addr_o   ;
+   wire			       Dmem_data_we_o     ;
+   wire [ 3:0]		 Dmem_data_be_o     ;
+   wire [31:0]		 Dmem_data_wdata_o  ;
+
+   wire [31:0]		 Dmem_data_rdata_i  ;
+   wire			       Dmem_data_rvalid_i ;
+   wire			       Dmem_data_gnt_i    ;
 
 
 
-   wire			       Dmem_data_req_o;
-   wire [31:0]		       Dmem_data_addr_o;
-   wire			       Dmem_data_we_o;
-   wire [ 3:0]		       Dmem_data_be_o;
-   wire [31:0]		       Dmem_data_wdata_o;
-   wire [31:0]		       Dmem_data_rdata_i;
-   wire			       Dmem_data_rvalid_i;
-   wire			       Dmem_data_gnt_i;
+   wire [31:0]		 tbmem_Dmem_data_rdata_i  ;
+   wire			       tbmem_Dmem_data_rvalid_i ;
+   wire			       tbmem_Dmem_data_gnt_i    ;
+   wire [31:0]		 tbmem_ins_data_rdata_i   ;
+   wire			       tbmem_ins_data_rvalid_i  ;
+   wire			       tbmem_ins_data_gnt_i     ;  
+
+   wire [31:0]		 bram_Dmem_data_rdata_i  ;
+   wire			       bram_Dmem_data_rvalid_i ;
+   wire			       bram_Dmem_data_gnt_i    ;
+   wire [31:0]		 bram_ins_data_rdata_i   ;
+   wire			       bram_ins_data_rvalid_i  ;
+   wire			       bram_ins_data_gnt_i     ;  
 
 
-   wire			       Pmem_data_req_o;
-   wire [31:0]		       Pmem_data_addr_o;
-   wire			       Pmem_data_we_o;
-   wire [ 3:0]		       Pmem_data_be_o;
-   wire [31:0]		       Pmem_data_wdata_o;
-   wire [31:0]		       Pmem_data_rdata_i;
-   wire			       Pmem_data_rvalid_i;
-   wire			       Pmem_data_gnt_i;
+   wire			       Pmem_data_req_o    ;
+   wire [31:0]		 Pmem_data_addr_o   ;
+   wire			       Pmem_data_we_o     ;
+   wire [ 3:0]		 Pmem_data_be_o     ;
+   wire [31:0]		 Pmem_data_wdata_o  ;
+   wire [31:0]		 Pmem_data_rdata_i  ;
+   wire			       Pmem_data_rvalid_i ;
+   wire			       Pmem_data_gnt_i    ;
+  
+  wire  BRAM_MEM;
+  assign BRAM_MEM = BRAM1_TBMEM0_PARAM;
 
+  assign ins_data_rdata_i   = BRAM_MEM ? bram_ins_data_rdata_i   : tbmem_ins_data_rdata_i   ;
+  assign ins_data_rvalid_i  = BRAM_MEM ? bram_ins_data_rvalid_i  : tbmem_ins_data_rvalid_i  ;
+  assign ins_data_gnt_i     = BRAM_MEM ? bram_ins_data_gnt_i     : tbmem_ins_data_gnt_i     ;
+
+  assign Dmem_data_rdata_i  = BRAM_MEM ? bram_Dmem_data_rdata_i  : tbmem_Dmem_data_rdata_i  ;
+  assign Dmem_data_rvalid_i = BRAM_MEM ? bram_Dmem_data_rvalid_i : tbmem_Dmem_data_rvalid_i ;
+  assign Dmem_data_gnt_i    = BRAM_MEM ? bram_Dmem_data_gnt_i    : tbmem_Dmem_data_gnt_i    ;
 
 
    pulse_generator pulse_generator_GPIO0_R0_CH1 (
@@ -179,8 +211,6 @@ module riscv32i_wrap
 				      .Dmem_data_rvalid_i(  Dmem_data_rvalid_i),
 				      .Dmem_data_gnt_i(     Dmem_data_gnt_i),
 
-
-
 				      .Pmem_clk(            Pmem_clk),
 				      .Pmem_data_req_o(     Pmem_data_req_o),
 				      .Pmem_data_addr_o(    Pmem_data_addr_o),
@@ -199,53 +229,25 @@ module riscv32i_wrap
 				      .ins_data_we_o      (ins_data_we_o),
 				      .ins_data_be_o      (ins_data_be_o),
 				      .ins_data_wdata_o   (ins_data_wdata_o),
+
 				      .ins_data_rdata_i   (ins_data_rdata_i),
 				      .ins_data_rvalid_i  (ins_data_rvalid_i),
 				      .ins_data_gnt_i     (ins_data_gnt_i)
 				      );
 
 
-  ri5cy_lsu_mem_bfm #(
-    .MEM_WORDS      (6532),
-   //  .GRANT_MIN_CYC  (1),   // dummy; overridden below
-    .GRANT_MAX_CYC  (4),
-   //  .RESP_MIN_CYC   (1),
-    .RESP_MAX_CYC   (30),
-    .OUTSTANDING_MAX(32),
-    .DEBUG(debug_param),
-    .INIT_HEX       (""),
-   //  .RESET_MEM_PARAM(32'h00000013),
-    .ADDR_OFFSET(32'h00002600)
-  ) u_data_mem (
-    .clk            (clk),
-    .rst_n          (~reset),
-   //  .seed_i         ( 32'h2975bc20),
-    .seed_i         ( 32'h2975bc21),
-    .seed_valid_i   (1'b1),
-    .data_req_i     (Dmem_data_req_o),
-    .data_addr_i    (Dmem_data_addr_o),
-    .data_we_i      (Dmem_data_we_o),
-    .data_be_i      (Dmem_data_be_o),
-    .data_wdata_i   (Dmem_data_wdata_o),
-    .data_gnt_o     (Dmem_data_gnt_i),
-    .data_rvalid_o  (Dmem_data_rvalid_i),
-    .data_rdata_o   (Dmem_data_rdata_i)
-  );
-
-
    data_mem_bram_wrapper  data_mem_bram_wrapper (
 						 .clk               (    clk),
 						 .reset             (    reset),
 
-						//  .ins_data_req_o    (    Dmem_data_req_o),
-						//  .ins_data_addr_o   (    Dmem_data_addr_o),
-						//  .ins_data_we_o     (    Dmem_data_we_o),
-						//  .ins_data_be_o     (    Dmem_data_be_o),
-						//  .ins_data_wdata_o  (    Dmem_data_wdata_o),
-						//  .ins_data_rdata_i  (    Dmem_data_rdata_i),
-						//  .ins_data_rvalid_i (    Dmem_data_rvalid_i),
-						//  .ins_data_gnt_i    (    Dmem_data_gnt_i),
-
+						 .ins_data_req_o    (         Dmem_data_req_o     ),
+						 .ins_data_addr_o   (         Dmem_data_addr_o    ),
+						 .ins_data_we_o     (         Dmem_data_we_o      ),
+						 .ins_data_be_o     (         Dmem_data_be_o      ),
+						 .ins_data_wdata_o  (         Dmem_data_wdata_o   ),
+						 .ins_data_rdata_i  (    bram_Dmem_data_rdata_i   ),
+						 .ins_data_rvalid_i (    bram_Dmem_data_rvalid_i  ),
+						 .ins_data_gnt_i    (    bram_Dmem_data_gnt_i     ),
 
 						 // .data_clk(Imem_clk),
 						 .ins_mem_clkb (       data_mem_clkb),
@@ -286,41 +288,17 @@ module riscv32i_wrap
 
 							     );
 
-
-  ri5cy_lsu_mem_bfm #(
-    .MEM_WORDS      (8192),
-    .OUTSTANDING_MAX(8),
-    .DEBUG(0), // NEVER PRINT
-    .INIT_HEX       ("out.hex"),
-    .RESET_MEM_PARAM(32'h00000013),
-    .ADDR_OFFSET(32'h00002000)
-  ) u_ins_mem (
-    .clk            (clk),
-    .rst_n          (~reset),
-   //  .seed_i         ( 32'h2975bc20),
-    .seed_i         ( 32'h2975bc21),
-    .seed_valid_i   (1'b1),
-    .data_req_i     (ins_data_req_o),
-    .data_addr_i    (ins_data_addr_o),
-    .data_we_i      (ins_data_we_o),
-    .data_be_i      (ins_data_be_o),
-    .data_wdata_i   (ins_data_wdata_o),
-    .data_gnt_o     (ins_data_gnt_i),
-    .data_rvalid_o  (ins_data_rvalid_i),
-    .data_rdata_o   (ins_data_rdata_i)
-  );
-
    inst_mem_bram_wrapper  inst_mem_bram_wrapper (
 						 .clk               (clk),
 						 .reset             (reset),
-						//  .ins_data_req_o    (ins_data_req_o),
-						//  .ins_data_addr_o   (ins_data_addr_o),
-						//  .ins_data_we_o     (ins_data_we_o),
-						//  .ins_data_be_o     (ins_data_be_o),
-						//  .ins_data_wdata_o  (ins_data_wdata_o),
-						//  .ins_data_rdata_i  (ins_data_rdata_i),
-						//  .ins_data_rvalid_i (ins_data_rvalid_i),
-						//  .ins_data_gnt_i    (ins_data_gnt_i),
+						 .ins_data_req_o    (     ins_data_req_o),
+						 .ins_data_addr_o   (     ins_data_addr_o),
+						 .ins_data_we_o     (     ins_data_we_o),
+						 .ins_data_be_o     (     ins_data_be_o),
+						 .ins_data_wdata_o  (     ins_data_wdata_o),
+						 .ins_data_rdata_i  (bram_ins_data_rdata_i),
+						 .ins_data_rvalid_i (bram_ins_data_rvalid_i),
+						 .ins_data_gnt_i    (bram_ins_data_gnt_i),
 						 // .data_clk(Imem_clk),
 						 .ins_mem_clkb (ins_mem_clkb),
 						 .ins_mem_enb (ins_mem_enb),
@@ -332,6 +310,61 @@ module riscv32i_wrap
 						 .ins_mem_doutb (ins_mem_doutb)
 						 );
    
+
+generate
+  if (BRAM1_TBMEM0_PARAM == 0) begin : g_with_bram1
+    ri5cy_lsu_mem_bfm #(
+      .MEM_WORDS      (ADR_DMEM_SIZE),
+    //  .GRANT_MIN_CYC  (1),   // dummy; overridden below
+      .GRANT_MAX_CYC  (4),
+    //  .RESP_MIN_CYC   (1),
+      .RESP_MAX_CYC   (30),
+      .OUTSTANDING_MAX(32),
+      .DEBUG(debug_param),
+      .INIT_HEX       (""),
+    //  .RESET_MEM_PARAM(32'h00000013),
+      .ADDR_OFFSET(ADR_DMEM_START)
+    ) u_data_mem (
+      .clk            (clk),
+      .rst_n          (~reset),
+    //  .seed_i         ( 32'h2975bc20),
+      .seed_i         ( 32'h2975bc21),
+      .seed_valid_i   (1'b1),
+      .data_req_i     (      Dmem_data_req_o),
+      .data_addr_i    (      Dmem_data_addr_o),
+      .data_we_i      (      Dmem_data_we_o),
+      .data_be_i      (      Dmem_data_be_o),
+      .data_wdata_i   (      Dmem_data_wdata_o),
+      .data_gnt_o     (tbmem_Dmem_data_gnt_i),
+      .data_rvalid_o  (tbmem_Dmem_data_rvalid_i),
+      .data_rdata_o   (tbmem_Dmem_data_rdata_i)
+    );
+
+    ri5cy_lsu_mem_bfm #(
+      .MEM_WORDS      (ADR_IMEM_SIZE),
+      .OUTSTANDING_MAX(8),
+      .DEBUG(0), // NEVER PRINT
+      .INIT_HEX       ("out.hex"),
+      .RESET_MEM_PARAM(32'h00000013),
+      .ADDR_OFFSET(ADR_IMEM_START)
+    ) u_ins_mem (
+      .clk            (clk),
+      .rst_n          (~reset),
+    //  .seed_i         ( 32'h2975bc20),
+      .seed_i         ( 32'h2975bc21),
+      .seed_valid_i   (1'b1),
+      .data_req_i     (      ins_data_req_o),
+      .data_addr_i    (      ins_data_addr_o),
+      .data_we_i      (      ins_data_we_o),
+      .data_be_i      (      ins_data_be_o),
+      .data_wdata_i   (      ins_data_wdata_o),
+      .data_gnt_o     (tbmem_ins_data_gnt_i),
+      .data_rvalid_o  (tbmem_ins_data_rvalid_i),
+      .data_rdata_o   (tbmem_ins_data_rdata_i)
+    );
+  end
+endgenerate
+
 
 
 endmodule

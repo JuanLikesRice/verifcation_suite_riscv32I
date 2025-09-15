@@ -1,4 +1,10 @@
-module dataMem (
+module dataMem #(
+    parameter ADR_PMEM_START = 32'h00002600,
+    parameter ADR_DMEM_START = 32'h00002800
+    )
+
+
+ (
 		input wire	   clk,
 		input wire	   reset, 
 
@@ -83,7 +89,7 @@ module dataMem (
 
 
    //--|control data|--\\\
-   assign address = address_i - memory_offset;
+   assign address = address_i;
    // assign address = address_i;
    assign word_address = address[31:2];  
    assign byte_address = address[ 1:0];
@@ -119,8 +125,8 @@ module dataMem (
 
 
    addr_range_matcher #(
-			.ADDR_MIN(32'h00002600),
-			.ADDR_MAX(32'h00002800)
+			.ADDR_MIN(ADR_PMEM_START),
+			.ADDR_MAX(ADR_DMEM_START)
 			) uut (
 			       .addr_in(   address_i),
 			       .in_range(  in_range_peripheral)
@@ -307,7 +313,9 @@ module dataMem (
 
 
    // used for final endpoint      
-   end_write end_write (
+   end_write #(
+.ADR_PMEM_START(ADR_PMEM_START)
+   )end_write (
 			.clkb(clk),
 			.rstb(reset),
 			.data_req_o(data_req_o),
@@ -323,7 +331,10 @@ endmodule
 
 
 
-module end_write (
+module end_write 
+         #(
+            parameter ADR_PMEM_START = 32'h2600
+         ) (
 
 		  input wire	     clkb,
 		  input wire	     rstb,
@@ -337,6 +348,11 @@ module end_write (
 
 		  output wire [31:0] final_value
 		  );
+
+   wire [31:0] write_addr;
+   wire [29:0] write_addr_MSB29;
+   assign write_addr = ADR_PMEM_START; 
+   assign write_addr_MSB29 = write_addr[31:2]; 
 
    wire				     enb;
    // wire        rstb;
@@ -360,7 +376,7 @@ module end_write (
       if (rstb) begin
 	 doutb_reg <= 32'b0;
 	 DMEM <= 32'h00000000;
-      end else if ((enb==1'b1) &&( word_address == 29'd2432)) begin
+      end else if ((enb==1'b1) &&( word_address == write_addr_MSB29)) begin
 	 if (web != 4'b0000) begin
             if (web[0]) begin DMEM[ 7: 0]  <=  data_wdata_o[ 7: 0];   end 
             if (web[1]) begin DMEM[15: 8]  <=  data_wdata_o[15: 8];   end 

@@ -5,6 +5,8 @@ module riscv32iTB
     parameter N_param = 32, 
     parameter memory_offset_param = 32'h00000000,
     parameter success_code = 32'hDEADBEEF,
+    parameter BRAM1_TBMEM0_PARAM = 0,
+   //  parameter BRAM1_TBMEM0_PARAM = 1,
    //  parameter cycles_timeout      = 5000,
     parameter cycles_timeout      = 300000,
    //  parameter debug_param               = 1,
@@ -12,14 +14,17 @@ module riscv32iTB
     parameter debug_param_vcd           = 1,
     parameter dispatch_print            = 0,
     // parameter cycles_timeout = 700,
-    parameter initial_pc    = 32'h000023AC
+    parameter initial_pc    = 32'h000021B4
     )
    (
 
-
-
     );
-
+   localparam ADR_IMEM_START = 32'h00002000;
+   localparam ADR_PMEM_START = 32'h00002600;
+   localparam ADR_DMEM_START = 32'h00002600;
+   localparam ADR_IMEM_SIZE  =         8192;
+   localparam ADR_PMEM_SIZE  =         1024;
+   localparam ADR_DMEM_SIZE  =         6656;
 
 
 
@@ -78,8 +83,15 @@ module riscv32iTB
 
    riscv32i_wrap
      // `ifndef GATESIM
-     #(    .N_param(N_param),
-           .debug_param(debug_param)
+     #(     .N_param(N_param),
+            .BRAM1_TBMEM0_PARAM(BRAM1_TBMEM0_PARAM),
+            .ADR_IMEM_START(ADR_IMEM_START),
+            .ADR_PMEM_START(ADR_PMEM_START),
+            .ADR_DMEM_START(ADR_DMEM_START),
+            .ADR_IMEM_SIZE (ADR_IMEM_SIZE ),
+            .ADR_PMEM_SIZE (ADR_PMEM_SIZE ),
+            .ADR_DMEM_SIZE (ADR_DMEM_SIZE ),
+            .debug_param(debug_param)
 	   ) 
    // `endif
    dut (
@@ -120,8 +132,6 @@ module riscv32iTB
         .peripheral_mem_doutb(     peripheral_mem_doutb    ),
         .peripheral_mem_rstb_busy( peripheral_mem_rstb_busy),
         .timer_timeout(            timer_timeout           ), // timer timeout signal
-
-
 
         //bram ports ins_mem
         .ins_mem_clkb(       ins_mem_clkb),
@@ -204,12 +214,15 @@ module riscv32iTB
    end 
 
 
-
-
-
+generate
+  if (BRAM1_TBMEM0_PARAM) begin : g_with_bram0
    // BRAM PORTS data mem
-   bram_mem #(.MEM_DEPTH(6656),.debug_param(debug_param))  data_mem_bram (
-						// bram_mem #(.MEM_DEPTH(8192))  data_mem_bram (
+   bram_mem #(
+      .MEM_DEPTH(    ADR_DMEM_SIZE),
+      .ADR_DMEM_START(ADR_DMEM_START),
+      .debug_param(debug_param)
+      )  
+      data_mem_bram (
 						.clkb(                  data_mem_clkb     ),
 						.addrb_pre_aligned(     data_mem_addrb    ),
 						.dinb(                  data_mem_dinb     ),
@@ -219,9 +232,32 @@ module riscv32iTB
 						.doutb(                 data_mem_doutb    ),
 						.rstb_busy(             data_mem_rstb_busy )
 						);
+  
+  
+    bram_ins #(
+      .MEM_DEPTH(     ADR_IMEM_SIZE),
+      .ADR_IMEM_START(ADR_IMEM_START),
+      .debug_param(debug_param) 
+      ) 
+      ins_mem_bram (
+					       .clkb(       ins_mem_clkb),
+					       .enb(        ins_mem_enb),
+					       .rstb(       ins_mem_rstb),
+					       .web(        ins_mem_web),
+					       .addrb(      ins_mem_addrb),
+					       .dinb(       ins_mem_dinb),
+					       .rstb_busy(  ins_mem_rstb_busy),
+					       .doutb(      ins_mem_doutb) 
+					       );
+ 
+   end
+endgenerate
 
-   bram_pmem #(.MEM_DEPTH(1024),.debug_param(debug_param))  data_pmem_bram (
-						  // bram_mem #(.MEM_DEPTH(8192))  data_mem_bram (
+   bram_pmem #(
+      .MEM_DEPTH(    ADR_PMEM_SIZE),
+      .ADR_PMEM_START(ADR_PMEM_START),
+      .debug_param(debug_param)
+   )  data_pmem_bram (
 						  .clkb(                  peripheral_mem_clkb     ),
 						  .addrb_pre_aligned(     peripheral_mem_addrb    ),
 						  .dinb(                  peripheral_mem_dinb     ),
@@ -234,40 +270,16 @@ module riscv32iTB
 						  );
 
 
-   bram_ins #(.MEM_DEPTH(8192),.debug_param(debug_param) ) ins_mem_bram (
-					       .clkb(       ins_mem_clkb),
-					       .enb(        ins_mem_enb),
-					       .rstb(       ins_mem_rstb),
-					       .web(        ins_mem_web),
-					       .addrb(      ins_mem_addrb),
-					       .dinb(       ins_mem_dinb),
-					       .rstb_busy(  ins_mem_rstb_busy),
-					       .doutb(      ins_mem_doutb) 
-					       );
-
-
-
-
-   // inst_mem_bram_wrapper  inst_mem_bram_wrapper (
-   //     .clk               (clk),
-   //     .reset             (reset),
-   //     .ins_data_req_o    (ins_data_req_o),
-   //     .ins_data_addr_o   (ins_data_addr_o),
-   //     .ins_data_we_o     (ins_data_we_o),
-   //     .ins_data_be_o     (ins_data_be_o),
-   //     .ins_data_wdata_o  (ins_data_wdata_o),
-   //     .ins_data_rdata_i  (ins_data_rdata_i),
-   //     .ins_data_rvalid_i (ins_data_rvalid_i),
-   //     .ins_data_gnt_i    (ins_data_gnt_i)
-   // );
-
+ 
 
 
 endmodule
 
 
 
-module bram_pmem #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 ) (
+module bram_pmem #(  parameter MEM_DEPTH = 1096,    
+                     parameter ADR_PMEM_START = 32'h00002600,
+                     parameter debug_param = 1     ) (
 						   input wire	      clkb,
 						   input wire	      enb,
 						   input wire	      rstb,
@@ -289,7 +301,7 @@ module bram_pmem #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 
    wire [ 1:0]							      byte_address;
    // wire [31:0] addrb_aligned;
    wire [31:0]							      addrb;
-   assign addrb = addrb_pre_aligned - 32'h00002600; // memory offset
+   assign addrb = addrb_pre_aligned - ADR_PMEM_START; // memory offset
    // wire sub_condition;
    // assign sub_condition = (addrb > 32'h2000):
    // assign address_translation = sub_condition ? addrb - 32'h2000: 32'h0000;
@@ -407,7 +419,11 @@ endmodule
 
 
 
-module bram_mem #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 ) (
+  
+module bram_mem #(   parameter MEM_DEPTH = 1096,  
+                     parameter ADR_DMEM_START = 32'h00002600,
+                     parameter debug_param = 1 ) 
+                     (
 						  input wire	     clkb,
 						  input wire	     enb,
 						  input wire	     rstb,
@@ -428,7 +444,7 @@ module bram_mem #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 )
    wire [ 1:0]							     byte_address;
    // wire [31:0] addrb_aligned;
    wire [31:0]							     addrb;
-   assign addrb = addrb_pre_aligned - 32'h00002600; // memory offset
+   assign addrb = addrb_pre_aligned - ADR_DMEM_START; // memory offset
 
    // wire sub_condition;
    // assign sub_condition = (addrb > 32'h2000):
@@ -530,7 +546,9 @@ endmodule
 
 
 
-module bram_ins #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 ) (
+module bram_ins #(  parameter MEM_DEPTH = 1096,      
+                    parameter ADR_IMEM_START = 32'h00002000,
+                     parameter debug_param = 1 ) (
 						  input wire	     clkb,
 						  input wire	     enb,
 						  input wire	     rstb,
@@ -551,8 +569,8 @@ module bram_ins #(  parameter MEM_DEPTH = 1096,      parameter debug_param = 1 )
 
    wire [31:0] address_translation;
    wire sub_condition;
-   assign sub_condition = (addrb > 32'h2000);
-   assign address_translation = sub_condition ? (addrb - 32'h2000): 32'h0000;
+   assign sub_condition = (addrb > ADR_IMEM_START);
+   assign address_translation = sub_condition ? (addrb - ADR_IMEM_START): 32'h0000;
    assign word_address = address_translation[31:2];  
    assign byte_address = address_translation[ 1:0];
 
