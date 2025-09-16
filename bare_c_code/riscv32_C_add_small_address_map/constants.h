@@ -1,0 +1,18 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+/* Auto-generated. Do not edit. */
+
+#define INSTR_ORIGIN       0x00002000u
+#define ROM_ORIGIN         0x00003000u
+#define PERIPHERAL_ORIGIN  0x00003800u
+#define DATARAM_ORIGIN     0x00004000u
+
+#define INSTR_LENGTH_BYTES 4096u
+#define ROM_LENGTH_BYTES   2048u
+#define PERI_LENGTH_BYTES  2048u
+#define DATA_LENGTH_BYTES  8192u
+
+#define PERIPHERAL_SUCCESS PERIPHERAL_ORIGIN
+
+#endif

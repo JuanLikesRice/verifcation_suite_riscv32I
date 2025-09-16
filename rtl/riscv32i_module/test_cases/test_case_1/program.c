@@ -1,22 +1,14 @@
-#define PERIPHERAL_SUCCESS    0x00002600
-#define PERIPHERAL_BYTE       0x00002604
-#define PERIPHERAL_BYTE_TOTAL 0x00002608
-
-
-void write_mmio(unsigned int addr, unsigned int value) {
-    volatile unsigned int *ptr = (unsigned int *)addr;
-    *ptr = value;
-}
+#include "constants.h"
 
 int main(void) {
     unsigned char expected[4] = { 0xEF, 0xBE, 0xAD, 0xDE };
-    volatile unsigned char *ptr = (volatile unsigned char *)PERIPHERAL_BYTE_TOTAL;
+    volatile unsigned char *ptr = (volatile unsigned char *)PERIPHERAL_S2;
     
     // Store and verify each byte.
     for (int i = 0; i < 4; i++) {
         ptr[i] = expected[i];          // Store byte
         if (ptr[i] != expected[i]) {     // Verify store byte
-            write_mmio(PERIPHERAL_BYTE, i);  // Log failing index
+            write_mmio(PERIPHERAL_S1, i);  // Log failing index
             write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
             while (1);
         }

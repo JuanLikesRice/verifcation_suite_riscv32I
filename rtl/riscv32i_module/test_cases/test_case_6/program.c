@@ -3,21 +3,7 @@
 //  - Load/Store: inst_LB, inst_LH, inst_LW, inst_LBU, inst_LHU, inst_SB, inst_SH, inst_SW
 //  Tests 20–27.
 
-#define PERIPHERAL_SUCCESS 0x00002600
-#define PERIPHERAL_BYTE    0x00002604
-
-// Write a value to a memory-mapped register.
-void write_mmio(unsigned int addr, unsigned int value) {
-    volatile unsigned int *ptr = (volatile unsigned int *)addr;
-    *ptr = value;
-}
-
-// Called when a test fails; test_index indicates the failing instruction.
-void fail(int test_index) {
-    write_mmio(PERIPHERAL_BYTE, test_index);
-    write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
-    while (1);
-}
+#include "constants.h"
 
 int main(void) {
     // --- Load Instructions ---

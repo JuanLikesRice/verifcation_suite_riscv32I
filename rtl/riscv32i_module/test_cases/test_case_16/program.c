@@ -1,23 +1,9 @@
-#define PERIPHERAL_SUCCESS 0x00002600
-#define PERIPHERAL_BYTE    0x00002604
-
-// Write a value to a memory-mapped register.
-void write_mmio(unsigned int addr, unsigned int value) {
-    volatile unsigned int *ptr = (volatile unsigned int *)addr;
-    *ptr = value;
-}
-
-// Called when a test fails; test_index indicates which test failed.
-void fail(int test_index) {
-    write_mmio(PERIPHERAL_BYTE, test_index);
-    write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
-    while (1);
-}
+#include "constants.h"
 
 int main(void) {
     // In ILP32, long is 32 bits.
     // Use a fixed memory address (adjust as appropriate for your system).
-    volatile long *mem_ptr = (volatile long *)0x00002900;
+    volatile long *mem_ptr = (volatile long *) DATARAM_ORIGIN;
     
     // Test value: 0xDEADBEEF
     long test_val = 0xDEADBEEF;

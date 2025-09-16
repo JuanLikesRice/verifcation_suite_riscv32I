@@ -1,10 +1,5 @@
-#define PERIPHERAL_SUCCESS 0x00002600
+#include "constants.h"
 
-// Write a value to a memory-mapped register.
-void write_mmio(unsigned int addr, unsigned int value) {
-    volatile unsigned int *ptr = (volatile unsigned int *)addr;
-    *ptr = value;
-}
 
 int main(void) {
     // This is the value loaded by LHU: zero-extended from a 16-bit halfword.

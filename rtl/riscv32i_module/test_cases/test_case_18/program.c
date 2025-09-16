@@ -1,16 +1,6 @@
-// #define PERIPHERAL_BASE   0x000007D0  // Base address for success/failure codes
-// #define PERIPHERAL_RESULT 0x000007D4  // Base address for matrix sum result
-#define PERIPHERAL_BASE           0x00002600  
-#define PERIPHERAL_RESULT         0x00002604
-// #define PERIPHERAL_SUM_immediate  0x00000608
 
+#include "constants.h"
 
-
-// Function to write values to memory-mapped I/O
-void write_to_peripheral(int address, int value) {
-    volatile int* periph_addr = (int*)(address);
-    *periph_addr = value;
-}
 
 // Function to perform matrix multiplication (memory and computation intensive)
 void matrix_multiply(int size, int A[][size], int B[][size], int C[][size]) {
@@ -44,8 +34,8 @@ int main() {
         }
     }
 
-    write_to_peripheral(PERIPHERAL_RESULT, matrix_sum);  // Send result to peripheral
-    write_to_peripheral(PERIPHERAL_BASE,  0xDEADBEEF);  // Success code
+    write_to_peripheral(PERIPHERAL_S1, matrix_sum);  // Send result to peripheral
+    write_to_peripheral(PERIPHERAL_BASE,   0xDEADBEEF);  // Success code
 
     // if (matrix_sum ==  4 4 4) {  // Known expected result for this matrix setup
     //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);  // Success code
@@ -59,7 +49,7 @@ int main() {
 
 
 // #define   PERIPHERAL_BASE 0x00000600  // Base address for success/failure codes
-// #define PERIPHERAL_RESULT 0x00000604  // Base address for factorial result
+// #define PERIPHERAL_S1 0x00000604  // Base address for factorial result
 
 // void write_to_peripheral(int address, int value) {
 //     volatile int* periph_addr = (int*)(address);
@@ -94,7 +84,7 @@ int main() {
 //     // int    A =  4 4;
 //     // int    B = 47 4;
 //     // result = A * B;
-//     // write_to_peripheral(PERIPHERAL_RESULT, 0xBADF00D);
+//     // write_to_peripheral(PERIPHERAL_S1, 0xBADF00D);
     
 //     // if (result ==  44700) {
 //     //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);

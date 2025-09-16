@@ -1,19 +1,4 @@
-#define PERIPHERAL_SUCCESS 0x00002600
-#define PERIPHERAL_BYTE    0x00002604
-
-// Write a value to a memory-mapped register.
-void write_mmio(unsigned int addr, unsigned int value) {
-    volatile unsigned int *ptr = (volatile unsigned int *)addr;
-    *ptr = value;
-}
-
-// Called when a test fails; test_index indicates which test failed.
-void fail(int test_index) {
-    write_mmio(PERIPHERAL_BYTE, test_index);
-    write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
-    while (1);
-}
-
+#include "constants.h"
 
 int test_beq(void) {
     volatile int a = 50, b = 50;
@@ -47,19 +32,13 @@ static inline void write_mtvec(uint32_t value) {
     asm volatile ("csrw mtvec, %0" :: "r" (value));
 }
 
-    void write_to_peripheral(int address, int value) {
-    volatile int* periph_addr = (int*)(address);
-    *periph_addr = value;  
-    }
+
     // Set a new trap vector base address (example: 0x100000)
 
 
 int main(void) {
     int res;
-
     write_mtvec(0x100000);
-
-
     // If all branch tests pass, signal overall success.
     write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
     while (1);

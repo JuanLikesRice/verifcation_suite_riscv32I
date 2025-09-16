@@ -7,7 +7,7 @@ VERILOG_DIR="verilog"
 # Delete all files in "compilation" directory
 rm -rf "$COMPILATION_DIR"/*
 # Copy all files from "inputs" to "compilation"
-cp "$INPUT_DIR"/* "$COMPILATION_DIR"/
+cp -r "$INPUT_DIR"/* "$COMPILATION_DIR"/
 # Change directory to "compilation"
 cd "$COMPILATION_DIR" || exit
 # Run commands here
@@ -16,7 +16,8 @@ echo "Running compilation commands..."
 # riscv32-unknown-elf-gcc -march=rv32i_zicsr -mabi=ilp32 -nostdlib -ffreestanding -o program.o -c program.c
 # riscv32-unknown-elf-as  -march=rv32i_zicsr -o startup.o startup.S
 
-riscv32-unknown-elf-gcc -march=rv32im_zicsr -mabi=ilp32 -nostdlib -ffreestanding -O0 -o program.o -c program.c
+riscv32-unknown-elf-gcc -march=rv32im_zicsr -mabi=ilp32 -nostdlib -ffreestanding -O0 -I include -o program.o -c program.c
+
 riscv32-unknown-elf-as  -march=rv32im_zicsr -o startup.o startup.S
 
 riscv32-unknown-elf-gcc  -T link.ld -e _start -nostdlib -o program.elf program.o startup.o /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a

@@ -1,14 +1,9 @@
-#define PERIPHERAL_SUCCESS   0x00002600
-#define PERIPHERAL_HALF_ADDR 0x00002608
 
+#include "constants.h"
 
-void write_mmio(unsigned int addr, unsigned int value) {
-    volatile unsigned int *ptr = (volatile unsigned int *)addr;
-    *ptr = value;
-}
 int main(void) {
     // Use a signed short pointer to force LH (signed half-word load)
-    volatile short *half_ptr = (volatile short *)PERIPHERAL_HALF_ADDR;
+    volatile short *half_ptr = (volatile short *)PERIPHERAL_S2;
     
     // Store 0xDEAD into memory using a half-word store.
     *half_ptr = (short)0xDEAD;

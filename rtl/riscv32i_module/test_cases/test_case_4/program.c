@@ -6,19 +6,7 @@
 //  - Immediate Arithmetic/Logical: inst_ADDI, inst_XORI, inst_ORI, inst_ANDI (Tests 16–19)
 //  - Other: inst_LUI (Test 36)
 
-#define PERIPHERAL_SUCCESS 0x00002600
-#define PERIPHERAL_BYTE    0x00002604
-
-void write_mmio(unsigned int addr, unsigned int value) {
-    volatile unsigned int *ptr = (volatile unsigned int *)addr;
-    *ptr = value;
-}
-
-void fail(int test_index) {
-    write_mmio(PERIPHERAL_BYTE, test_index);
-    write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
-    while (1);
-}
+#include "constants.h"
 
 int main(void) {
     // Volatile operands to block constant folding

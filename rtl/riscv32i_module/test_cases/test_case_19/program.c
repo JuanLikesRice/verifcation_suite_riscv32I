@@ -5,6 +5,12 @@
  * ========================================================== */
 
 /* ---------- simple typedefs ---------- */
+
+
+#include "constants.h"
+
+
+
 typedef unsigned int        uint32;          /* 32-bit */
 typedef unsigned long long  uint64;          /* 64-bit */
 typedef unsigned long       uintptr;         /* native pointer */
@@ -14,14 +20,11 @@ typedef unsigned long       uintptr;         /* native pointer */
 #define  STR(x)   _STR(x)
 
 /* ---------- MMIO addresses ---------- */
-#define MTIME_LO        (*(volatile uint32 *)0x00002700U)
-#define MTIME_HI        (*(volatile uint32 *)0x00002704U)
-#define MTIMECMP_LO     (*(volatile uint32 *)0x00002708U)
-#define MTIMECMP_HI     (*(volatile uint32 *)0x0000270CU)
+#define MTIME_LO        (*(volatile uint32 *)(0x00000100U + PERIPHERAL_SUCCESS) )
+#define MTIME_HI        (*(volatile uint32 *)(0x00000104U + PERIPHERAL_SUCCESS))
+#define MTIMECMP_LO     (*(volatile uint32 *)(0x00000108U + PERIPHERAL_SUCCESS))
+#define MTIMECMP_HI     (*(volatile uint32 *)(0x0000010CU + PERIPHERAL_SUCCESS))
 
-/* test-bench peripherals (unchanged) */
-#define PERIPHERAL_SUCCESS   0x00002600
-#define PERIPHERAL_BYTE      0x00002604
 
 /* ---------- CSR bit masks ---------- */
 #define MIE_MTIE       (1U << 7)     /* mie  – machine-timer enable   */
@@ -33,10 +36,12 @@ volatile uint32 timer_triggered = 0;
 /* ==========================================================
  * Low-level helpers
  * ========================================================== */
-static inline void write_mmio(uint32 addr, uint32 val)
-{
-    *(volatile uint32 *)addr = val;
-}
+// static inline void write_mmio(uint32 addr, uint32 val)
+// {
+//     *(volatile uint32 *)addr = val;
+// }
+
+
 
 /* 64-bit read of mtime with rollover guard             */
 static inline uint64 read_mtime(void)
@@ -82,7 +87,7 @@ static inline void enable_timer_interrupts(void)
 
 // static inline void on_timer_irq(void)
 // {
-//     *(volatile uint32 *)PERIPHERAL_BYTE = 0xDEADBEEF; /* MMIO write */  /*:contentReference[oaicite:8]{index=8}*/
+//     *(volatile uint32 *)PERIPHERAL_S1 = 0xDEADBEEF; /* MMIO write */  /*:contentReference[oaicite:8]{index=8}*/
 //     timer_triggered = 1;
 // }
 
@@ -233,7 +238,7 @@ void main(void)
 
 // /* test-bench peripherals (unchanged) */
 // #define PERIPHERAL_SUCCESS   0x00002600
-// #define PERIPHERAL_BYTE      0x00002604
+// #define PERIPHERAL_S1      0x00002604
 
 // /* ---------- CSR bit masks ---------- */
 // #define MIE_MTIE       (1U << 7)     /* mie  – machine-timer enable   */

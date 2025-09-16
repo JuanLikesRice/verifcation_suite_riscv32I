@@ -21,37 +21,69 @@ Disassembly of section .data:
   34:	02812403          	lw	s0,40(sp)
   38:	03010113          	addi	sp,sp,48
   3c:	00008067          	ret
-  40:	fe010113          	addi	sp,sp,-32
-  44:	00112e23          	sw	ra,28(sp)
-  48:	00812c23          	sw	s0,24(sp)
-  4c:	02010413          	addi	s0,sp,32
-  50:	000027b7          	lui	a5,0x2
-  54:	60878793          	addi	a5,a5,1544 # 0x2608
-  58:	fef42623          	sw	a5,-20(s0)
-  5c:	fec42783          	lw	a5,-20(s0)
-  60:	ffffe737          	lui	a4,0xffffe
-  64:	ead70713          	addi	a4,a4,-339 # 0xffffdead
-  68:	00e79023          	sh	a4,0(a5)
-  6c:	fec42783          	lw	a5,-20(s0)
-  70:	0007d783          	lhu	a5,0(a5)
-  74:	fef41523          	sh	a5,-22(s0)
-  78:	fea41703          	lh	a4,-22(s0)
-  7c:	ffffe7b7          	lui	a5,0xffffe
-  80:	ead78793          	addi	a5,a5,-339 # 0xffffdead
-  84:	00f71e63          	bne	a4,a5,0xa0
-  88:	deadc7b7          	lui	a5,0xdeadc
-  8c:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
-  90:	000027b7          	lui	a5,0x2
-  94:	60078513          	addi	a0,a5,1536 # 0x2600
-  98:	f69ff0ef          	jal	0x0
-  9c:	0180006f          	j	0xb4
-  a0:	0badf7b7          	lui	a5,0xbadf
-  a4:	00d78593          	addi	a1,a5,13 # 0xbadf00d
-  a8:	000027b7          	lui	a5,0x2
-  ac:	60078513          	addi	a0,a5,1536 # 0x2600
-  b0:	f51ff0ef          	jal	0x0
-  b4:	0000006f          	j	0xb4
-  b8:	00002117          	auipc	sp,0x2
-  bc:	f4810113          	addi	sp,sp,-184 # 0x2000
-  c0:	f81ff0ef          	jal	0x40
-  c4:	ff5ff06f          	j	0xb8
+  40:	fd010113          	addi	sp,sp,-48
+  44:	02112623          	sw	ra,44(sp)
+  48:	02812423          	sw	s0,40(sp)
+  4c:	03010413          	addi	s0,sp,48
+  50:	fca42e23          	sw	a0,-36(s0)
+  54:	fcb42c23          	sw	a1,-40(s0)
+  58:	fdc42783          	lw	a5,-36(s0)
+  5c:	fef42623          	sw	a5,-20(s0)
+  60:	fec42783          	lw	a5,-20(s0)
+  64:	fd842703          	lw	a4,-40(s0)
+  68:	00e7a023          	sw	a4,0(a5)
+  6c:	00000013          	nop
+  70:	02c12083          	lw	ra,44(sp)
+  74:	02812403          	lw	s0,40(sp)
+  78:	03010113          	addi	sp,sp,48
+  7c:	00008067          	ret
+  80:	fe010113          	addi	sp,sp,-32
+  84:	00112e23          	sw	ra,28(sp)
+  88:	00812c23          	sw	s0,24(sp)
+  8c:	02010413          	addi	s0,sp,32
+  90:	fea42623          	sw	a0,-20(s0)
+  94:	fec42783          	lw	a5,-20(s0)
+  98:	00078593          	mv	a1,a5
+  9c:	000057b7          	lui	a5,0x5
+  a0:	80878513          	addi	a0,a5,-2040 # 0x4808
+  a4:	f5dff0ef          	jal	0x0
+  a8:	0badf7b7          	lui	a5,0xbadf
+  ac:	00d78593          	addi	a1,a5,13 # 0xbadf00d
+  b0:	000057b7          	lui	a5,0x5
+  b4:	80078513          	addi	a0,a5,-2048 # 0x4800
+  b8:	f49ff0ef          	jal	0x0
+  bc:	0000006f          	j	0xbc
+  c0:	fe010113          	addi	sp,sp,-32
+  c4:	00112e23          	sw	ra,28(sp)
+  c8:	00812c23          	sw	s0,24(sp)
+  cc:	02010413          	addi	s0,sp,32
+  d0:	000057b7          	lui	a5,0x5
+  d4:	80878793          	addi	a5,a5,-2040 # 0x4808
+  d8:	fef42623          	sw	a5,-20(s0)
+  dc:	fec42783          	lw	a5,-20(s0)
+  e0:	ffffe737          	lui	a4,0xffffe
+  e4:	ead70713          	addi	a4,a4,-339 # 0xffffdead
+  e8:	00e79023          	sh	a4,0(a5)
+  ec:	fec42783          	lw	a5,-20(s0)
+  f0:	0007d783          	lhu	a5,0(a5)
+  f4:	fef41523          	sh	a5,-22(s0)
+  f8:	fea41703          	lh	a4,-22(s0)
+  fc:	ffffe7b7          	lui	a5,0xffffe
+ 100:	ead78793          	addi	a5,a5,-339 # 0xffffdead
+ 104:	00f71e63          	bne	a4,a5,0x120
+ 108:	deadc7b7          	lui	a5,0xdeadc
+ 10c:	eef78593          	addi	a1,a5,-273 # 0xdeadbeef
+ 110:	000057b7          	lui	a5,0x5
+ 114:	80078513          	addi	a0,a5,-2048 # 0x4800
+ 118:	ee9ff0ef          	jal	0x0
+ 11c:	0180006f          	j	0x134
+ 120:	0badf7b7          	lui	a5,0xbadf
+ 124:	00d78593          	addi	a1,a5,13 # 0xbadf00d
+ 128:	000057b7          	lui	a5,0x5
+ 12c:	80078513          	addi	a0,a5,-2048 # 0x4800
+ 130:	ed1ff0ef          	jal	0x0
+ 134:	0000006f          	j	0x134
+ 138:	00007117          	auipc	sp,0x7
+ 13c:	ec810113          	addi	sp,sp,-312 # 0x7000
+ 140:	f81ff0ef          	jal	0xc0
+ 144:	ff5ff06f          	j	0x138

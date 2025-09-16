@@ -185,6 +185,8 @@ module riscv32i_wrap
    riscv32i #(
 		  .N_param(32),
       .debug_param(debug_param),
+.ADR_PMEM_START(ADR_PMEM_START),
+.ADR_DMEM_START(ADR_DMEM_START),
       .dispatch_print(dispatch_print)
 		   ) u_riscv32i_main (
 				      .clk(             clk),

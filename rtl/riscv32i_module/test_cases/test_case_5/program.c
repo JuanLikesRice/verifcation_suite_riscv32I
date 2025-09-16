@@ -3,21 +3,7 @@
 //  - Branch and Jump: inst_BEQ, inst_BNE, inst_BLT, inst_BGE, inst_BLTU, inst_BGEU, inst_JAL, inst_JALR
 //  Tests 28–35.
 
-#define PERIPHERAL_SUCCESS 0x00002600
-#define PERIPHERAL_BYTE    0x00002604
-
-// Write a value to a memory-mapped register.
-void write_mmio(unsigned int addr, unsigned int value) {
-    volatile unsigned int *ptr = (volatile unsigned int *)addr;
-    *ptr = value;
-}
-
-// Called when a test fails; test_index indicates the failing instruction.
-void fail(int test_index) {
-    write_mmio(PERIPHERAL_BYTE, test_index);
-    write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
-    while (1);
-}
+#include "constants.h"
 
 int main(void) {
     // --- Branch Instructions ---

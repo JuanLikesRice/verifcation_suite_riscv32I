@@ -1,7 +1,0 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
-
-#define PERIPHERAL_SUCCESS 0x00002600
-#define PERIPHERAL_BYTE    0x00002604
-
-#endif

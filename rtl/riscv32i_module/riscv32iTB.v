@@ -11,21 +11,30 @@ module riscv32iTB
     parameter cycles_timeout      = 300000,
    //  parameter debug_param               = 1,
     parameter debug_param               = 0,
-    parameter debug_param_vcd           = 1,
+
+    parameter debug_param_vcd           = 0,
+   //  parameter debug_param_vcd           = 1,
     parameter dispatch_print            = 0,
     // parameter cycles_timeout = 700,
-    parameter initial_pc    = 32'h000021B4
+    parameter initial_pc    = 32'h000021F4
     )
    (
 
     );
-   localparam ADR_IMEM_START = 32'h00002000;
-   localparam ADR_PMEM_START = 32'h00002600;
-   localparam ADR_DMEM_START = 32'h00002600;
-   localparam ADR_IMEM_SIZE  =         8192;
-   localparam ADR_PMEM_SIZE  =         1024;
-   localparam ADR_DMEM_SIZE  =         6656;
+   // localparam ADR_IMEM_START = 32'h00002000;
+   // localparam ADR_PMEM_START = 32'h00003800;
+   // localparam ADR_DMEM_START = 32'h00004000;
+   // localparam ADR_IMEM_SIZE  =         2048;
+   // localparam ADR_PMEM_SIZE  =         1024;
+   // localparam ADR_DMEM_SIZE  =         2048;
 
+      localparam ADR_IMEM_START = 32'h00002000;
+      localparam ADR_PMEM_START = 32'h00004800;
+      localparam ADR_DMEM_START = 32'h00005000;
+
+      localparam ADR_IMEM_SIZE  = 8192;
+      localparam ADR_PMEM_SIZE  = 2048;
+      localparam ADR_DMEM_SIZE  = 16384;
 
 
    // glbl glbl ();
