@@ -34,8 +34,8 @@ int main() {
         }
     }
 
-    write_to_peripheral(PERIPHERAL_S1, matrix_sum);  // Send result to peripheral
-    write_to_peripheral(PERIPHERAL_BASE,   0xDEADBEEF);  // Success code
+    write_to_peripheral(PERIPHERAL_S1,   matrix_sum);  // Send result to peripheral
+    write_to_peripheral(PERIPHERAL_S3,   0xDEADBEEF);  // Success code
 
     // if (matrix_sum ==  4 4 4) {  // Known expected result for this matrix setup
     //     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);  // Success code
@@ -43,7 +43,7 @@ int main() {
     //     write_to_peripheral(PERIPHERAL_BASE, 0xBADF00D);   // Failure code
     // }
 
-    while (1) {}  // Halt
+    // while (1) {}  // Halt
     return 0;
 }
 

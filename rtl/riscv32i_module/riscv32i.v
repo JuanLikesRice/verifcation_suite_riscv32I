@@ -98,6 +98,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    wire stage0_en,stage1_en,stage2_en,stage3_en;
    wire stage0_flush,stage1_flush,stage2_flush,stage3_flush;
    wire insM_ivalid;
+   wire exec_stall_reg, rs1_rs2_valid,load_data_valid;
 
    assign  initate_irq             = 1'b0;  
    assign  end_condition           = (final_value == success_code);  
@@ -144,16 +145,16 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 
          //   .en                   ( ( stage3_MEM_valid && enable_design)),
    assign stage3_en           =  stage3_MEM_valid;
-   assign stage3_flush        =   1'b0 ;
+   assign stage3_flush        =  ~stage3_MEM_valid || stage2_reg_empty;
    
    assign stage_MEM_done    = ~stall_MEMSTAGE;
    assign stage3_MEM_valid  = stage_MEM_done;
    assign stage_MEM_ready   = stage3_MEM_valid || stage2_reg_empty; // 
 
-   assign stage2_en           =  ~stage1_reg_empty && stage_MEM_ready;
-   assign stage2_flush        =  delete_reg1_reg2 || (stage1_reg_empty && stage_MEM_ready) ;
+   assign stage2_en           =  ~stage1_reg_empty && stage2_EXEC_valid;
+   assign stage2_flush        =  delete_reg1_reg2 || ((stage1_reg_empty||exec_stall_reg) && stage_MEM_ready) ;
    
-   assign stage_EXEC_done   = 1'b1;
+   assign stage_EXEC_done   = ~exec_stall_reg;
    assign stage2_EXEC_valid = (stage_MEM_ready && stage_EXEC_done);
    assign stage_EXEC_ready  = stage2_EXEC_valid || stage1_reg_empty; // 
    
@@ -169,8 +170,12 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    //for PC counter 
    assign stage_IF_ready      = ~STALL_FETCH; // ready for PC reg to update
 
-
-
+   wire exec_fwd1  ,exec_fwd2  ,exec_fwdCSR;  // assign i_op1_reg_overwrite_en = 
+   wire i_op1_reg_overwrite_en, i_op2_reg_overwrite_en,i_csr_reg_val_overwrite_en;
+   assign i_op1_reg_overwrite_en     = exec_fwd1  && exec_stall_reg;
+   assign i_op2_reg_overwrite_en     = exec_fwd2  && exec_stall_reg;
+   assign i_csr_reg_val_overwrite_en = exec_fwdCSR&& exec_stall_reg;
+   
    
    pulse_generator_1bit pulse_generator_1bit (
 					      .clk(clk),
@@ -271,7 +276,11 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
         .i_instruct           (instruction),
         .o_PC_reg             (pc_stage_0),
         .o_instruct           (instruction_stage_0),
-        .o_rst_value          (stage0_reg_empty)
+        .o_rst_value          (stage0_reg_empty),
+
+        .i_op1_reg_overwrite_en(1'b0),
+        .i_op2_reg_overwrite_en(1'b0),
+        .i_csr_reg_val_overwrite_en(1'b0)
     );
 
    reg_file #(.debug_param(debug_param))reg_file(
@@ -317,6 +326,11 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       .i_opRs2_reg          (rs2_o),
       .i_op1_reg            (operand1_po),
       .i_op2_reg            (operand2_po),
+      .i_op1_reg_overwrite  (operand1_into_exec),
+      .i_op2_reg_overwrite  (operand2_into_exec),
+      .i_op1_reg_overwrite_en(i_op1_reg_overwrite_en),
+      .i_op2_reg_overwrite_en(i_op2_reg_overwrite_en),
+      .i_csr_reg_val_overwrite_en(i_csr_reg_val_overwrite_en),
       .i_immediate          (imm_o),
       .i_Single_Instruction (Single_Instruction_o),
       .i_csr_reg            (csr_o),
@@ -336,7 +350,8 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
           );
 
    execute  #(.N_param(`size_X_LEN), .debug_param(debug_param)) execute 
-     (.i_clk(clk),    
+     (.i_clk(clk),  
+      .rst (reset),  
       .Single_Instruction_i(Single_Instruction_stage1),
       .operand1_pi(operand1_into_exec),
       .operand2_pi(operand2_into_exec),
@@ -353,7 +368,11 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       .branch_inst_wire(branch_inst_wire),
       .jump_inst_wire(jump_inst_wire),
       .write_reg_file_wire(write_reg_file_wire),
-      .write_csr_wire(         write_csr_wire)
+      .exec_stall(              exec_stall_reg),
+      .MEM_stage_valid(         stage_MEM_ready),
+      .write_csr_wire(          write_csr_wire),
+
+      .rs1_rs2_valid(           rs1_rs2_valid)
       
       );
 
@@ -378,6 +397,8 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       .stop_request_overide(      stop_request_overide_datamem),
       .reset_able(                reset_able_datamem),
       .in_range_peripheral(       in_range_peripheral),
+      .load_data_valid (          load_data_valid),
+
       //
       .data_clk(         data_clk                     ),
       .data_req_o(       data_req_o_intermediate ),
@@ -404,7 +425,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 		  .PC_stage2(pc_stage_2), 
 		  .PC_stage3(pc_stage_3),
 		  .rd_result_stage2(rd_result_stage2),
-		  .writeData_pi(writeData_pi),
+		  .rd_result_stage3(writeData_pi),
 		  .operand1_stage1(operand1_stage1),
 		  .operand1_into_exec(operand1_into_exec),
 		  .operand2_into_exec(operand2_into_exec),
@@ -421,7 +442,15 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 		  .csr_destination_reg_stage3(               csr_stage3),
 		  .csr_write_reg_stage3(          write_csr_wire_stage3),
 		  .csr_memstage_data(                    csr_val_stage2),
-		  .csr_wbstage_data(                     csr_val_stage3)
+		  .csr_wbstage_data(                     csr_val_stage3),
+
+      .memstage_load_into_reg(                load_into_reg),
+      .load_data_valid (                    load_data_valid),
+      .exec_fwd1  (exec_fwd1  ),
+      .exec_fwd2  (exec_fwd2  ),
+      .exec_fwdCSR(exec_fwdCSR),
+      .rs1_rs2_valid (                        rs1_rs2_valid)
+
 
 		  );
 
@@ -484,7 +513,11 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
         // .o_data_mem_loaded    (                      0),
         .o_csr_reg            (csr_stage2             ),
         .o_csr_reg_val        (csr_val_stage2           ),
-      .o_rst_value          (stage2_reg_empty)
+        .o_rst_value          (stage2_reg_empty),
+        .i_op1_reg_overwrite_en(1'b0),
+        .i_op2_reg_overwrite_en(1'b0),
+        .i_csr_reg_val_overwrite_en(1'b0)
+
         );
 
     pipe_ff_fields u_pipeReg3 (
@@ -542,7 +575,11 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
         .o_data_mem_loaded    (     loaded_data_stage3),
         .o_csr_reg            (csr_stage3             ),
         .o_csr_reg_val        (csr_val_stage3           ),
-        .o_rst_value          (stage3_reg_empty)
+        .o_rst_value          (stage3_reg_empty),
+        .i_op1_reg_overwrite_en(1'b0),
+        .i_op2_reg_overwrite_en(1'b0),
+        .i_csr_reg_val_overwrite_en(1'b0)
+
         );
 
 

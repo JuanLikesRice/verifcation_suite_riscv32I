@@ -75,7 +75,7 @@ int main(void) {
     if (result != (0x123 << 12)) { fail(16); }
 
     // All tests passed; signal success.
-    write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
-    while (1);
+    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
+    // while (1);
     return 0;
 }

@@ -43,7 +43,7 @@ int main(void) {
     }
 
     // All branch and jump tests passed.
-    write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
-    while (1);
+    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
+    // while (1);
     return 0;
 }

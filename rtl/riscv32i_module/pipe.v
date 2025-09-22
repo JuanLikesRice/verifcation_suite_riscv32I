@@ -47,6 +47,12 @@ module pipe_ff_fields #(
     input  wire [`size_opRs2_reg          -1:0] i_opRs2_reg,
     input  wire [`size_op1_reg            -1:0] i_op1_reg,
     input  wire [`size_op2_reg            -1:0] i_op2_reg,
+    input  wire [`size_op1_reg            -1:0] i_op1_reg_overwrite,
+    input  wire [`size_op2_reg            -1:0] i_op2_reg_overwrite,
+    input  wire                                 i_op1_reg_overwrite_en,
+    input  wire                                 i_op2_reg_overwrite_en,
+    input  wire                                 i_csr_reg_val_overwrite_en,
+    
     input  wire [`size_immediate          -1:0] i_immediate,
     input  wire [`size_alu_res2           -1:0] i_alu_res2,
     input  wire [`size_rd_data            -1:0] i_rd_data,
@@ -54,6 +60,7 @@ module pipe_ff_fields #(
     input  wire [`size_data_mem_loaded    -1:0] i_data_mem_loaded,
     input  wire [`size_csr_reg            -1:0] i_csr_reg,
     input  wire [`size_csr_reg_val        -1:0] i_csr_reg_val,
+    input  wire [`size_csr_reg_val        -1:0] i_csr_reg_val_overwrite,
 
     // Packed output bus and per-field outputs
     output wire [WIDTH-1:0]           o_bus,
@@ -141,6 +148,16 @@ module pipe_ff_fields #(
             q[`rst_bit            ] <= 1'b1;
         end else if (en) begin
             q <= din;
+        end else  begin 
+         if (i_op1_reg_overwrite_en) begin 
+            q[`op1_reg] <= i_op1_reg_overwrite;
+         end
+         if (i_op2_reg_overwrite_en) begin 
+            q[`op2_reg] <= i_op2_reg_overwrite;
+         end
+         if (i_csr_reg_val_overwrite_en) begin 
+            q[`op2_reg] <= i_csr_reg_val_overwrite;
+         end
         end
     end
 

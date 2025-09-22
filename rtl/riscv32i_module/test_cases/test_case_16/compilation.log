@@ -9,9 +9,9 @@ ELF Header:
   Type:                              EXEC (Executable file)
   Machine:                           RISC-V
   Version:                           0x1
-  Entry point address:               0x2128
+  Entry point address:               0x2000
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          9012 (bytes into file)
+  Start of section headers:          9136 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -21,6 +21,3 @@ ELF Header:
   Section header string table index: 10
 Complilation run, python next step
 /mnt/c/Users/Turog/Documents/GitHub/verifcation_suite_riscv32I/bare_c_code/riscv32_C_add_small_address_map
-PC: 00000000, Instruction: xxxxxxxx, word in processor 00000000
-PC: 00000004, Instruction: xxxxxxxx, word in processor 00000001
-riscv_command_streamer_tb.v:23: $finish called at 30 (1s)

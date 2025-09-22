@@ -15,7 +15,7 @@ int main(void) {
     if ((a4 * b4) != -152746056)   { fail(4); }
     if ((a5 * b5) != 152746056)    { fail(5); }
 
-    write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
-    while (1);
+    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
+    // while (1);
     return 0;
 }

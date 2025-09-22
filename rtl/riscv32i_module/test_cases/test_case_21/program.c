@@ -21,6 +21,7 @@ int main(void){
   if (do_mulhu(uf,ue) != 0x75CD9046u) fail(3);
 //   if (do_mulhsu(sm1,u8000) != 0xFFFFFFFFu) fail(4);
 
-  write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
-  for(;;);
+  write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
+  // for(;;);
+  return 0;
 }

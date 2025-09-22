@@ -96,7 +96,7 @@ static void on_timer_irq(void) __attribute__((noinline));
 static void on_timer_irq(void)
 {
     /* MMIO write for test bench */
-    *(volatile uint32 *)PERIPHERAL_SUCCESS = 0xDEADBEEF;
+    *(volatile uint32 *)PERIPHERAL_S3 = 0xDEADBEEF;
     timer_triggered = 1;
 }
 
@@ -192,19 +192,24 @@ static void init_mtvec(void)
 
 static inline void delay(void)
 {
-    for (volatile uint32 i = 0; i < 100000U; ++i)
+    for (volatile uint32 i = 0; i < 100U; ++i)
         asm volatile("");
 }
 
 
-void main(void)
+int main(void)
 {
     init_mtvec();                  /* point mtvec at ISR        */
     enable_timer_interrupts();     /* MIE + MTIE                */
     set_timer(10);                /* fire in ~100 cycles      */
 
+
     while (1){
         delay();
+        if (timer_triggered == 1) {
+
+            return 0;
+        }
 
     }    }
 

@@ -23,10 +23,9 @@ int main() {
             break;
         }
      }
-     write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);
-     while (1) {
-
-     }
+    //  write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);
+    //  while (1) {
+    //  }
     return 0; 
 }
 

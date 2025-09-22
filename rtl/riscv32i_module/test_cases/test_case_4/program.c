@@ -60,7 +60,6 @@ int main(void) {
         if (lui_result != (0x123 << 12)) { fail(36); }
     }
 
-    write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
-    while (1);
+    write_mmio(PERIPHERAL_S2, 0xDEADB00F);
     return 0;
 }

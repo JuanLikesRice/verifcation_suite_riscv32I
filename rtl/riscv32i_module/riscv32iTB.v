@@ -5,18 +5,18 @@ module riscv32iTB
     parameter N_param = 32, 
     parameter memory_offset_param = 32'h00000000,
     parameter success_code = 32'hDEADBEEF,
-    parameter BRAM1_TBMEM0_PARAM = 0,
-   //  parameter BRAM1_TBMEM0_PARAM = 1,
-   //  parameter cycles_timeout      = 5000,
-    parameter cycles_timeout      = 300000,
+   //  parameter BRAM1_TBMEM0_PARAM = 0,
+    parameter BRAM1_TBMEM0_PARAM = 1,
+   //  parameter cycles_timeout      =  20_000,
+    parameter cycles_timeout      = 300_000,
    //  parameter debug_param               = 1,
     parameter debug_param               = 0,
 
-    parameter debug_param_vcd           = 0,
-   //  parameter debug_param_vcd           = 1,
+   //  parameter debug_param_vcd           = 0,
+    parameter debug_param_vcd           = 1,
     parameter dispatch_print            = 0,
     // parameter cycles_timeout = 700,
-    parameter initial_pc    = 32'h000021F4
+    parameter initial_pc    = 32'h00002000
     )
    (
 

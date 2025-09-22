@@ -77,7 +77,7 @@ int main(void) {
     }
 
     // All load/store tests passed.
-    write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
-    while (1);
+    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
+    // while (1);
     return 0;
 }

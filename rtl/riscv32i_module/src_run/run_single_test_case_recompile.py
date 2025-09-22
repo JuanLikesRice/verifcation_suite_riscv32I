@@ -211,7 +211,7 @@ def shift_hex_file(src_path, dst_path, offset=0x2000, allow_negative=False, only
 
 
 
-def main(vlt=False,recompile_on=True):
+def main(vlt=False,recompile_on=True,VCD_SAVE=False,offset_given=0x2000):
     rtl_directory = os.getcwd()
     assembly_code_dir = os.path.join(rtl_directory, "assembly_code")
     test_case_number_file = os.path.join(assembly_code_dir, "test_case_number.txt")
@@ -253,7 +253,7 @@ def main(vlt=False,recompile_on=True):
     dst_program_hex = os.path.join(rtl_directory, "program.hex")
     # src_program_hex = os.path.join(test_case_dir, "program.hex")
     dst_program_hex_l = os.path.join(rtl_directory, "out.hex")
-    shift_hex_file(src_program_hex, dst_program_hex_l, offset=0x2000)
+    shift_hex_file(src_program_hex, dst_program_hex_l, offset=offset_given)
     copy_file(src_program_hex, dst_program_hex)
 
     # Parse compilation.log for entry point address.
@@ -280,7 +280,10 @@ def main(vlt=False,recompile_on=True):
     sim_log_path = os.path.join(rtl_directory, "sim.log")
 
     # Copy output files to the outputs directory in the test case.
-    output_files = ["sim.log", "sim.vcd"]  # Add other output files as needed.
+    if VCD_SAVE:
+        output_files = ["sim.log", "sim.vcd"]  # Add other output files as needed.
+    else: 
+        output_files = ["sim.log"]  # Add other output files as needed.
     for output_file in output_files:
         src_output_file = os.path.join(rtl_directory, output_file)
         if os.path.exists(src_output_file):
@@ -297,8 +300,12 @@ if __name__ == "__main__":
     vlt = False
     recompile_on=True
     # recompile_on=False
+    
+    VCD_SAVE = False
+    VCD_SAVE = True
+    offset_given=0x2000
     mainstart_time = time.time()
-    main(vlt=vlt,recompile_on=recompile_on)
+    main(vlt=vlt,recompile_on=recompile_on,VCD_SAVE=VCD_SAVE,offset_given=offset_given)
     mainend_time = time.time()
     print(f"TESTCASE SCRIPT took {mainend_time - mainstart_time:.2f} seconds.")
 

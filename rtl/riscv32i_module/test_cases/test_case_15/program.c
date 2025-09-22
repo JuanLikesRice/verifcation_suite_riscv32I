@@ -12,9 +12,9 @@ int main() {
     write_to_peripheral(PERIPHERAL_S1, sum);
 
     if (sum == 465) {
-                write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);
+                write_to_peripheral(PERIPHERAL_S2, 0xDEADBEEF);
     } else {    write_to_peripheral(PERIPHERAL_BASE, 0x0BADF00D);}
-    while (1) {    }
+    // while (1) {    }
     return 0; 
 }
 

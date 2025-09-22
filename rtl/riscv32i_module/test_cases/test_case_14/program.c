@@ -40,7 +40,7 @@ int main(void) {
     int res;
     write_mtvec(0x100000);
     // If all branch tests pass, signal overall success.
-    write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
-    while (1);
+    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
+    // while (1);
     return 0;
 }

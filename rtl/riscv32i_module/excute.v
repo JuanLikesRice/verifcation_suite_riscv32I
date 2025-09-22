@@ -4,13 +4,14 @@ module execute
 	 parameter debug_param = 1   ) (
 				 input wire	    i_clk,
 				 input wire	    i_en,
+				 input wire	    rst,
+
 				 // input  wire [N_param-1:0]  instruction,
 				 // outputs to register file
 				 input wire [4:0]   rd_i,
 				 input wire [4:0]   rs1_i,
 				 input wire [4:0]   rs2_i,
 				 input wire [11:0]  csr_i,
-
 				 input wire [31:0]  instruction,
 				 input wire [31:0]  operand1_pi,
 				 input wire [31:0]  operand2_pi,
@@ -26,16 +27,99 @@ module execute
 				 output wire	    write_reg_file_wire,
 				 output wire	    write_csr_wire,
 
-				 input wire [63:0]  Single_Instruction_i
+				 input wire [63:0]  Single_Instruction_i,
+				 input wire 		rs1_rs2_valid,
+				 output 			exec_stall,
+				 input 				MEM_stage_valid
 				 // outputs to ALU
 				 );
 
 
-   reg [32:0]					    result;
-   reg [32:0]					    result_secondary;
-   assign alu_result_1           = result[31:0];
-   assign alu_result_2 = result_secondary[31:0];
-   reg						    branch_inst, jump_inst,write_reg_file,write_csr;
+    reg [32:0]					    result;
+    reg [32:0]					    result_secondary;
+    reg						    branch_inst, jump_inst,write_reg_file,write_csr;
+	reg exec_stall_reg;
+	reg start;
+	reg [5:0] counter;
+	parameter MULT_CYCLE = 7; // min 1 
+	localparam [1:0]		S_0 = 2'b00, S_1 = 2'b01, S_2 = 2'b10, S_3 = 2'b11;
+	reg	[1:0] current_state, next_state;
+	reg	stall_reg ;
+	wire start_processing,process_end,accept_out;
+
+
+	assign alu_result_1 = result[31:0];
+	assign alu_result_2 = result_secondary[31:0];
+	assign exec_stall 	= stall_reg | ~rs1_rs2_valid|~MEM_stage_valid;
+
+	assign start_processing = ((Single_Instruction_i == `inst_MUL) & rs1_rs2_valid );
+	assign process_end 		= (counter >= MULT_CYCLE );
+	assign accept_out       = MEM_stage_valid;
+
+
+	always @ (posedge i_clk) begin 
+		if (rst) begin 
+			current_state <= S_0;
+			counter 	  <= 1;
+		end else begin 
+			current_state <= next_state;
+		end
+		case(current_state)
+			S_0: begin
+				counter <= 1;
+			 end  
+			S_1: begin
+				counter <= counter + 1;
+			 end  
+			S_2: begin
+				counter <= 1;
+			 end  
+		endcase
+	end
+
+
+
+	always @(*) begin 
+		case(current_state) 
+			S_0: begin
+				if (start_processing) begin 
+					stall_reg <= 1;
+					next_state <= S_1;
+				end else begin 
+					stall_reg <= 0;
+					next_state <= S_0;
+				end
+			 end
+			S_1: begin
+				if (process_end) begin 
+					if (accept_out) begin
+						stall_reg  <= 0;
+						next_state <= S_0;
+					end else begin 
+						stall_reg  <= 1;
+						next_state <= S_2;
+					end 
+				end else begin 
+					stall_reg  <= 1;
+					next_state <= S_1;
+				end
+			 end
+			S_2: begin
+				if (accept_out) begin 
+					stall_reg  <= 0;
+					next_state <= S_0;
+				end else begin 
+					stall_reg  <= 1;
+					next_state <= S_2;
+				end
+			 end
+		
+		endcase
+	end 
+
+
+
+
 
    initial begin 
       result           <=0;
@@ -43,6 +127,7 @@ module execute
       branch_inst      <=0;
       jump_inst        <=0;
       write_reg_file   <=0;
+	  exec_stall_reg   <=0;
    end 
 
 

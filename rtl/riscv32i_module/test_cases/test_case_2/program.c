@@ -13,11 +13,9 @@ int main(void) {
     
     // Expected result is sign-extended: 0xFFFFCFC7, which is -12345.
     if (result == -12345) {
-        write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
+        write_mmio(PERIPHERAL_S1,     0xDEADBEEF);
     } else {
         write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
-    }
-    
-    while (1);
+    }    
     return 0;
 }

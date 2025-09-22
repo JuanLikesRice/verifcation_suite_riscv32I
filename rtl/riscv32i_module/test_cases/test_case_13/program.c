@@ -115,7 +115,7 @@ int main(void) {
     if (res != 1) { fail(6); }    // Expected BGEU to succeed
 
     // If all branch tests pass, signal overall success.
-    write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
-    while (1);
+    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
+    // while (1);
     return 0;
 }

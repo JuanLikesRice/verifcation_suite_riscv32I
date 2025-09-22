@@ -13,10 +13,9 @@ int main(void) {
     
     // Check if the loaded half-word is as expected.
     if (loaded == (short)0xDEAD) {
-        write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
+        write_mmio(PERIPHERAL_S3,     0xDEADBEEF);
     } else {
         write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
     }
-    while (1);
     return 0;
 }

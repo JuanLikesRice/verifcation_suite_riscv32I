@@ -11,16 +11,18 @@ module dataMem #(
 		input wire	   stop_request_overide,
 		output wire	   reset_able,
 
-		input wire [63:0]  Single_Instruction,
-		input wire [31:0]  address_i,
-		input wire [31:0]  storeData, 
-		input wire [31:0]  pc_i,
-		input wire [31:0]  memory_offset,
-		output wire [31:0] loadData_w,
-		output wire [31:0] final_value, // debug port not in actual FPGA
-		output wire	   stall_mem_not_avalible,
-		output wire	   load_into_reg,
-		output wire	   in_range_peripheral,
+		input wire [63:0]    Single_Instruction,
+		input wire [31:0]    address_i,
+		input wire [31:0]    storeData, 
+		input wire [31:0]    pc_i,
+		input wire [31:0]    memory_offset,
+		output wire [31:0]   loadData_w,
+		output wire [31:0]   final_value, // debug port not in actual FPGA
+		output wire	         stall_mem_not_avalible,
+		output wire	         load_into_reg,
+		output wire	         in_range_peripheral,
+      output wire          load_data_valid,
+      
 
 
 
@@ -39,7 +41,6 @@ module dataMem #(
    wire [29:0]			   word_address;
    wire [ 1:0]			   byte_address;
    reg				   stall_mem_not_avalible_reg;
-   wire				   load_data_valid;
    wire				   store_wire,load_wire;
    wire [31:0]			   raw_word;
    reg [31:0]			   loadData;               // Data to be loaded
@@ -55,17 +56,14 @@ module dataMem #(
    wire [31:0]			   address;
 
    reg [31:0]			   cycles_request; 
-   reg [31:0]			   retrive_cycles;
-   wire				   rstb_busy;
-
-   wire				   enb;
+   wire				      rstb_busy;
+   wire				      enb;
    reg [3:0]			   web;
    wire [ 7:0]			   raw_data_byte_LBU;
    reg [31:0]			   store_data;
 
 
    initial begin 
-      retrive_cycles <= 2; // number of stall cycles
       store_data    <= 32'b0;
    end 
 
@@ -75,14 +73,13 @@ module dataMem #(
    // assign rstb_busy          = data_mem_rstb_busy;
 
    //Outputs
-   assign load_into_reg      = load_wire;
+   assign          load_into_reg = load_wire;
    assign stall_mem_not_avalible = fsm_mem_stall;
-
-   assign    data_req_o   = data_req_o_internal;
-   assign    data_addr_o  = address;
-   assign    data_we_o    = data_we_o_internal;
-   assign    data_be_o    = data_be_o_internal;
-   assign    data_wdata_o = store_data;
+   assign           data_req_o   = data_req_o_internal;
+   assign           data_addr_o  = address;
+   assign           data_we_o    = data_we_o_internal;
+   assign           data_be_o    = data_be_o_internal;
+   assign           data_wdata_o = store_data;
 
 
 
@@ -90,10 +87,8 @@ module dataMem #(
 
    //--|control data|--\\\
    assign address = address_i;
-   // assign address = address_i;
    assign word_address = address[31:2];  
    assign byte_address = address[ 1:0];
-   // assign raw_word = DMEM[word_address];
    assign loadData_w = loadData;
 
 
@@ -106,11 +101,8 @@ module dataMem #(
                            (Single_Instruction == `inst_SH) ||
                            (Single_Instruction == `inst_SW));
 
-   // assign enb = store_wire | load_wire;
 
    assign loadData_w =   loadData;
-
-
    assign raw_data_byte_LBU = ((byte_address == 2'b00) ? raw_bram_data_word[7:0]   :
                                (byte_address == 2'b01) ? raw_bram_data_word[15:8]  :
                                (byte_address == 2'b10) ? raw_bram_data_word[23:16] :
@@ -235,12 +227,11 @@ module dataMem #(
 
    assign load_data_valid  = (current_state == S_WAIT_RVALID) && data_rvalid_i;
 
-   assign accept_new_req   = (load_wire || store_wire) && ~load_data_valid  && ~stop_request_overide;
+   assign accept_new_req   = (load_wire || store_wire) && ~load_data_valid  && ~stop_request_overide && (last_serviced_PC!={1'b0,pc_i});
 
    assign reset_able       = (current_state == S_IDLE) && ~accept_new_req;
 
    always @(*) begin
-
       case (current_state)
         S_IDLE: begin
            if (accept_new_req) begin
@@ -293,21 +284,23 @@ module dataMem #(
    
 
 
-
+reg [32:0] last_serviced_PC;
 
    always @(posedge clk) begin 
       if (reset) begin
          current_state        <= S_IDLE;
+         last_serviced_PC     <= 33'h1_0000_000;
+         
       end else begin 
          current_state <= next_state; // Update the state
-         //     case(current_state)
-         //     S_WAIT_RVALID: begin
-         //         if (pc_i_valid && stall_i_EXEC && ~abort_rvalid) begin 
-         //         instruction_o_backup         <= data_rdata_i; // Store the requested PC   
-         //         saved_instruction_from_stall <= 1'b1; // Store the requested PC   
-         //         end 
-         //     end
-         // endcase
+
+          case(current_state)
+          S_WAIT_RVALID: begin
+              if (data_rvalid_i) begin 
+               last_serviced_PC     <= {1'b0,pc_i};  
+              end 
+          end
+         endcase
       end 
    end
 
