@@ -10,7 +10,7 @@ IVERILOG ?= /usr/bin/iverilog
 YOSYS ?= /usr/local/bin/yosys
 
 OUT_DIR   := build_results
-RTL_SRCS := $(DUT) main.v pipe.v ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v
+RTL_SRCS := $(DUT) main.v pipe.v ins_mem.v decode.v regfile.v FPregfile.v excute.v pc.v dataMem.v hazard.v debug.v
 HDRS     := params.vh
 INC      := .    
 
@@ -20,7 +20,7 @@ sim: riscv32i-sim
 	./$< +VCDFILE=sim.vcd +VCDLEVEL=5 &> sim.log
 
 
-riscv32i-sim: riscv32iTB.v riscv32i_wrap.v ${DUT} main.v pipe.v ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v  tbmem.v | ${XILINX_CELLS_DIR}
+riscv32i-sim: riscv32iTB.v riscv32i_wrap.v ${DUT} main.v pipe.v ins_mem.v decode.v regfile.v FPregfile.v excute.v pc.v dataMem.v hazard.v debug.v  tbmem.v | ${XILINX_CELLS_DIR}
 	${IVERILOG} -g2001 -s riscv32iTB -y ${XILINX_CELLS_DIR} -o $@ $^
 
 
@@ -95,7 +95,7 @@ VLT_FLAGS += -Wno-fatal              # don't exit on warnings
 # Optional targeted mutes as you fix code:
 # VLT_FLAGS += -Wno-ASSIGNIN -Wno-UNOPTFLAT -Wno-UNUSED -Wno-UNDRIVEN -Wno-WIDTH
 
-RTL := main.v pipe.v ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v tbmem.v
+RTL := main.v pipe.v ins_mem.v decode.v regfile.v FPregfile.v excute.v pc.v dataMem.v hazard.v debug.v tbmem.v
 
 sim_vlt: build_vlt
 	./obj_dir/Vriscv32iTB +VCDFILE=sim.fst +VCDLEVEL=5 &> sim.log
@@ -111,7 +111,7 @@ vlt_clean:
 
 
 # VERILATOR ?= verilator
-# RTL := $(DUT) main.v pipe.v ins_mem.v decode.v regfile.v excute.v pc.v dataMem.v hazard.v debug.v
+# RTL := $(DUT) main.v pipe.v ins_mem.v decode.v regfile.v FPregfile.v excute.v pc.v dataMem.v hazard.v debug.v
 # VLT_FLAGS = -Wall --sv --binary --timing --trace-vcd -j 0 -Wno-fatal
 
 # sim_vlt: build_vlt

@@ -298,11 +298,11 @@ def main(vlt=False,recompile_on=True,VCD_SAVE=False,offset_given=0x2000):
 if __name__ == "__main__":
     # vlt = True
     vlt = False
-    recompile_on=True
-    # recompile_on=False
+    # recompile_on=True
+    recompile_on=False
     
     VCD_SAVE = False
-    VCD_SAVE = True
+    # VCD_SAVE = True
     offset_given=0x2000
     mainstart_time = time.time()
     main(vlt=vlt,recompile_on=recompile_on,VCD_SAVE=VCD_SAVE,offset_given=offset_given)

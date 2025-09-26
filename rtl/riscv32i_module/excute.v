@@ -352,7 +352,7 @@ module execute
 	   write_reg_file <= 1'b1;
 	   write_csr <= 1'b0;
 	end
-	{`inst_LW    }:begin 
+	`inst_LW  ,`inst_FLW  :begin 
 	   result <= operand1_pi + imm_i;
 	   result_secondary <=0;
 	   branch_inst <=0;
@@ -392,7 +392,7 @@ module execute
 	   write_reg_file <= 1'b0;
 	   write_csr <= 1'b0;
 	end
-	{`inst_SW    }:begin
+	 `inst_SW, `inst_FSW :begin
 	   result <= operand1_pi + imm_i;
 	   result_secondary <=0;
 	   branch_inst <=0;
@@ -721,6 +721,9 @@ module execute
 	     {`inst_LW    }:begin 
 		$write("inst_LW     ");
 	     end
+	     {`inst_FLW    }:begin 
+		$write("inst_FLW     ");
+	     end
 	     {`inst_LBU   }:begin 
 		$write("inst_LBU    ");
 	     end
@@ -732,6 +735,9 @@ module execute
 	     end
 	     {`inst_SH    }:begin 
 		$write("inst_SH     ");
+	     end
+	     {`inst_FSW    }:begin 
+		$write("inst_FSW     ");
 	     end
 	     {`inst_SW    }:begin 
 		$write("inst_SW     ");

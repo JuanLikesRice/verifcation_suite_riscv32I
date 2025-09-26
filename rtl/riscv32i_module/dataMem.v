@@ -95,10 +95,12 @@ module dataMem #(
    assign load_wire  =     ((Single_Instruction == `inst_LB)  ||
                             (Single_Instruction == `inst_LH)  ||
                             (Single_Instruction == `inst_LW)  ||
+                            (Single_Instruction == `inst_FLW)  ||
                             (Single_Instruction == `inst_LBU) ||
                             (Single_Instruction == `inst_LHU));       
    assign store_wire    = ((Single_Instruction == `inst_SB) ||
                            (Single_Instruction == `inst_SH) ||
+                           (Single_Instruction == `inst_FSW)||
                            (Single_Instruction == `inst_SW));
 
 

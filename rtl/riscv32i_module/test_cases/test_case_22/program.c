@@ -1,63 +1,38 @@
-// Typedefs (since stdint.h is not used)
-typedef unsigned int    uint32;
-typedef unsigned long   uint64;
-typedef unsigned long   uintptr;
+#include "constants.h"
 
-#define CLINT_BASE      0x02000000UL
-#define MTIMECMP        (*(volatile uint64*)(CLINT_BASE + 0x4000))
-#define MTIME           (*(volatile uint64*)(CLINT_BASE + 0xBFF8))
+// static inline void mmio_write(unsigned int a, unsigned int v){ *(volatile unsigned int*)a = v; }
 
-#define MIE_MTIE        (1 << 7)
-#define MSTATUS_MIE     (1 << 3)
-
-volatile uint32 timer_triggered = 0;
-
-// Forward declaration
-void trap_handler(void);
-
-// Set mtvec to our trap handler address
-void init_mtvec() {
-    uintptr trap_addr = (uintptr)&trap_handler;
-    asm volatile("csrw mtvec, %0" :: "r"(trap_addr));
+/* ---- FP control ---- */
+static inline void enable_fp(void) {
+    const unsigned int FS_DIRTY = (3u << 13);  // mstatus.FS=11
+    __asm__ volatile ("csrs mstatus, %0" :: "r"(FS_DIRTY));
+}
+static inline void set_fcsr(unsigned int frm, unsigned int fflags) {
+    unsigned int v = ((frm & 7u) << 5) | (fflags & 0x1Fu);
+    __asm__ volatile ("csrw fcsr, %0" :: "r"(v));
+}
+static inline unsigned int read_fcsr(void){
+    unsigned int v;
+    __asm__ volatile ("csrr %0, fcsr" : "=r"(v));
+    return v;
 }
 
-// Enable timer interrupt
-void enable_timer_interrupt() {
-    asm volatile("csrs mie, %0" :: "r"(MIE_MTIE));
-    asm volatile("csrs mstatus, %0" :: "r"(MSTATUS_MIE));
-}
+int main(void) {
+    enable_fp();
 
-// Set timer for future interrupt (e.g., 1 million cycles ahead)
-void set_timer(uint64 delta) {
-    uint64 now = MTIME;
-    MTIMECMP = now + delta;
-}
+    // round-to-nearest-even, clear flags
+    set_fcsr(0u, 0u);
 
-// Trap handler (called on interrupt)
-void trap_handler() {
-    set_timer(1000000);  // Set next timer interrupt
-    timer_triggered = 1;
-}
+    volatile float a = 1.25f;
+    volatile float b = 2.5f;
+    float c = a + b;        // should be 3.75f, compiled as fadd.s
 
-// Dumb delay loop (for blinking or polling effect)
-void delay() {
-    volatile uint32 i;
-    for (i = 0; i < 100000; i++) {
-        // prevent optimization
-        asm volatile("");
-    }
-}
+    // touch c so compiler keeps it
+    volatile unsigned int out = *(volatile unsigned int*)&c;
 
-// Main entry point (from startup.S, sets _start to call this)
-void main() {
-    init_mtvec();
-    enable_timer_interrupt();
-    set_timer(1000000);
-
-    while (1) {
-        if (timer_triggered) {
-            timer_triggered = 0;
-        }
-        delay();
-    }
+    // record result and current fcsr to MMIO
+    write_mmio(PERIPHERAL_S1, out);
+    write_mmio(PERIPHERAL_S2 + 4, read_fcsr());
+    return 0;
+    // for(;;);
 }

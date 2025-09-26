@@ -1,33 +1,33 @@
 #include "constants.h"
 
-int main() {
-    int array[10];  
-    int sum = 0;
-    for (int i = 0; i < 10; i++) {
-        array[i] = i + 1;}
-    for (int i = 0; i < 10; i++) {
-                sum += array[i];
-    write_to_peripheral(PERIPHERAL_S2, sum);}
-    write_to_peripheral(PERIPHERAL_S1, sum);
-
-    if (sum == 55) {
-                write_to_peripheral(PERIPHERAL_S3,0xDEADF00F);
-    } else {    write_to_peripheral(PERIPHERAL_BASE, 0x0BADF00D);}
+int main(void) {
+    unsigned char expected[4] = { 0xEF, 0xBE, 0xAD, 0xDE };
+    volatile unsigned char *ptr = (volatile unsigned char *)PERIPHERAL_S2;
     
-    int sum_while;
-    sum_while = 0;
-    while (1) {   
-
-        sum_while += 1;
-        if (sum_while == 10) {
-            break;
+    // Store and verify each byte.
+    for (int i = 0; i < 4; i++) {
+        ptr[i] = expected[i];          // Store byte
+        if (ptr[i] != expected[i]) {     // Verify store byte
+            write_mmio(PERIPHERAL_S1, i);  // Log failing index
+            write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
+            while (1);
         }
-     }
-    //  write_to_peripheral(PERIPHERAL_BASE, 0xDEADBEEF);
-    //  while (1) {
-    //  }
-    return 0; 
+    }
+    
+    // Reassemble the 32-bit word from stored bytes.
+    unsigned int reconstructed = 
+          (ptr[0]) 
+        | (ptr[1] << 8)
+        | (ptr[2] << 16)
+        | (ptr[3] << 24);
+    
+    // Check the reassembled word.
+    if (reconstructed == 0xDEADBEEF) {
+        write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);
+    } else {
+        write_mmio(PERIPHERAL_SUCCESS, 0xBADF00D);
+    }
+    
+    while (1);
+    return 0;
 }
-
-
-

@@ -65,15 +65,20 @@ module riscv32i
 wire [2:0] fun3_o;
 wire [3:0] data_be_o;
 wire [4:0] rd_o, rs1_o, rs2_o;
+wire [4:0] fp_rd_o, fp_rs1_o, fp_rs2_o;
 wire [ 4:0] rd_stage1, rd_stage2, rd_stage3, rs1_stage1, rs1_stage2, rs2_stage1, rs2_stage2;
+wire [ 4:0] Fp_rd_stage1, Fp_rd_stage2, Fp_rd_stage3, Fp_rs1_stage1, Fp_rs1_stage2, Fp_rs2_stage1, Fp_rs2_stage2;
 wire [6:0] fun7_o, INST_typ_o, opcode_o;
 wire [11:0] csr_o, csr_stage1, csr_stage2, csr_stage3;
-wire [31:0] alu_result_1, alu_result_1_stage2, alu_result_1_stage3, alu_result_2, alu_result_2_stage2, alu_result_2_stage3, csr_into_exec, csr_regfile_o, csr_val_stage1, csr_val_stage2, csr_val_stage3, csrData_pi, data_addr_o, data_rdata_i, data_wdata_o, final_value, imm_o, imm_stage1, imm_stage2, imm_stage3, instruction_stage_0, instruction_stage_1, instruction_stage_2, instruction_stage_3, interrupt_vector_i, irq_addr_i, loaded_data, loaded_data_stage3, mepc, nextPC_o, operand1_into_exec, operand1_po, operand1_stage1, operand1_stage2, operand1_stage3, operand2_into_exec, operand2_po, operand2_stage1, operand2_stage2, operand2_stage3, pc_i,pc_o, pc_stage_0, pc_stage_1, pc_stage_2, pc_stage_3, rd_result_stage2, writeData_pi;
+wire [31:0] alu_result_1, alu_result_1_stage2, alu_result_1_stage3, alu_result_2, alu_result_2_stage2, alu_result_2_stage3, csr_into_exec, csr_regfile_o, csr_val_stage1, csr_val_stage2, csr_val_stage3, csrData_pi, data_addr_o, data_rdata_i, data_wdata_o, final_value, imm_o, imm_stage1, imm_stage2, imm_stage3, instruction_stage_0, instruction_stage_1, instruction_stage_2, instruction_stage_3, interrupt_vector_i, irq_addr_i, loaded_data, loaded_data_stage3, mepc, nextPC_o, operand1_into_exec, operand1_po, operand1_stage1, operand1_stage2, operand1_stage3, operand2_into_exec, operand2_po, operand2_stage1, operand2_stage2, operand2_stage3, pc_i,pc_o, pc_stage_0, pc_stage_1, pc_stage_2, pc_stage_3, rd_result_stage2, wb_final_IReg_writeData_pi;
+wire [31:0] Fp_operand1_into_exec, Fp_operand1_po, Fp_operand1_stage1, Fp_operand1_stage2, Fp_operand1_stage3; 
+wire [31:0] Fp_operand2_into_exec, Fp_operand2_po, Fp_operand2_stage1, Fp_operand2_stage2, Fp_operand2_stage3; 
+
 wire [63:0] pipeReg0_wire, Single_Instruction_o, Single_Instruction_stage1, Single_Instruction_stage2, Single_Instruction_stage3;
 reg  [511:0] pipeReg1, pipeReg2, pipeReg3;
 wire [511:0] pipeReg1_wire, pipeReg2_wire, pipeReg3_wire;
 reg delete_reg1_reg2_reg, halt_i;
-wire all_ready, branch_inst_wire, branch_inst_wire_stage2, change_PC_condition_for_jump_or_branch, data_clk, data_gnt_i, data_req_o, data_req_o_intermediate, data_rvalid_i, data_we_o, delete_reg1_reg2, enable_design, end_condition, exec_stall, i_en, in_range_peripheral, initate_irq, irq_grant_o, irq_prep, irq_req_i, irq_service_done, jump_inst_wire, jump_inst_wire_stage2, load_into_reg, load_into_reg_stage3, mret_inst, override_all_stop, pc_i_valid, pc_valid, pulsed_irq_prep, ready_for_irq_handler, reset, stall_i, STALL_DECODE, STALL_FETCH, stall_MEMSTAGE, we_pi, write_csr_wire, write_csr_wire_stage2, write_csr_wire_stage3, write_reg_file_wire, write_reg_file_wire_stage2, write_reg_file_wire_stage3, write_reg_stage3;
+wire all_ready, branch_inst_wire, branch_inst_wire_stage2, change_PC_condition_for_jump_or_branch, data_clk, data_gnt_i, data_req_o, data_req_o_intermediate, data_rvalid_i, data_we_o, delete_reg1_reg2, enable_design, end_condition, exec_stall, i_en, in_range_peripheral, initate_irq, irq_grant_o, irq_prep, irq_req_i, irq_service_done, jump_inst_wire, jump_inst_wire_stage2, mem_load_into_reg, mem_load_into_reg_stage3, mret_inst, override_all_stop, pc_i_valid, pc_valid, pulsed_irq_prep, ready_for_irq_handler, reset, stall_i, STALL_DECODE, STALL_FETCH, stall_MEMSTAGE, we_pi, write_csr_wire, write_csr_wire_stage2, write_csr_wire_stage3, write_reg_file_wire, write_reg_file_wire_stage2, write_reg_file_wire_stage3, write_reg_stage3;
 wire [N_param-1:0] instruction;
 wire [`pipe_len-1:0] u_pipeReg1_res, u_pipeReg2_res, u_pipeReg3_res;
 wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
@@ -110,19 +115,19 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
    assign  irq_req_i               = 1'b0;  
    assign  irq_addr_i              = 32'h0;
    //writing into destination reg
-   assign write_reg_stage3 = write_reg_file_wire_stage3|load_into_reg_stage3;
+   assign write_reg_stage3 = write_reg_file_wire_stage3|mem_load_into_reg_stage3;
    //flush from branch
    assign delete_reg1_reg2 = branch_inst_wire_stage2 | jump_inst_wire_stage2| irq_prep | mret_inst;
    //Value being wrtten to regfile in WBB stage, also may be forwarded to ALU
-   assign writeData_pi     = load_into_reg_stage3 ? loaded_data_stage3 : alu_result_1_stage3;
-   // assign csrData_pi       = alu_result_2_stage3;
+   assign wb_final_IReg_writeData_pi     = mem_load_into_reg_stage3 ? loaded_data_stage3 : alu_result_1_stage3;
    //Value being wrtten to regfile in MEM stage, also may be forwarded to ALU
-   assign rd_result_stage2 = load_into_reg ? loaded_data : alu_result_1_stage2;
+   assign rd_result_stage2 = mem_load_into_reg ? loaded_data : alu_result_1_stage2;
 
    assign  stop_request_overide_datamem = 1'b0;
    assign  stop_request_overide_insmem = 1'b0;
    assign mret_inst =   (Single_Instruction_stage2 == `inst_MRET);
 
+   // assign csrData_pi       = alu_result_2_stage3;
    // assign Dmem_data_req_o = in_range_peripheral ?  1'b0 : Dmem_data_req_o_intermediate;
    // assign  Dmem_data_req_o   =    Dmem_data_req_o_intermediate;
    assign  Dmem_data_req_o   =   in_range_peripheral ? 1'b0                     : data_req_o_intermediate;
@@ -278,22 +283,41 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
         .o_instruct           (instruction_stage_0),
         .o_rst_value          (stage0_reg_empty),
 
+
+        .i_Fp_op1_reg_overwrite_en(1'b0),
+        .i_Fp_op2_reg_overwrite_en(1'b0),
         .i_op1_reg_overwrite_en(1'b0),
         .i_op2_reg_overwrite_en(1'b0),
         .i_csr_reg_val_overwrite_en(1'b0)
     );
 
-   reg_file #(.debug_param(debug_param))reg_file(
+   reg_file #(.debug_param(debug_param)) I_reg_file (
 		     .clk(clk),
 		     .reset(reset), 
 		     .reg1_pi(rs1_o), 
 		     .reg2_pi(rs2_o), 
 		     .destReg_pi(rd_stage3),
 		     .we_pi(write_reg_file_wire_stage3), 
-		     .writeData_pi(writeData_pi), 
+		     .writeData_pi(wb_final_IReg_writeData_pi), 
 		     .operand1_po(operand1_po),
 		     .operand2_po(operand2_po)
 		     );
+
+   Fp_reg_file #(.debug_param(debug_param)) FP_reg_file(
+		     .clk(clk),
+		     .reset(reset), 
+		     .Fp_reg1_pi(      fp_rs1_o), 
+		     .Fp_reg2_pi(      fp_rs2_o), 
+		    //  .Fp_destReg_pi(   fp_rd_stage3),
+		    //  .Fp_we_pi(        fp_write_reg_file_wire_stage3), 
+		     .Fp_writeData_pi( wb_final_IReg_writeData_pi),
+		     .Fp_operand1_po(  Fp_operand1_po),
+		     .Fp_operand2_po(  Fp_operand2_po)
+		     );
+
+
+
+
   
    decode #(.N_param(`size_X_LEN)) decode_debug
      (
@@ -309,7 +333,11 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       .imm_o(imm_o),
       .INST_typ_o(INST_typ_o),
       .opcode_o(opcode_o),
-      .Single_Instruction_o(Single_Instruction_o)
+      .Single_Instruction_o(Single_Instruction_o),
+      .fp_rd_o (fp_rd_o ), // used later
+      .fp_rs1_o(fp_rs1_o),
+      .fp_rs2_o(fp_rs2_o)
+
       );
 
     pipe_ff_fields u_pipeReg1 (
@@ -330,6 +358,19 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       .i_op2_reg_overwrite  (operand2_into_exec),
       .i_op1_reg_overwrite_en(i_op1_reg_overwrite_en),
       .i_op2_reg_overwrite_en(i_op2_reg_overwrite_en),
+
+
+      .i_Fp_opRs1_reg          (fp_rs1_o     ),
+      .i_Fp_opRs2_reg          (fp_rs2_o     ),
+      .i_Fp_op1_reg            (Fp_operand1_po),
+      .i_Fp_op2_reg            (Fp_operand2_po),
+      // .i_Fp_fmt(),
+
+      .i_Fp_op1_reg_overwrite  (operand1_into_exec),
+      .i_Fp_op2_reg_overwrite  (operand2_into_exec),
+      .i_Fp_op1_reg_overwrite_en(i_op1_reg_overwrite_en),
+      .i_Fp_op2_reg_overwrite_en(i_op2_reg_overwrite_en),
+
       .i_csr_reg_val_overwrite_en(i_csr_reg_val_overwrite_en),
       .i_immediate          (imm_o),
       .i_Single_Instruction (Single_Instruction_o),
@@ -346,7 +387,14 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       .o_Single_Instruction (Single_Instruction_stage1  ),
       .o_csr_reg            (csr_stage1                 ),
       .o_csr_reg_val        (csr_val_stage1             ),
-      .o_rst_value          (stage1_reg_empty)
+      .o_rst_value          (stage1_reg_empty),
+
+      .o_Fp_opRs1_reg          (Fp_rs1_stage1     ),
+      .o_Fp_opRs2_reg          (Fp_rs2_stage1     ),
+      .o_Fp_op1_reg            (Fp_operand1_stage1),
+      .o_Fp_op2_reg            (Fp_operand2_stage1)
+      // .o_Fp_fmt                 (  )
+
           );
 
    execute  #(.N_param(`size_X_LEN), .debug_param(debug_param)) execute 
@@ -393,7 +441,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
       .loadData_w(                loaded_data),
       .memory_offset(             memory_offset),
       .stall_mem_not_avalible(    stall_MEMSTAGE),
-      .load_into_reg(             load_into_reg),
+      .load_into_reg(             mem_load_into_reg),
       .stop_request_overide(      stop_request_overide_datamem),
       .reset_able(                reset_able_datamem),
       .in_range_peripheral(       in_range_peripheral),
@@ -425,12 +473,23 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 		  .PC_stage2(pc_stage_2), 
 		  .PC_stage3(pc_stage_3),
 		  .rd_result_stage2(rd_result_stage2),
-		  .rd_result_stage3(writeData_pi),
+		  .rd_result_stage3(wb_final_IReg_writeData_pi),
 		  .operand1_stage1(operand1_stage1),
 		  .operand1_into_exec(operand1_into_exec),
 		  .operand2_into_exec(operand2_into_exec),
 		  .operand2_stage1(operand2_stage1),
 
+      // // FP added
+      // .Fp_rs1_stage1(Fp_rs1_stage1),
+		  // .Fp_rs2_stage1(Fp_rs2_stage1),
+      // .Fp_rd_result_stage2(rd_result_stage2),
+		  // .Fp_rd_result_stage3(wb_final_IReg_writeData_pi),
+		  // .Fp_operand1_stage1(operand1_stage1),
+		  // .Fp_operand1_into_exec(operand1_into_exec),
+		  // .Fp_operand2_into_exec(operand2_into_exec),
+		  // .Fp_operand2_stage1(operand2_stage1),
+      // Fp_operand2_stage1
+      // Fp_operand2_stage1
 
 		  .csr_into_exec(csr_into_exec),
 
@@ -444,7 +503,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
 		  .csr_memstage_data(                    csr_val_stage2),
 		  .csr_wbstage_data(                     csr_val_stage3),
 
-      .memstage_load_into_reg(                load_into_reg),
+      .memstage_load_into_reg(                mem_load_into_reg),
       .load_data_valid (                    load_data_valid),
       .exec_fwd1  (exec_fwd1  ),
       .exec_fwd2  (exec_fwd2  ),
@@ -514,6 +573,9 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
         .o_csr_reg            (csr_stage2             ),
         .o_csr_reg_val        (csr_val_stage2           ),
         .o_rst_value          (stage2_reg_empty),
+
+        .i_Fp_op1_reg_overwrite_en(1'b0),
+        .i_Fp_op2_reg_overwrite_en(1'b0),
         .i_op1_reg_overwrite_en(1'b0),
         .i_op2_reg_overwrite_en(1'b0),
         .i_csr_reg_val_overwrite_en(1'b0)
@@ -532,7 +594,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
         .i_instruct           (instruction_stage_2),
         .i_alu_res1           (alu_result_1_stage2),
         .i_csr_write_en       (write_csr_wire_stage2),
-        .i_load_reg           (load_into_reg      ),
+        .i_load_reg           (mem_load_into_reg      ),
         .i_jump_en            (`size_jump_en'b0   ),
         .i_branch_en          (`size_branch_en'b0 ),
         .i_reg_write_en       (write_reg_file_wire_stage2 ),
@@ -556,7 +618,7 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
         .o_instruct           (instruction_stage_3    ),
         .o_alu_res1           (alu_result_1_stage3    ),
         .o_csr_write_en       (write_csr_wire_stage3  ),
-        .o_load_reg           (load_into_reg_stage3   ),
+        .o_load_reg           (mem_load_into_reg_stage3   ),
         // .o_jump_en            (  ),
         // .o_branch_en          (),
         .o_reg_write_en       (write_reg_file_wire_stage3),
@@ -576,6 +638,8 @@ wire [`size_X_LEN-1:0] main2pc_initial_pc_i;
         .o_csr_reg            (csr_stage3             ),
         .o_csr_reg_val        (csr_val_stage3           ),
         .o_rst_value          (stage3_reg_empty),
+        .i_Fp_op1_reg_overwrite_en(1'b0),
+        .i_Fp_op2_reg_overwrite_en(1'b0),
         .i_op1_reg_overwrite_en(1'b0),
         .i_op2_reg_overwrite_en(1'b0),
         .i_csr_reg_val_overwrite_en(1'b0)

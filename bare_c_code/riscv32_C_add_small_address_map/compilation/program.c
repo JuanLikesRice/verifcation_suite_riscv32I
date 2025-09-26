@@ -1,20 +1,120 @@
 #include "constants.h"
 
+// Branch test functions
+
+// // Test BEQ: if (rs1 == rs2) should branch.
+// int test_beq(void) {
+//     volatile int a = 50, b = 50;  // Equal values
+//     if (a == b)
+//         return 1;
+//     else
+//         return 0;
+// }
+
+int test_beq(void) {
+    volatile int a = 50, b = 50;
+    int ret;
+    asm volatile (
+        "sub t0, %1, %2\n\t"    // t0 = a - b
+        "beq t0, x0, 1f\n\t"     // if (t0 == 0) branch to label 1 (i.e. a == b)
+        "li %0, 0\n\t"          // ret = 0 (branch not taken)
+        "j 2f\n\t"              
+        "1: li %0, 1\n\t"       // ret = 1 (branch taken)
+        "2:\n\t"
+        : "=r"(ret)
+        : "r"(a), "r"(b)
+        : "t0"
+    );
+    return ret;
+}
+
+
+// Test BNE: if (rs1 != rs2) should branch.
+// int test_bne(void) {
+//     volatile int a = 50, b = 60;  // Different values
+//     if (a != b)
+//         return 1;
+//     else
+//         return 0;
+// }
+
+int test_bne(void) {
+    volatile int a = 50, b = 60;
+    int ret;
+    asm volatile (
+        "sub t0, %1, %2\n\t"   // t0 = a - b (will be nonzero if a != b)
+        "bne t0, x0, 1f\n\t"    // if t0 != 0, branch to label 1
+        "li %0, 0\n\t"         // else: ret = 0 (values equal, not expected)
+        "j 2f\n\t"             // jump to label 2
+        "1: li %0, 1\n\t"      // label 1: ret = 1 (branch taken: a != b)
+        "2:\n\t"
+        : "=r"(ret)
+        : "r"(a), "r"(b)
+        : "t0"
+    );
+    return ret;
+}
+
+
+// Test BLT: if (rs1 < rs2) for signed values.
+int test_bge(void) {
+    volatile int a = -10, b = 5;  // -10 is less than 5 (signed comparison)
+    if (a < b)
+        return 1;
+    else
+        return 0;
+}
+
+// Test BGE: if (rs1 >= rs2) for signed values.
+int test_blt(void) {
+    volatile int a = 5, b = 5;    // Equal values: 5 >= 5 is true
+    if (a >= b)
+        return 1;
+    else
+        return 0;
+}
+
+// Test BLTU: if (rs1 < rs2) for unsigned values.
+int test_bgeu(void) {
+    volatile unsigned int a = 1, b = 2; // 1 < 2 as unsigned
+    if (a < b)
+        return 1;
+    else
+        return 0;
+}
+
+// Test BGEU: if (rs1 >= rs2) for unsigned values.
+int test_bltu(void) {
+    volatile unsigned int a = 2, b = 2; // 2 >= 2 as unsigned is true
+    if (a >= b)
+        return 1;
+    else
+        return 0;
+}
+
 int main(void) {
-    // declare operands as volatile so the compiler must read them
-    volatile int a1 = 5,      b1 = 7;
-    volatile int a2 = 32652,  b2 = 4678;
-    volatile int a3 = 32652,  b3 = -4678;
-    volatile int a4 = -32652, b4 = 4678;
-    volatile int a5 = -32652, b5 = -4678;
+    int res;
 
-    // --- Arithmetic Operations ---
-    if ((a1 * b1) != 35)           { fail(1); }
-    if ((a2 * b2) != 152746056)    { fail(2); }
-    if ((a3 * b3) != -152746056)   { fail(3); }
-    if ((a4 * b4) != -152746056)   { fail(4); }
-    if ((a5 * b5) != 152746056)    { fail(5); }
+    // Call each branch test and check the result.
+    res = test_beq();
+    if (res != 1) { fail(1); }    // Expected BEQ to succeed
 
+    res = test_bne();
+    if (res != 1) { fail(2); }    // Expected BNE to succeed
+
+    res = test_blt();
+    if (res != 1) { fail(3); }    // Expected BLT to succeed
+
+    res = test_bge();
+    if (res != 1) { fail(4); }    // Expected BGE to succeed
+
+    res = test_bltu();
+    if (res != 1) { fail(5); }    // Expected BLTU to succeed
+
+    res = test_bgeu();
+    if (res != 1) { fail(6); }    // Expected BGEU to succeed
+
+    // If all branch tests pass, signal overall success.
     write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
     // while (1);
     return 0;

@@ -362,12 +362,12 @@ Disassembly of section .text:
 Disassembly of section .riscv.attributes:
 
 00000000 <.riscv.attributes>:
-   0:	3241                	.insn	2, 0x3241
+   0:	3741                	.insn	2, 0x3741
    2:	0000                	.insn	2, 0x
    4:	7200                	.insn	2, 0x7200
    6:	7369                	.insn	2, 0x7369
    8:	01007663          	bgeu	zero,a6,14 <__DYNAMIC+0x14>
-   c:	0028                	.insn	2, 0x0028
+   c:	002d                	.insn	2, 0x002d
    e:	0000                	.insn	2, 0x
   10:	1004                	.insn	2, 0x1004
   12:	7205                	.insn	2, 0x7205
@@ -377,14 +377,13 @@ Disassembly of section .riscv.attributes:
   1a:	5f31                	.insn	2, 0x5f31
   1c:	326d                	.insn	2, 0x326d
   1e:	3070                	.insn	2, 0x3070
-  20:	7a5f 6369 7273      	.insn	6, 0x727363697a5f
-  26:	7032                	.insn	2, 0x7032
-  28:	5f30                	.insn	2, 0x5f30
-  2a:	6d7a                	.insn	2, 0x6d7a
-  2c:	756d                	.insn	2, 0x756d
-  2e:	316c                	.insn	2, 0x316c
-  30:	3070                	.insn	2, 0x3070
-	...
+  20:	665f 7032 5f32      	.insn	6, 0x5f327032665f
+  26:	697a                	.insn	2, 0x697a
+  28:	32727363          	bgeu	tp,t2,34e <__DYNAMIC+0x34e>
+  2c:	3070                	.insn	2, 0x3070
+  2e:	7a5f 6d6d 6c75      	.insn	6, 0x6c756d6d7a5f
+  34:	7031                	.insn	2, 0x7031
+  36:	0030                	.insn	2, 0x0030
 
 Disassembly of section .comment:
 

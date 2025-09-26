@@ -9,10 +9,16 @@ module decode
 				 output wire [4:0]	  rd_o,
 				 output wire [4:0]	  rs1_o,
 				 output wire [4:0]	  rs2_o,
+             output wire [4:0]  fp_rd_o ,
+             output wire [4:0]  fp_rs1_o,
+             output wire [4:0]  fp_rs2_o,
 				 output wire [11:0]	  csr_o,
 				 output wire [2:0]	  fun3_o,
 				 output wire [6:0]	  fun7_o,
 				 output wire [31:0]	  imm_o,
+            output wire rd_FP ,
+            output wire rs1_FP,
+            output wire rs2_FP,
 				 output wire [63:0]	  Single_Instruction_o,
 				 output wire [6:0]	  INST_typ_o,
 				 output wire [6:0]	  opcode_o,
@@ -31,6 +37,12 @@ module decode
    reg [63:0]						  Single_Instruction; 
    reg [3:0]						  operand_amt;
    //FPGA 
+
+
+
+
+
+
    initial begin 
       imm         <=0;
       INST_typ    <=0;
@@ -43,6 +55,7 @@ module decode
       csr         <=0;
    end
 
+   // wire rd_FP,rs1_FP,rs2_FP;
 
    assign csr_o                = csr; 
    assign operand_amt_o        = operand_amt;
@@ -53,6 +66,8 @@ module decode
 
    always @(*) begin
       csr = 0;
+
+
       case (opcode)
         `R_Type: begin
            INST_typ <= `INST_typ_R;
@@ -64,7 +79,7 @@ module decode
            imm    <= 32'b0;
         end
 
-        `I_Type_A,`I_Type_L, `I_Type_JALR: begin  
+        `I_Type_A,`I_Type_L, `I_Type_JALR, `FP_load: begin  
            INST_typ <= `INST_typ_I;
            rd     <= instruction[11:7];
            fun3   <= instruction[14:12];
@@ -86,7 +101,7 @@ module decode
 
         end 
 
-        `S_Type: begin  
+        `S_Type, `FP_store: begin  
            INST_typ <= `INST_typ_S;
            rd     <= 0;
            fun3   <= instruction[14:12];
@@ -274,7 +289,7 @@ module decode
                   default: begin  // 
                      Single_Instruction <= `inst_UNKNOWN;
                   end 
-		endcase
+		         endcase
              end
              `I_Type_L: begin 
                 case ({fun3})
@@ -309,6 +324,19 @@ module decode
                 endcase
              end
 
+             `FP_load: begin 
+                case ({fun3})
+                  {3'b010}: begin  // JALR
+                     Single_Instruction <= `inst_FLW;
+                  end 
+                  default: begin 
+                     Single_Instruction <= `inst_UNKNOWN;
+                  end
+                endcase
+             end
+                  default: begin 
+                     Single_Instruction <= `inst_UNKNOWN;
+                  end
            endcase
         end
 
@@ -371,7 +399,11 @@ module decode
                 Single_Instruction <= `inst_SH;
              end 
              {3'b010}: begin  // SW
+               if (opcode==`FP_store) begin
+                Single_Instruction <= `inst_FSW;
+               end else begin 
                 Single_Instruction <= `inst_SW;
+                end
              end 
              default: begin 
                 Single_Instruction <= `inst_UNKNOWN;
@@ -437,11 +469,23 @@ module decode
    end
 
 
-   assign rd_o   = rd;
+
+   assign rd_FP  =                                    (Single_Instruction == `inst_FLW);
+   assign rs1_FP =  (Single_Instruction == `inst_FSW)|(Single_Instruction == `inst_FLW);
+   assign rs2_FP =  (Single_Instruction == `inst_FSW)                                  ;
+
+
    assign fun3_o = fun3;
    assign fun7_o = fun7;
-   assign rs1_o  = rs1;
-   assign rs2_o  = rs2;
+
+   assign fp_rd_o   = rd_FP  ? rd : 0  ;
+   assign fp_rs1_o  = rs1_FP ? rs1: 0  ;
+   assign fp_rs2_o  = rs2_FP ? rs2: 0  ;
+
+   assign rd_o      = rd_FP  ? 0  : rd ;
+   assign rs1_o     = rs1_FP ? 0  : rs1;
+   assign rs2_o     = rs2_FP ? 0  : rs2;
+
    assign imm_o  = imm;
    assign INST_typ_o = INST_typ;
    // assign opcode_o = opcode;

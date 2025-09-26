@@ -23,7 +23,13 @@ module pipe_ff_fields #(
     parameter RST_Single_Instruction = {`size_Single_Instruction{1'b0}},
     parameter RST_data_mem_loaded    = {`size_data_mem_loaded{1'b0}   },
     parameter RST_csr_reg            = {`size_csr_reg       {1'b0}    },
-    parameter RST_csr_reg_val        = {`size_csr_reg_val   {1'b0}    }
+    parameter RST_csr_reg_val        = {`size_csr_reg_val   {1'b0}    },
+   
+    parameter RST_Fp_opRs1_reg       = {`size_Fp_opRs1_reg  {1'b0}},
+    parameter RST_Fp_opRs2_reg       = {`size_Fp_opRs2_reg  {1'b0}},
+    parameter RST_Fp_op1_reg         = {`size_Fp_op1_reg    {1'b0}},
+    parameter RST_Fp_op2_reg         = {`size_Fp_op2_reg    {1'b0}},
+    parameter RST_Fp_fmt             = {`size_Fp_fmt        {1'b0}}
 ) (
     input  wire                 clk,
     input  wire                 rst,   // sync, active high
@@ -62,8 +68,23 @@ module pipe_ff_fields #(
     input  wire [`size_csr_reg_val        -1:0] i_csr_reg_val,
     input  wire [`size_csr_reg_val        -1:0] i_csr_reg_val_overwrite,
 
+    input  wire [`size_Fp_rd_data         -1:0] i_Fp_rd_data,
+    input  wire [`size_Fp_rd              -1:0] i_Fp_rd     ,
+    input  wire [`size_Fp_opRs1_reg-1:0]        i_Fp_opRs1_reg,
+    input  wire [`size_Fp_opRs2_reg-1:0]        i_Fp_opRs2_reg,
+    input  wire [`size_Fp_op1_reg  -1:0]        i_Fp_op1_reg,
+    input  wire [`size_Fp_op2_reg  -1:0]        i_Fp_op2_reg,
+    input  wire [`size_Fp_fmt      -1:0]        i_Fp_fmt,
+
+    input  wire [`size_Fp_op1_reg  -1:0]        i_Fp_op1_reg_overwrite,
+    input  wire [`size_Fp_op2_reg  -1:0]        i_Fp_op2_reg_overwrite,
+    input  wire                                 i_Fp_op1_reg_overwrite_en,
+    input  wire                                 i_Fp_op2_reg_overwrite_en,
+
+
+
     // Packed output bus and per-field outputs
-    output wire [WIDTH-1:0]           o_bus,
+    output wire [WIDTH-1:0]                    o_bus,
     output wire [`size_PC_reg             -1:0] o_PC_reg,
     output wire [`size_instruct           -1:0] o_instruct,
     output wire [`size_alu_res1           -1:0] o_alu_res1,
@@ -87,7 +108,18 @@ module pipe_ff_fields #(
     output wire [`size_data_mem_loaded    -1:0] o_data_mem_loaded,
     output wire [`size_csr_reg            -1:0] o_csr_reg,
     output wire [`size_csr_reg_val        -1:0] o_csr_reg_val,
-    output wire [`size_rst_bit            -1:0] o_rst_value
+    output wire [`size_rst_bit            -1:0] o_rst_value,
+
+    // ---- New FP outputs ----
+    output wire [`size_Fp_rd_data         -1:0] o_Fp_rd_data,
+    output wire [`size_Fp_rd              -1:0] o_Fp_rd     ,
+    output wire [`size_Fp_opRs1_reg-1:0] o_Fp_opRs1_reg,
+    output wire [`size_Fp_opRs2_reg-1:0] o_Fp_opRs2_reg,
+    output wire [`size_Fp_op1_reg  -1:0] o_Fp_op1_reg,
+    output wire [`size_Fp_op2_reg  -1:0] o_Fp_op2_reg,
+    output wire [`size_Fp_fmt      -1:0] o_Fp_fmt
+
+
 );
     // build input bus
     wire [WIDTH-1:0] din;
@@ -115,6 +147,16 @@ module pipe_ff_fields #(
     assign din[`csr_reg            ] = i_csr_reg;
     assign din[`csr_reg_val        ] = i_csr_reg_val;
     assign din[`rst_bit            ] = 1'b0;
+
+
+   //  assign din[`Fp_opRs1_reg       ] = i_Fp_opRs1_reg;
+   //  assign din[`Fp_opRs2_reg       ] = i_Fp_opRs2_reg;
+
+    assign din[`Fp_opRs1_reg       ] = i_Fp_opRs1_reg;
+    assign din[`Fp_opRs2_reg       ] = i_Fp_opRs2_reg;
+    assign din[`Fp_op1_reg         ] = i_Fp_op1_reg;
+    assign din[`Fp_op2_reg         ] = i_Fp_op2_reg;
+    assign din[`Fp_fmt             ] = i_Fp_fmt;
 
     // register
     reg [WIDTH-1:0] q;
@@ -146,6 +188,12 @@ module pipe_ff_fields #(
             q[`csr_reg            ] <= RST_csr_reg;
             q[`csr_reg_val        ] <= RST_csr_reg_val;
             q[`rst_bit            ] <= 1'b1;
+            q[`Fp_opRs1_reg       ] <= RST_Fp_opRs1_reg;
+            q[`Fp_opRs2_reg       ] <= RST_Fp_opRs2_reg;
+            q[`Fp_op1_reg         ] <= RST_Fp_op1_reg;
+            q[`Fp_op2_reg         ] <= RST_Fp_op2_reg;
+            q[`Fp_fmt             ] <= RST_Fp_fmt;
+
         end else if (en) begin
             q <= din;
         end else  begin 
@@ -156,8 +204,16 @@ module pipe_ff_fields #(
             q[`op2_reg] <= i_op2_reg_overwrite;
          end
          if (i_csr_reg_val_overwrite_en) begin 
-            q[`op2_reg] <= i_csr_reg_val_overwrite;
+            q[`csr_reg_val] <= i_csr_reg_val_overwrite;
          end
+
+         if (i_Fp_op1_reg_overwrite_en) begin 
+            q[`Fp_op1_reg] <= i_Fp_op1_reg_overwrite;
+         end
+         if (i_Fp_op2_reg_overwrite_en) begin 
+            q[`Fp_op2_reg] <= i_Fp_op2_reg_overwrite;
+         end
+         
         end
     end
 
@@ -186,6 +242,12 @@ module pipe_ff_fields #(
     assign o_csr_reg             = q[`csr_reg];
     assign o_csr_reg_val         = q[`csr_reg_val];
     assign o_rst_value           = q[`rst_bit];
+
+    assign o_Fp_opRs1_reg        = q[`Fp_opRs1_reg];
+    assign o_Fp_opRs2_reg        = q[`Fp_opRs2_reg];
+    assign o_Fp_op1_reg          = q[`Fp_op1_reg];
+    assign o_Fp_op2_reg          = q[`Fp_op2_reg];
+    assign o_Fp_fmt              = q[`Fp_fmt];
 
 
 endmodule

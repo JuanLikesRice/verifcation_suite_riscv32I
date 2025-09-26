@@ -16,14 +16,24 @@ echo "Running compilation commands..."
 # riscv32-unknown-elf-gcc -march=rv32i_zicsr -mabi=ilp32 -nostdlib -ffreestanding -o program.o -c program.c
 # riscv32-unknown-elf-as  -march=rv32i_zicsr -o startup.o startup.S
 
-riscv32-unknown-elf-as  -march=rv32im_zicsr -o startup.o startup.S
+# riscv32-unknown-elf-as  -march=rv32imf_zicsr -mabi=ilp32f -o startup.o startup.S
+# riscv32-unknown-elf-gcc -march=rv32imf_zicsr -mabi=ilp32f -O0 -nostdlib -ffreestanding -I include -c runtime_init.c -o runtime_init.o
+# riscv32-unknown-elf-gcc -march=rv32imf_zicsr -mabi=ilp32f -O0 -nostdlib -ffreestanding -I include -c program.c      -o program.o
+# riscv32-unknown-elf-gcc -march=rv32imf_zicsr -mabi=ilp32f -T link.ld -e _start -nostdlib -o program.elf startup.o runtime_init.o program.o -lgcc
 
-# riscv32-unknown-elf-gcc -march=rv32im_zicsr -mabi=ilp32 -nostdlib -ffreestanding -O0 -I include -o program.o -c program.c
-riscv32-unknown-elf-gcc -march=rv32im_zicsr -mabi=ilp32 -O0 -nostdlib -ffreestanding -I include -c runtime_init.c -o runtime_init.o
-riscv32-unknown-elf-gcc -march=rv32im_zicsr -mabi=ilp32 -O0 -nostdlib -ffreestanding -I include -c program.c -o program.o
 
-# riscv32-unknown-elf-gcc -T link.ld -e _start -nostdlib -o program.elf program.o startup.o                /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a
-riscv32-unknown-elf-gcc -T link.ld -e _start -nostdlib -o program.elf startup.o runtime_init.o program.o /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a
+riscv32-unknown-elf-as  -march=rv32imf_zicsr  -mabi=ilp32f -o startup.o startup.S
+riscv32-unknown-elf-gcc -march=rv32imf_zicsr -mabi=ilp32f -O0 -nostdlib -ffreestanding -I include -c runtime_init.c -o runtime_init.o
+riscv32-unknown-elf-gcc -march=rv32imf_zicsr -mabi=ilp32f -O0 -nostdlib -ffreestanding -I include -c program.c      -o program.o
+riscv32-unknown-elf-gcc -march=rv32imf_zicsr -mabi=ilp32f -T link.ld -e _start -nostdlib -o program.elf startup.o runtime_init.o program.o -lgcc
+# /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a
+
+# riscv32-unknown-elf-gcc -march=rv32imf_zicsr -mabi=ilp32f -O0 \
+#     -ffreestanding -nostdlib -I include -c fp_add_test.c -o fp_add_test.o
+# riscv32-unknown-elf-as -march=rv32imf_zicsr startup.S -o startup.o
+# riscv32-unknown-elf-gcc -T link.ld -e _start -nostdlib \
+#     -o program.elf startup.o fp_add_test.o /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a
+
 
 riscv32-unknown-elf-objcopy -O binary program.elf program.bin
 riscv32-unknown-elf-readelf -h program.elf

@@ -4,34 +4,41 @@
 `define size_X_LEN             32
 `define size_CSR_ENTRIES       4096
 `define size_CSR_bit            12
-`define pipe_len               512
+`define pipe_len               512+64
 
 
 
-`define size_PC_reg             `size_X_LEN
-`define size_instruct           `size_X_LEN      //63:32   //[31:00]
-`define size_alu_res1           `size_X_LEN       // 95:64   //[31:00]
-`define size_csr_write_en       1               // 96
-`define size_load_reg           1               // 1 101
-`define size_jump_en            1               // 102     //[ 4:0]
-`define size_branch_en          1               // 103     //[ 4:0]
-`define size_reg_write_en       1               // 104     //[ 4:0]
-`define size_LD_ready           1               // 105     //[ 4:0]
-`define size_SD_ready           1               // 106     //[ 4:0]
-`define size_rd                 5               // 111:107 //[ 4:0]
-`define size_operand_amt        4               // 115:112 //[ 3:0]
-`define size_opRs1_reg          5               // 120:116 //[4:0]
-`define size_opRs2_reg          5               // 127:121 //[4:0]
-`define size_op1_reg            `size_X_LEN      // 159:128 //[31:00]
-`define size_op2_reg            `size_X_LEN      // 191:160 //[31:00]
-`define size_immediate          `size_X_LEN      // 223:192 //[31:0]
-`define size_alu_res2           `size_X_LEN      // 255:224 //[31:0]
-`define size_rd_data            `size_X_LEN      // 287:256 //[31:0]
-`define size_Single_Instruction 64              // 351:288 //[63:00]   
-`define size_data_mem_loaded    `size_X_LEN      // 383:352  
-`define size_csr_reg            12              // 395:384 //[11:0]
-`define size_csr_reg_val        `size_X_LEN      // 427:396 //[31:0]
-`define size_rst_bit            1      // 427:396 //[31:0]
+`define size_PC_reg                `size_X_LEN
+`define size_instruct              `size_X_LEN    
+`define size_alu_res1              `size_X_LEN    
+`define size_csr_write_en          1              
+`define size_load_reg              1              
+`define size_jump_en               1              
+`define size_branch_en             1              
+`define size_reg_write_en          1              
+`define size_LD_ready              1              
+`define size_SD_ready              1              
+`define size_rd                    5              
+`define size_operand_amt           4              
+`define size_opRs1_reg             5              
+`define size_opRs2_reg             5              
+`define size_op1_reg               `size_X_LEN    
+`define size_op2_reg               `size_X_LEN    
+`define size_immediate             `size_X_LEN    
+`define size_alu_res2              `size_X_LEN    
+`define size_rd_data               `size_X_LEN    
+`define size_Single_Instruction    64             
+`define size_data_mem_loaded       `size_X_LEN    
+`define size_csr_reg               12             
+`define size_csr_reg_val           `size_X_LEN    
+`define size_rst_bit               1              
+`define size_Fp_opRs1_reg          5                
+`define size_Fp_opRs2_reg          5  
+`define size_Fp_rd                 5              
+`define size_Fp_op1_reg            `size_X_LEN      
+`define size_Fp_op2_reg            `size_X_LEN      
+`define size_Fp_rd_data            `size_X_LEN     
+`define size_Fp_fmt                3     
 
 
 `define PC_reg_end          `size_PC_reg
@@ -100,6 +107,27 @@
 `define rst_bit               `rst_bit_end-1
 // `define rst_bit              (`rst_bit_end-1):`csr_reg_val_end
 
+`define Fp_opRs1_reg_end       `size_Fp_opRs1_reg      +`rst_bit_end    
+`define Fp_opRs1_reg                `Fp_opRs1_reg_end-1:`rst_bit_end
+`define Fp_opRs2_reg_end       `size_Fp_opRs2_reg      +`Fp_opRs1_reg_end    
+`define Fp_opRs2_reg                `Fp_opRs2_reg_end-1:`Fp_opRs1_reg_end
+`define Fp_op1_reg_end         `size_Fp_op1_reg +       `Fp_opRs2_reg_end            
+`define Fp_op1_reg                  `Fp_op1_reg_end-1 : `Fp_opRs2_reg_end
+`define Fp_op2_reg_end         `size_Fp_op2_reg +       `Fp_op1_reg_end          
+`define Fp_op2_reg                  `Fp_op2_reg_end-1:  `Fp_op1_reg_end 
+`define Fp_fmt_end             `size_Fp_fmt +           `Fp_op2_reg_end          
+`define Fp_fmt                      `Fp_fmt_end-1:      `Fp_op2_reg_end 
+
+`define Fp_rd_data_end          `size_Fp_rd_data +       `Fp_fmt_end          
+`define Fp_rd_data                   `Fp_rd_data_end-1:  `Fp_fmt_end 
+
+`define Fp_rd_end               `size_Fp_rd +       `Fp_rd_data_end          
+`define Fp_rd                        `Fp_rd_end-1:  `Fp_rd_data_end 
+
+
+
+
+
 // `define immediate          223:192 //[31:0]
 // `define alu_res2           255:224 //[31:0]
 // `define rd_data            287:256 //[31:0]
@@ -141,6 +169,28 @@
 `define U_Type_auipc      7'b0010111
 `define I_Type_ECALL      7'b1110011
 `define F_TYPE_FENCE      7'b0001111
+
+
+// FLOATING TYPES
+`define FP_load           7'b0000111
+`define FP_store          7'b0100111
+// `define FP_convt          7'b1010011
+
+`define FP_TYPE           7'b1010011 
+// fadd.s    fsub.s   fmul.s fdiv.s fsqrt.s 
+// fsgnj.s fsgnjn.s fsgnjx.s fmin.s  fmax.s 
+// fcvt.wu.s fmv.x.w   feq.s  flt.s   fle.s 
+//  fclass.s fcvt.s   fcvr.s.wu fmv.w.x
+// 
+
+`define FP_convt          7'b1010101 //fcvt.w.s 
+
+`define FP_madd           7'b1000011
+`define FP_msub           7'b1000111
+`define FP_nmsub          7'b1001011
+`define FP_nmadd          7'b1001111
+
+`define FP_nmadd          7'b1001111
 `define NOOP             32'h00000013
 
 
@@ -232,6 +282,9 @@
 `define inst_DIVU       64'h0080_0000_0000_0000 //  divu 
 `define inst_REM        64'h0100_0000_0000_0000 //  rem  
 `define inst_REMU       64'h0200_0000_0000_0000 //  remu 
+`define inst_FSW        64'h0400_0000_0000_0000 //  FP ST 
+`define inst_FLW        64'h0800_0000_0000_0000 //  FP LW
+
 
 
 
