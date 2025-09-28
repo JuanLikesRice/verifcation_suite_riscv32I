@@ -6,12 +6,12 @@ module decode
 				 input wire		  i_en,
 				 input wire [N_param-1:0] instruction,
 				 // outputs to register file
-				 output wire [4:0]	  rd_o,
-				 output wire [4:0]	  rs1_o,
-				 output wire [4:0]	  rs2_o,
-             output wire [4:0]  fp_rd_o ,
-             output wire [4:0]  fp_rs1_o,
-             output wire [4:0]  fp_rs2_o,
+				 output wire [5:0]	   rd_o,
+				 output wire [5:0]	  rs1_o,
+				 output wire [5:0]	  rs2_o,
+             output wire [4:0]   fp_rd_o ,
+             output wire [4:0]   fp_rs1_o,
+             output wire [4:0]   fp_rs2_o,
 				 output wire [11:0]	  csr_o,
 				 output wire [2:0]	  fun3_o,
 				 output wire [6:0]	  fun7_o,
@@ -22,7 +22,8 @@ module decode
 				 output wire [63:0]	  Single_Instruction_o,
 				 output wire [6:0]	  INST_typ_o,
 				 output wire [6:0]	  opcode_o,
-				 output wire [3:0]	  operand_amt_o
+				 output wire [3:0]	  operand_amt_o,
+             output wire [2:0]     Fp_rm
 				 // outputs to ALU
 				 );
 
@@ -471,23 +472,25 @@ module decode
 
 
    assign rd_FP  =                                    (Single_Instruction == `inst_FLW);
-   assign rs1_FP =  (Single_Instruction == `inst_FSW)|(Single_Instruction == `inst_FLW);
+   assign rs1_FP =  0;
+   // assign rs1_FP =  (Single_Instruction == `inst_FSW)|(Single_Instruction == `inst_FLW);
    assign rs2_FP =  (Single_Instruction == `inst_FSW)                                  ;
 
 
    assign fun3_o = fun3;
    assign fun7_o = fun7;
 
-   assign fp_rd_o   = rd_FP  ? rd : 0  ;
-   assign fp_rs1_o  = rs1_FP ? rs1: 0  ;
-   assign fp_rs2_o  = rs2_FP ? rs2: 0  ;
+   assign fp_rd_o   = {1'b1, rd }; //rd_FP  ? <>: 0  ;
+   assign fp_rs1_o  = {1'b1, rs1}; //rs1_FP ? <>: 0  ;
+   assign fp_rs2_o  = {1'b1, rs2}; //rs2_FP ? <>: 0  ;
 
-   assign rd_o      = rd_FP  ? 0  : rd ;
-   assign rs1_o     = rs1_FP ? 0  : rs1;
-   assign rs2_o     = rs2_FP ? 0  : rs2;
+   assign rd_o      = { rd_FP, rd };//rd_FP  ? 0  : rd ;
+   assign rs1_o     = {rs1_FP, rs1};//rs1_FP ? 0  : rs1;
+   assign rs2_o     = {rs2_FP, rs2};//rs2_FP ? 0  : rs2;
 
-   assign imm_o  = imm;
+   assign imm_o      = imm;
    assign INST_typ_o = INST_typ;
+   assign Fp_rm      = 0;
    // assign opcode_o = opcode;
 
 

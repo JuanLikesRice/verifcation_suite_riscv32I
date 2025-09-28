@@ -98,6 +98,7 @@ module dataMem #(
                             (Single_Instruction == `inst_FLW)  ||
                             (Single_Instruction == `inst_LBU) ||
                             (Single_Instruction == `inst_LHU));       
+
    assign store_wire    = ((Single_Instruction == `inst_SB) ||
                            (Single_Instruction == `inst_SH) ||
                            (Single_Instruction == `inst_FSW)||
@@ -130,7 +131,7 @@ module dataMem #(
    always @(*) begin
       if (load_data_valid) begin  
 	 case(Single_Instruction)
-           `inst_LW :begin 
+           `inst_LW,`inst_FLW  :begin 
               loadData <= raw_bram_data_word;
            end
            `inst_LB :begin  
@@ -176,7 +177,7 @@ module dataMem #(
 		default:     begin web   <= 4'b0;    store_data <= 32'b0;                          end
               endcase// DMEM[word_address]   <= (DMEM[word_address] & ~(32'hFFFF << (address[1] * 16))) | ((storeData[15:0] & 16'hFFFF) << (address[1] * 16));
            end
-           {`inst_SW }:begin
+           `inst_SW,`inst_FSW :begin
               web        <= 4'b1111; // DMEM[word_address]   <= storeData;
               store_data <= storeData;
            end

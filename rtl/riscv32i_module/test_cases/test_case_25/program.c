@@ -1,21 +1,36 @@
 #include "constants.h"
 
+#define TEST_ADDR   (DATARAM_ORIGIN + 0x200)
+#define TEST_ADDR2  (DATARAM_ORIGIN + 0x204)
+
 int main(void) {
-    // declare operands as volatile so the compiler must read them
-    volatile int a1 = 5,      b1 = 7;
-    volatile int a2 = 32652,  b2 = 4678;
-    volatile int a3 = 32652,  b3 = -4678;
-    volatile int a4 = -32652, b4 = 4678;
-    volatile int a5 = -32652, b5 = -4678;
+    unsigned int result;
 
-    // --- Arithmetic Operations ---
-    if ((a1 * b1) != 35)           { fail(1); }
-    if ((a2 * b2) != 152746056)    { fail(2); }
-    if ((a3 * b3) != -152746056)   { fail(3); }
-    if ((a4 * b4) != -152746056)   { fail(4); }
-    if ((a5 * b5) != 152746056)    { fail(5); }
+    // initialize memory
+    *((volatile unsigned int*)TEST_ADDR) = 0x12345678;
 
-    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
-    // while (1);
+    __asm__ volatile (
+        // load from TEST_ADDR into t1
+        "lw   t1, 0(%1)\n"
+        // store t1 into TEST_ADDR2
+        "sw   t1, 0(%2)\n"
+        // load back into t2
+        "lw   t2, 0(%2)\n"
+        // branch if not equal
+        "bne  t1, t2, 1f\n"
+        // if equal, write result = t1
+        "mv   %0, t1\n"
+        "j    2f\n"
+        "1:\n"
+        // call fail(1)
+        "li   a0, 1\n"
+        "jal  fail\n"
+        "2:\n"
+        : "=r"(result)
+        : "r"(TEST_ADDR), "r"(TEST_ADDR2)
+        : "t1", "t2", "a0", "memory"
+    );
+
+    write_mmio(PERIPHERAL_S2, result);
     return 0;
 }

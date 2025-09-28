@@ -22,7 +22,7 @@ void runtime_init(void) {
 
     /* After main finishes, signal via MMIO and stop */
     write_mmio(PERIPHERAL_SUCCESS, 0xDEADBEEF);  /* “good food” marker; change if you like */
-    write_mmio(PERIPHERAL_S1, (unsigned)rc);
+    // write_mmio(PERIPHERAL_S1, (unsigned)rc);
     for (;;)
         ;  /* halt */
 }

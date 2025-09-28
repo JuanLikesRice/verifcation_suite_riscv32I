@@ -8,9 +8,9 @@ module execute
 
 				 // input  wire [N_param-1:0]  instruction,
 				 // outputs to register file
-				 input wire [4:0]   rd_i,
-				 input wire [4:0]   rs1_i,
-				 input wire [4:0]   rs2_i,
+				 input wire [5:0]   rd_i,
+				 input wire [5:0]   rs1_i,
+				 input wire [5:0]   rs2_i,
 				 input wire [11:0]  csr_i,
 				 input wire [31:0]  instruction,
 				 input wire [31:0]  operand1_pi,
@@ -25,6 +25,7 @@ module execute
 				 output wire	    branch_inst_wire, 
 				 output wire	    jump_inst_wire,
 				 output wire	    write_reg_file_wire,
+				 output wire	    write_Fp_reg_file_wire,
 				 output wire	    write_csr_wire,
 
 				 input wire [63:0]  Single_Instruction_i,
@@ -34,7 +35,7 @@ module execute
 				 // outputs to ALU
 				 );
 
-
+	assign write_Fp_reg_file_wire = rd_i[5];
     reg [32:0]					    result;
     reg [32:0]					    result_secondary;
     reg						    branch_inst, jump_inst,write_reg_file,write_csr;

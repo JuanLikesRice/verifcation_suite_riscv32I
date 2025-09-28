@@ -14,8 +14,6 @@ module reg_file #(
 		output wire [31:0] operand1_po,
 		output wire [31:0] operand2_po,
 
-
-
 		input wire	   write_csr,
 		input wire [11:0]  csrReg_write_dest_reg,
 		input wire [31:0]  csrReg_write_dest_reg_data,

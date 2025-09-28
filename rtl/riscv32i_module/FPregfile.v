@@ -4,9 +4,9 @@ module Fp_reg_file #(
 )(
 		input wire	       clk,
 		input wire	       reset, 
-		input wire [4:0]   Fp_reg1_pi, 
-		input wire [4:0]   Fp_reg2_pi, 
-		input wire [4:0]   Fp_destReg_pi,
+		input wire [5:0]   Fp_reg1_pi   , 
+		input wire [5:0]   Fp_reg2_pi   , 
+		input wire [5:0]   Fp_destReg_pi,
 		input wire	       Fp_we_pi,
 		input wire [31:0]  Fp_writeData_pi, 
 		output wire [31:0] Fp_operand1_po,
@@ -15,13 +15,22 @@ module Fp_reg_file #(
    wire				   cntrl1, cntrl2;
 
    reg [31:0]			   Fp_REG_FILE[0:31];  // 32 32-bit registers
+     wire [5:0]   FILTERED_Fp_reg1_pi   ;
+     wire [5:0]   FILTERED_Fp_reg2_pi   ;
+     wire [5:0]   FILTERED_Fp_destReg_pi;
    
-   // read while writing in WB stage   
-   assign cntrl1      =  (Fp_reg1_pi  == Fp_destReg_pi) &&  Fp_we_pi;
-   assign cntrl2      =  (Fp_reg2_pi  == Fp_destReg_pi) &&  Fp_we_pi;
+    assign FILTERED_Fp_reg1_pi    = {5{Fp_reg1_pi   [5]}} & Fp_reg1_pi   [4:0]; 
+    assign FILTERED_Fp_reg2_pi    = {5{Fp_reg2_pi   [5]}} & Fp_reg2_pi   [4:0]; 
+    assign FILTERED_Fp_destReg_pi = {5{Fp_destReg_pi[5]}} & Fp_destReg_pi[4:0]; 
 
-   assign Fp_operand1_po              = cntrl1    ? Fp_writeData_pi : Fp_REG_FILE[Fp_reg1_pi];
-   assign Fp_operand2_po              = cntrl2    ? Fp_writeData_pi : Fp_REG_FILE[Fp_reg2_pi];
+
+
+   // read while writing in WB stage   
+   assign cntrl1      =  (FILTERED_Fp_reg1_pi  == FILTERED_Fp_destReg_pi) &&  Fp_we_pi;
+   assign cntrl2      =  (FILTERED_Fp_reg2_pi  == FILTERED_Fp_destReg_pi) &&  Fp_we_pi;
+
+   assign Fp_operand1_po              = cntrl1    ? Fp_writeData_pi : Fp_REG_FILE[FILTERED_Fp_reg1_pi];
+   assign Fp_operand2_po              = cntrl2    ? Fp_writeData_pi : Fp_REG_FILE[FILTERED_Fp_reg2_pi];
 
    integer			   j;
    // integer p;
@@ -41,7 +50,7 @@ module Fp_reg_file #(
          end
       end else begin 
 	 if (Fp_we_pi)  begin 
-	    Fp_REG_FILE[Fp_destReg_pi] <= Fp_writeData_pi;
+	    Fp_REG_FILE[FILTERED_Fp_destReg_pi] <= Fp_writeData_pi;
          end
       end
    end

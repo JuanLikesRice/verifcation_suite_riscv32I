@@ -1,21 +1,34 @@
 #include "constants.h"
 
+#define TEST_ADDR (DATARAM_ORIGIN + 0x100)
+
 int main(void) {
-    // declare operands as volatile so the compiler must read them
-    volatile int a1 = 5,      b1 = 7;
-    volatile int a2 = 32652,  b2 = 4678;
-    volatile int a3 = 32652,  b3 = -4678;
-    volatile int a4 = -32652, b4 = 4678;
-    volatile int a5 = -32652, b5 = -4678;
+    unsigned int result;
 
-    // --- Arithmetic Operations ---
-    if ((a1 * b1) != 35)           { fail(1); }
-    if ((a2 * b2) != 152746056)    { fail(2); }
-    if ((a3 * b3) != -152746056)   { fail(3); }
-    if ((a4 * b4) != -152746056)   { fail(4); }
-    if ((a5 * b5) != 152746056)    { fail(5); }
+    // 1. Store constant bit pattern for 1.0f into memory
+    *((volatile unsigned int*)TEST_ADDR) = 0x3F800000u;
 
-    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
-    // while (1);
+    __asm__ volatile (
+        // Load float 1.0 into f15
+        "flw f15, 0(%1)\n"
+        // Store f15 to TEST_ADDR+4
+        "fsw f15, 4(%1)\n"
+        // Load that back into f14
+        "flw f14, 4(%1)\n"
+        // Now load it into an integer register from memory (LW, not FMV)
+        "lw %0, 4(%1)\n"
+        : "=r"(result)          // output
+        : "r"(TEST_ADDR)        // input base address
+        : "f14", "f15", "memory"
+    );
+
+    // Write raw bits out to peripheral
+    write_mmio(PERIPHERAL_S2, result);
+
+    // Check expected pattern for float 1.0
+    if (result != 0x3F800000u) {
+        fail(1);
+    }
+
     return 0;
 }

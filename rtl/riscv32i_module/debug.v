@@ -6,7 +6,7 @@ module debug # (
 		   input wire	      i_clk,
 		   input wire [ 31:0] pc_o,
 		   input wire [ 31:0] Cycle_count,
-		   input wire [511:0] pipeReg
+		   input wire [`pipe_len-1:0] pipeReg
 		   );
 
 
@@ -287,6 +287,15 @@ module debug # (
 		 {`inst_REMU }:begin 
 		$write("inst_REMU     ");
 		end
+		 {`inst_FLW }:begin 
+		$write("inst_FLW     ");
+		end
+		 {`inst_FSW }:begin 
+		$write("inst_FSW     ");
+		end
+
+
+
 	default: begin 
 	   $write("not_encoded  ");
 

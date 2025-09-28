@@ -1,21 +1,38 @@
 #include "constants.h"
 
+// static inline void mmio_write(unsigned int a, unsigned int v){ *(volatile unsigned int*)a = v; }
+
+/* ---- FP control ---- */
+static inline void enable_fp(void) {
+    const unsigned int FS_DIRTY = (3u << 13);  // mstatus.FS=11
+    __asm__ volatile ("csrs mstatus, %0" :: "r"(FS_DIRTY));
+}
+static inline void set_fcsr(unsigned int frm, unsigned int fflags) {
+    unsigned int v = ((frm & 7u) << 5) | (fflags & 0x1Fu);
+    __asm__ volatile ("csrw fcsr, %0" :: "r"(v));
+}
+static inline unsigned int read_fcsr(void){
+    unsigned int v;
+    __asm__ volatile ("csrr %0, fcsr" : "=r"(v));
+    return v;
+}
+
 int main(void) {
-    // declare operands as volatile so the compiler must read them
-    volatile int a1 = 5,      b1 = 7;
-    volatile int a2 = 32652,  b2 = 4678;
-    volatile int a3 = 32652,  b3 = -4678;
-    volatile int a4 = -32652, b4 = 4678;
-    volatile int a5 = -32652, b5 = -4678;
+    enable_fp();
 
-    // --- Arithmetic Operations ---
-    if ((a1 * b1) != 35)           { fail(1); }
-    if ((a2 * b2) != 152746056)    { fail(2); }
-    if ((a3 * b3) != -152746056)   { fail(3); }
-    if ((a4 * b4) != -152746056)   { fail(4); }
-    if ((a5 * b5) != 152746056)    { fail(5); }
+    // round-to-nearest-even, clear flags
+    set_fcsr(0u, 0u);
 
-    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
-    // while (1);
+    volatile float a = 1.25f;
+    volatile float b = 2.5f;
+    float c = a + b;        // should be 3.75f, compiled as fadd.s
+
+    // touch c so compiler keeps it
+    volatile unsigned int out = *(volatile unsigned int*)&c;
+
+    // record result and current fcsr to MMIO
+    write_mmio(PERIPHERAL_S1, out);
+    write_mmio(PERIPHERAL_S2 + 4, read_fcsr());
     return 0;
+    // for(;;);
 }

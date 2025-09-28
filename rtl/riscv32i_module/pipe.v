@@ -25,10 +25,10 @@ module pipe_ff_fields #(
     parameter RST_csr_reg            = {`size_csr_reg       {1'b0}    },
     parameter RST_csr_reg_val        = {`size_csr_reg_val   {1'b0}    },
    
-    parameter RST_Fp_opRs1_reg       = {`size_Fp_opRs1_reg  {1'b0}},
-    parameter RST_Fp_opRs2_reg       = {`size_Fp_opRs2_reg  {1'b0}},
-    parameter RST_Fp_op1_reg         = {`size_Fp_op1_reg    {1'b0}},
-    parameter RST_Fp_op2_reg         = {`size_Fp_op2_reg    {1'b0}},
+   //  parameter RST_Fp_opRs1_reg       = {`size_Fp_opRs1_reg  {1'b0}},
+   //  parameter RST_Fp_opRs2_reg       = {`size_Fp_opRs2_reg  {1'b0}},
+   //  parameter RST_Fp_op1_reg         = {`size_Fp_op1_reg    {1'b0}},
+   //  parameter RST_Fp_op2_reg         = {`size_Fp_op2_reg    {1'b0}},
     parameter RST_Fp_fmt             = {`size_Fp_fmt        {1'b0}}
 ) (
     input  wire                 clk,
@@ -68,18 +68,18 @@ module pipe_ff_fields #(
     input  wire [`size_csr_reg_val        -1:0] i_csr_reg_val,
     input  wire [`size_csr_reg_val        -1:0] i_csr_reg_val_overwrite,
 
-    input  wire [`size_Fp_rd_data         -1:0] i_Fp_rd_data,
-    input  wire [`size_Fp_rd              -1:0] i_Fp_rd     ,
-    input  wire [`size_Fp_opRs1_reg-1:0]        i_Fp_opRs1_reg,
-    input  wire [`size_Fp_opRs2_reg-1:0]        i_Fp_opRs2_reg,
-    input  wire [`size_Fp_op1_reg  -1:0]        i_Fp_op1_reg,
-    input  wire [`size_Fp_op2_reg  -1:0]        i_Fp_op2_reg,
+   //  input  wire [`size_Fp_rd_data         -1:0] i_Fp_rd_data,
+   //  input  wire [`size_Fp_rd              -1:0] i_Fp_rd     ,
+   //  input  wire [`size_Fp_opRs1_reg-1:0]        i_Fp_opRs1_reg,
+   //  input  wire [`size_Fp_opRs2_reg-1:0]        i_Fp_opRs2_reg,
+   //  input  wire [`size_Fp_op1_reg  -1:0]        i_Fp_op1_reg,
+   //  input  wire [`size_Fp_op2_reg  -1:0]        i_Fp_op2_reg,
     input  wire [`size_Fp_fmt      -1:0]        i_Fp_fmt,
 
-    input  wire [`size_Fp_op1_reg  -1:0]        i_Fp_op1_reg_overwrite,
-    input  wire [`size_Fp_op2_reg  -1:0]        i_Fp_op2_reg_overwrite,
-    input  wire                                 i_Fp_op1_reg_overwrite_en,
-    input  wire                                 i_Fp_op2_reg_overwrite_en,
+   //  input  wire [`size_Fp_op1_reg  -1:0]        i_Fp_op1_reg_overwrite,
+   //  input  wire [`size_Fp_op2_reg  -1:0]        i_Fp_op2_reg_overwrite,
+   //  input  wire                                 i_Fp_op1_reg_overwrite_en,
+   //  input  wire                                 i_Fp_op2_reg_overwrite_en,
 
 
 
@@ -110,13 +110,13 @@ module pipe_ff_fields #(
     output wire [`size_csr_reg_val        -1:0] o_csr_reg_val,
     output wire [`size_rst_bit            -1:0] o_rst_value,
 
-    // ---- New FP outputs ----
-    output wire [`size_Fp_rd_data         -1:0] o_Fp_rd_data,
-    output wire [`size_Fp_rd              -1:0] o_Fp_rd     ,
-    output wire [`size_Fp_opRs1_reg-1:0] o_Fp_opRs1_reg,
-    output wire [`size_Fp_opRs2_reg-1:0] o_Fp_opRs2_reg,
-    output wire [`size_Fp_op1_reg  -1:0] o_Fp_op1_reg,
-    output wire [`size_Fp_op2_reg  -1:0] o_Fp_op2_reg,
+   //  // ---- New FP outputs ----
+   //  output wire [`size_Fp_rd_data         -1:0] o_Fp_rd_data,
+   //  output wire [`size_Fp_rd              -1:0] o_Fp_rd     ,
+   //  output wire [`size_Fp_opRs1_reg-1:0] o_Fp_opRs1_reg,
+   //  output wire [`size_Fp_opRs2_reg-1:0] o_Fp_opRs2_reg,
+   //  output wire [`size_Fp_op1_reg  -1:0] o_Fp_op1_reg,
+   //  output wire [`size_Fp_op2_reg  -1:0] o_Fp_op2_reg,
     output wire [`size_Fp_fmt      -1:0] o_Fp_fmt
 
 
@@ -152,11 +152,14 @@ module pipe_ff_fields #(
    //  assign din[`Fp_opRs1_reg       ] = i_Fp_opRs1_reg;
    //  assign din[`Fp_opRs2_reg       ] = i_Fp_opRs2_reg;
 
-    assign din[`Fp_opRs1_reg       ] = i_Fp_opRs1_reg;
-    assign din[`Fp_opRs2_reg       ] = i_Fp_opRs2_reg;
-    assign din[`Fp_op1_reg         ] = i_Fp_op1_reg;
-    assign din[`Fp_op2_reg         ] = i_Fp_op2_reg;
+   //  assign din[`Fp_opRs1_reg       ] = i_Fp_opRs1_reg;
+   //  assign din[`Fp_opRs2_reg       ] = i_Fp_opRs2_reg;
+   //  assign din[`Fp_op1_reg         ] = i_Fp_op1_reg;
+   //  assign din[`Fp_op2_reg         ] = i_Fp_op2_reg;
     assign din[`Fp_fmt             ] = i_Fp_fmt;
+
+   //  assign din[`Fp_rd_data         ] = i_Fp_rd_data;
+   //  assign din[`Fp_rd              ] = i_Fp_rd;
 
     // register
     reg [WIDTH-1:0] q;
@@ -188,11 +191,14 @@ module pipe_ff_fields #(
             q[`csr_reg            ] <= RST_csr_reg;
             q[`csr_reg_val        ] <= RST_csr_reg_val;
             q[`rst_bit            ] <= 1'b1;
-            q[`Fp_opRs1_reg       ] <= RST_Fp_opRs1_reg;
-            q[`Fp_opRs2_reg       ] <= RST_Fp_opRs2_reg;
-            q[`Fp_op1_reg         ] <= RST_Fp_op1_reg;
-            q[`Fp_op2_reg         ] <= RST_Fp_op2_reg;
-            q[`Fp_fmt             ] <= RST_Fp_fmt;
+            // q[`Fp_opRs1_reg       ] <= RST_Fp_opRs1_reg;
+            // q[`Fp_opRs2_reg       ] <= RST_Fp_opRs2_reg;
+            // q[`Fp_op1_reg         ] <= RST_Fp_op1_reg;
+            // q[`Fp_op2_reg         ] <= RST_Fp_op2_reg;
+            // q[`Fp_fmt             ] <= RST_Fp_fmt;
+            // q[`Fp_rd_data         ] <= 0;
+            // q[`Fp_rd              ] <= 0;
+            q[`Fp_fmt              ] <= 0;
 
         end else if (en) begin
             q <= din;
@@ -207,12 +213,12 @@ module pipe_ff_fields #(
             q[`csr_reg_val] <= i_csr_reg_val_overwrite;
          end
 
-         if (i_Fp_op1_reg_overwrite_en) begin 
-            q[`Fp_op1_reg] <= i_Fp_op1_reg_overwrite;
-         end
-         if (i_Fp_op2_reg_overwrite_en) begin 
-            q[`Fp_op2_reg] <= i_Fp_op2_reg_overwrite;
-         end
+         // if (i_Fp_op1_reg_overwrite_en) begin 
+         //    q[`Fp_op1_reg] <= i_Fp_op1_reg_overwrite;
+         // end
+         // if (i_Fp_op2_reg_overwrite_en) begin 
+         //    q[`Fp_op2_reg] <= i_Fp_op2_reg_overwrite;
+         // end
          
         end
     end
@@ -243,10 +249,13 @@ module pipe_ff_fields #(
     assign o_csr_reg_val         = q[`csr_reg_val];
     assign o_rst_value           = q[`rst_bit];
 
-    assign o_Fp_opRs1_reg        = q[`Fp_opRs1_reg];
-    assign o_Fp_opRs2_reg        = q[`Fp_opRs2_reg];
-    assign o_Fp_op1_reg          = q[`Fp_op1_reg];
-    assign o_Fp_op2_reg          = q[`Fp_op2_reg];
+   //  assign o_Fp_opRs1_reg        = q[`Fp_opRs1_reg];
+   //  assign o_Fp_opRs2_reg        = q[`Fp_opRs2_reg];
+   //  assign o_Fp_op1_reg          = q[`Fp_op1_reg];
+   //  assign o_Fp_op2_reg          = q[`Fp_op2_reg];
+   //  assign o_Fp_rd_data          = q[`Fp_rd_data    ];
+   //  assign o_Fp_rd               = q[`Fp_rd         ];
+
     assign o_Fp_fmt              = q[`Fp_fmt];
 
 

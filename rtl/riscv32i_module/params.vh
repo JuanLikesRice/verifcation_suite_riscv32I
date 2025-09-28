@@ -4,7 +4,7 @@
 `define size_X_LEN             32
 `define size_CSR_ENTRIES       4096
 `define size_CSR_bit            12
-`define pipe_len               512+64
+`define pipe_len               520
 
 
 
@@ -18,10 +18,10 @@
 `define size_reg_write_en          1              
 `define size_LD_ready              1              
 `define size_SD_ready              1              
-`define size_rd                    5              
-`define size_operand_amt           4              
-`define size_opRs1_reg             5              
-`define size_opRs2_reg             5              
+`define size_operand_amt           4
+`define size_rd                    6              
+`define size_opRs1_reg             6              
+`define size_opRs2_reg             6              
 `define size_op1_reg               `size_X_LEN    
 `define size_op2_reg               `size_X_LEN    
 `define size_immediate             `size_X_LEN    
@@ -32,13 +32,13 @@
 `define size_csr_reg               12             
 `define size_csr_reg_val           `size_X_LEN    
 `define size_rst_bit               1              
-`define size_Fp_opRs1_reg          5                
-`define size_Fp_opRs2_reg          5  
-`define size_Fp_rd                 5              
+`define size_Fp_opRs1_reg          6                
+`define size_Fp_opRs2_reg          6  
+`define size_Fp_rd                 6              
 `define size_Fp_op1_reg            `size_X_LEN      
 `define size_Fp_op2_reg            `size_X_LEN      
 `define size_Fp_rd_data            `size_X_LEN     
-`define size_Fp_fmt                3     
+`define size_Fp_fmt                3    
 
 
 `define PC_reg_end          `size_PC_reg
@@ -105,24 +105,29 @@
 
 `define rst_bit_end          (`size_rst_bit+`csr_reg_val_end)
 `define rst_bit               `rst_bit_end-1
+
+`define Fp_fmt_end             `size_Fp_fmt +           `rst_bit_end          
+`define Fp_fmt                      `Fp_fmt_end-1:      `rst_bit_end 
+
+
 // `define rst_bit              (`rst_bit_end-1):`csr_reg_val_end
 
-`define Fp_opRs1_reg_end       `size_Fp_opRs1_reg      +`rst_bit_end    
-`define Fp_opRs1_reg                `Fp_opRs1_reg_end-1:`rst_bit_end
-`define Fp_opRs2_reg_end       `size_Fp_opRs2_reg      +`Fp_opRs1_reg_end    
-`define Fp_opRs2_reg                `Fp_opRs2_reg_end-1:`Fp_opRs1_reg_end
-`define Fp_op1_reg_end         `size_Fp_op1_reg +       `Fp_opRs2_reg_end            
-`define Fp_op1_reg                  `Fp_op1_reg_end-1 : `Fp_opRs2_reg_end
-`define Fp_op2_reg_end         `size_Fp_op2_reg +       `Fp_op1_reg_end          
-`define Fp_op2_reg                  `Fp_op2_reg_end-1:  `Fp_op1_reg_end 
-`define Fp_fmt_end             `size_Fp_fmt +           `Fp_op2_reg_end          
-`define Fp_fmt                      `Fp_fmt_end-1:      `Fp_op2_reg_end 
+// `define Fp_opRs1_reg_end       `size_Fp_opRs1_reg      +`rst_bit_end    
+// `define Fp_opRs1_reg                `Fp_opRs1_reg_end-1:`rst_bit_end
+// `define Fp_opRs2_reg_end       `size_Fp_opRs2_reg      +`Fp_opRs1_reg_end    
+// `define Fp_opRs2_reg                `Fp_opRs2_reg_end-1:`Fp_opRs1_reg_end
+// `define Fp_op1_reg_end         `size_Fp_op1_reg +       `Fp_opRs2_reg_end            
+// `define Fp_op1_reg                  `Fp_op1_reg_end-1 : `Fp_opRs2_reg_end
+// `define Fp_op2_reg_end         `size_Fp_op2_reg +       `Fp_op1_reg_end          
+// `define Fp_op2_reg                  `Fp_op2_reg_end-1:  `Fp_op1_reg_end 
+// `define Fp_fmt_end             `size_Fp_fmt +           `Fp_op2_reg_end          
+// `define Fp_fmt                      `Fp_fmt_end-1:      `Fp_op2_reg_end 
 
-`define Fp_rd_data_end          `size_Fp_rd_data +       `Fp_fmt_end          
-`define Fp_rd_data                   `Fp_rd_data_end-1:  `Fp_fmt_end 
+// `define Fp_rd_data_end          `size_Fp_rd_data +       `Fp_fmt_end          
+// `define Fp_rd_data                   `Fp_rd_data_end-1:  `Fp_fmt_end 
 
-`define Fp_rd_end               `size_Fp_rd +       `Fp_rd_data_end          
-`define Fp_rd                        `Fp_rd_end-1:  `Fp_rd_data_end 
+// `define Fp_rd_end               `size_Fp_rd +       `Fp_rd_data_end          
+// `define Fp_rd                        `Fp_rd_end-1:  `Fp_rd_data_end 
 
 
 

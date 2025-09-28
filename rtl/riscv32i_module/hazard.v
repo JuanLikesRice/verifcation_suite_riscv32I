@@ -5,13 +5,13 @@ module hazard #(
 
 	       input wire	  clk, 
 		   input 		  rst,
-	       input wire [4:0]	  rs1_stage1,             // Source Register  1  of instruction in EX stage
-	       input wire [4:0]	  rs2_stage1,             // Source  Register 2  of instruction in EX stage
+	       input wire [5:0]	  rs1_stage1,             // Source Register  1  of instruction in EX stage
+	       input wire [5:0]	  rs2_stage1,             // Source  Register 2  of instruction in EX stage
 	       input wire [11:0]  csr_stage1,             // Source  Register 2  of instruction in EX stage
 
-	       input wire [4:0]	  destination_reg_stage2, // Destination register of instruction in MEM stage (EX/MEM pipeline register)
+	       input wire [5:0]	  destination_reg_stage2, // Destination register of instruction in MEM stage (EX/MEM pipeline register)
 	       input wire	      write_reg_stage2, 	  // Write Enable signal of instruction in MEM stage
-	       input wire [4:0]	  destination_reg_stage3, // Destination register of instruction in WB stage (MEM/WB pipeline register)
+	       input wire [5:0]	  destination_reg_stage3, // Destination register of instruction in WB stage (MEM/WB pipeline register)
 	       input wire	      write_reg_stage3,       // Write Enable signal of instruction in WB stage
 
 	       input wire [11:0]  csr_destination_reg_stage3, 	// Destination register of instruction in MEM stage (EX/MEM pipeline register)
@@ -72,6 +72,15 @@ module hazard #(
    	assign  wbFwd2 =  (rs2_stage1 == destination_reg_stage3)  &&  write_reg_stage3; //foward from stage3 WB  reg to exec for RS3
    	assign operand2_into_exec =  memFwd2 ? (rd_result_stage2) :(wbFwd2 ? rd_result_stage3 : operand2_stage1 ) ;
    
+
+
+   	// assign memFwd2_Fp =  (Fp_rs2_stage1 == Fp_destination_reg_stage2)  &&  write_reg_stage2; //foward from stage2 MEM reg to exec for RS2
+   	// assign  wbFwd2_Fp =  (Fp_rs2_stage1 == Fp_destination_reg_stage3)  &&  write_reg_stage3; //foward from stage3 WB  reg to exec for RS3
+   	// assign operand2_into_exec =  memFwd2 ? (rd_result_stage2) :(wbFwd2 ? rd_result_stage3 : operand2_stage1 ) ;
+   
+
+
+
 	assign  awaiting_LDmemresult = ((memstage_load_into_reg && ~load_data_valid) && (memFwd1|memFwd2|csr_memFwd));
 	assign     valid_LDmemresult =  (memstage_load_into_reg &&  load_data_valid);
 	assign        rs1_rs2_valid  =  ~awaiting_LDmemresult ;
@@ -83,7 +92,7 @@ module hazard #(
 	// always @ (posedge i_clk) begin 
 	// 	if (rst) begin 
 	// 		current_state <= S_0;
-	// 	end else begin 
+	// 	end else begin 6
 	// 		current_state <= next_state;
 	// 	end
 	// end
@@ -125,7 +134,7 @@ module hazard #(
 	// 	endcase
 	// end 
 
-
+// Debug signals used
     assign csrForward_alu	 = csr_memFwd ?  2'b10 : csr_wbFwd ? 2'b01 : 2'b00;
 	assign src1Forward_alu 	 = memFwd1    ?  2'b10 : wbFwd1    ? 2'b01 : 2'b00;
 	assign src2Forward_alu 	 = memFwd2    ?  2'b10 : wbFwd2    ? 2'b01 : 2'b00;

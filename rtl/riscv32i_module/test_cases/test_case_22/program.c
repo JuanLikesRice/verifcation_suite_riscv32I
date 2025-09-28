@@ -1,38 +1,33 @@
 #include "constants.h"
 
-// static inline void mmio_write(unsigned int a, unsigned int v){ *(volatile unsigned int*)a = v; }
-
-/* ---- FP control ---- */
-static inline void enable_fp(void) {
-    const unsigned int FS_DIRTY = (3u << 13);  // mstatus.FS=11
-    __asm__ volatile ("csrs mstatus, %0" :: "r"(FS_DIRTY));
-}
-static inline void set_fcsr(unsigned int frm, unsigned int fflags) {
-    unsigned int v = ((frm & 7u) << 5) | (fflags & 0x1Fu);
-    __asm__ volatile ("csrw fcsr, %0" :: "r"(v));
-}
-static inline unsigned int read_fcsr(void){
-    unsigned int v;
-    __asm__ volatile ("csrr %0, fcsr" : "=r"(v));
-    return v;
-}
+#define TEST_ADDR ((volatile float*) (DATARAM_ORIGIN + 0x100))
 
 int main(void) {
-    enable_fp();
+    volatile float *p = TEST_ADDR;
 
-    // round-to-nearest-even, clear flags
-    set_fcsr(0u, 0u);
+    unsigned int pattern = 0x3F800000u;  // float +1.0
+    *((volatile unsigned int*)p) = pattern;  // store via integer store
 
-    volatile float a = 1.25f;
-    volatile float b = 2.5f;
-    float c = a + b;        // should be 3.75f, compiled as fadd.s
+    // Load the float from memory (should be FLW)
+    volatile float f = *p;
 
-    // touch c so compiler keeps it
-    volatile unsigned int out = *(volatile unsigned int*)&c;
+    // Perform a trivial FP operation (f = f + 1.0f), forces FADD.S
+    f = f + 1.0f;
 
-    // record result and current fcsr to MMIO
-    write_mmio(PERIPHERAL_S1, out);
-    write_mmio(PERIPHERAL_S2 + 4, read_fcsr());
+    // Store back (should be FSW)
+    *p = f;
+
+    // Read back raw bits through integer load
+    unsigned int got = *((volatile unsigned int*)p);
+
+    // Report value to peripheral for debug
+    write_mmio(PERIPHERAL_S2, got);
+
+    // Expected pattern = 1.0f + 1.0f = 2.0f = 0x40000000
+    // if (got != 0x40000000u) {
+    //     fail(1);
+    // }
+
     return 0;
-    // for(;;);
 }
+

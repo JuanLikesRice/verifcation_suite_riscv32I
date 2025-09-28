@@ -13,6 +13,7 @@ OUT_DIR   := build_results
 RTL_SRCS := $(DUT) main.v pipe.v ins_mem.v decode.v regfile.v FPregfile.v excute.v pc.v dataMem.v hazard.v debug.v
 HDRS     := params.vh
 INC      := .    
+MODULE ?= riscv32i
 
 all: sim synth gatesim
 
@@ -61,8 +62,8 @@ $(OUT_DIR)/stat.json $(OUT_DIR)/cell_usage.rpt $(OUT_DIR)/hierarchy.rpt: $(RTL_S
 		tee -o $(OUT_DIR)/hierarchy.rpt hierarchy -auto-top -check; \
 	"
 
-$(OUT_DIR):
-	mkdir -p $@
+# $(OUT_DIR):
+# 	mkdir -p $@
 
 
 
@@ -74,6 +75,31 @@ gatesim: ./riscv32i-gatesim
 
 riscv32i-gatesim: riscv32iTB.v riscv32i_wrap.v riscv32i.netlist.v | ${XILINX_CELLS_DIR}
 	${IVERILOG} -g2005-sv -s riscv32iTB -DGATESIM -y ${XILINX_CELLS_DIR} -y ${XILINX_CELLS_DIR}/unisims -o $@ $^
+
+
+# List modules (hierarchical)
+mods:
+	${YOSYS} -l $(OUT_DIR)/mods.log -p "\
+		read_verilog -sv -I $(INC) $(RTL_SRCS); \
+		hierarchy -check -top riscv32i; \
+		ls -hier" | tee $(OUT_DIR)/modules.txt
+
+# Draw RTL schematic for a module (default: riscv32i)
+# Requires graphviz ('dot') installed.
+# rtl_show: | $(OUT_DIR)
+rtl_show:
+	${YOSYS} -l $(OUT_DIR)/rtl_show.riscv32i.log -p "read_verilog -sv -I $(INC) $(RTL_SRCS); hierarchy -check -top riscv32i; proc; opt; memory; opt_clean; show -format svg -viewer none -prefix $(OUT_DIR)/riscv32i riscv32i"
+
+# 	${YOSYS} -l $(OUT_DIR)/rtl_show.$(MODULE).log -p '\
+# 		read_verilog -sv -I $(INC) $(RTL_SRCS); \
+# 		hierarchy -check -top riscv32i; \
+# 		# generate RTL nets, not tech-mapped
+# 		proc; opt; memory; opt_clean; \
+# 		show -format svg -viewer none -prefix $(OUT_DIR)/$(MODULE) $(MODULE)'
+
+# $(OUT_DIR):
+	mkdir -p $@
+
 
 clear:
 	$(RM) riscv32i-sim sim.log

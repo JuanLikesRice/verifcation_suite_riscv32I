@@ -1,0 +1,14 @@
+FP unit 
+Whats been added 
+- reg file, opcodes used in FP single
+- FP reg file
+
+Whats missing 
+- Actual FPU logic
+- Hazards of FP dest reg forwarding
+- REG2-3
+
+
+
+
+

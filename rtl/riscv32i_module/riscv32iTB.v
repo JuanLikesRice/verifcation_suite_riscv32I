@@ -12,8 +12,8 @@ module riscv32iTB
    //  parameter debug_param               = 1,
     parameter debug_param               = 0,
 
-    parameter debug_param_vcd           = 0,
-   //  parameter debug_param_vcd           = 1,
+   //  parameter debug_param_vcd           = 0,
+    parameter debug_param_vcd           = 1,
     parameter dispatch_print            = 0,
     // parameter cycles_timeout = 700,
     parameter initial_pc    = 32'h00002000

@@ -55,12 +55,12 @@ Disassembly of section .text:
     20a4:	fec42783          	lw	a5,-20(s0)
     20a8:	00078593          	mv	a1,a5
     20ac:	000057b7          	lui	a5,0x5
-    20b0:	80878513          	addi	a0,a5,-2040 # 4808 <_etext+0x2590>
+    20b0:	80878513          	addi	a0,a5,-2040 # 4808 <_etext+0x25a4>
     20b4:	f5dff0ef          	jal	2010 <write_mmio>
     20b8:	0badf7b7          	lui	a5,0xbadf
     20bc:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbad600d>
     20c0:	000057b7          	lui	a5,0x5
-    20c4:	80078513          	addi	a0,a5,-2048 # 4800 <_etext+0x2588>
+    20c4:	80078513          	addi	a0,a5,-2048 # 4800 <_etext+0x259c>
     20c8:	f49ff0ef          	jal	2010 <write_mmio>
     20cc:	0000006f          	j	20cc <fail+0x3c>
 
@@ -69,116 +69,111 @@ Disassembly of section .text:
     20d4:	00112e23          	sw	ra,28(sp)
     20d8:	00812c23          	sw	s0,24(sp)
     20dc:	02010413          	addi	s0,sp,32
-    20e0:	0f4000ef          	jal	21d4 <main>
+    20e0:	0e0000ef          	jal	21c0 <main>
     20e4:	fea42623          	sw	a0,-20(s0)
     20e8:	deadc7b7          	lui	a5,0xdeadc
     20ec:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead2eef>
     20f0:	000057b7          	lui	a5,0x5
-    20f4:	80078513          	addi	a0,a5,-2048 # 4800 <_etext+0x2588>
+    20f4:	80078513          	addi	a0,a5,-2048 # 4800 <_etext+0x259c>
     20f8:	f19ff0ef          	jal	2010 <write_mmio>
-    20fc:	fec42783          	lw	a5,-20(s0)
-    2100:	00078593          	mv	a1,a5
-    2104:	000057b7          	lui	a5,0x5
-    2108:	80478513          	addi	a0,a5,-2044 # 4804 <_etext+0x258c>
-    210c:	f05ff0ef          	jal	2010 <write_mmio>
-    2110:	0000006f          	j	2110 <runtime_init+0x40>
+    20fc:	0000006f          	j	20fc <runtime_init+0x2c>
 
-00002114 <write_mmio>:
-    2114:	fd010113          	addi	sp,sp,-48
-    2118:	02112623          	sw	ra,44(sp)
-    211c:	02812423          	sw	s0,40(sp)
-    2120:	03010413          	addi	s0,sp,48
-    2124:	fca42e23          	sw	a0,-36(s0)
-    2128:	fcb42c23          	sw	a1,-40(s0)
-    212c:	fdc42783          	lw	a5,-36(s0)
-    2130:	fef42623          	sw	a5,-20(s0)
-    2134:	fec42783          	lw	a5,-20(s0)
-    2138:	fd842703          	lw	a4,-40(s0)
-    213c:	00e7a023          	sw	a4,0(a5)
-    2140:	00000013          	nop
-    2144:	02c12083          	lw	ra,44(sp)
-    2148:	02812403          	lw	s0,40(sp)
-    214c:	03010113          	addi	sp,sp,48
-    2150:	00008067          	ret
+00002100 <write_mmio>:
+    2100:	fd010113          	addi	sp,sp,-48
+    2104:	02112623          	sw	ra,44(sp)
+    2108:	02812423          	sw	s0,40(sp)
+    210c:	03010413          	addi	s0,sp,48
+    2110:	fca42e23          	sw	a0,-36(s0)
+    2114:	fcb42c23          	sw	a1,-40(s0)
+    2118:	fdc42783          	lw	a5,-36(s0)
+    211c:	fef42623          	sw	a5,-20(s0)
+    2120:	fec42783          	lw	a5,-20(s0)
+    2124:	fd842703          	lw	a4,-40(s0)
+    2128:	00e7a023          	sw	a4,0(a5)
+    212c:	00000013          	nop
+    2130:	02c12083          	lw	ra,44(sp)
+    2134:	02812403          	lw	s0,40(sp)
+    2138:	03010113          	addi	sp,sp,48
+    213c:	00008067          	ret
 
-00002154 <write_to_peripheral>:
-    2154:	fd010113          	addi	sp,sp,-48
-    2158:	02112623          	sw	ra,44(sp)
-    215c:	02812423          	sw	s0,40(sp)
-    2160:	03010413          	addi	s0,sp,48
-    2164:	fca42e23          	sw	a0,-36(s0)
-    2168:	fcb42c23          	sw	a1,-40(s0)
-    216c:	fdc42783          	lw	a5,-36(s0)
-    2170:	fef42623          	sw	a5,-20(s0)
-    2174:	fec42783          	lw	a5,-20(s0)
-    2178:	fd842703          	lw	a4,-40(s0)
-    217c:	00e7a023          	sw	a4,0(a5)
-    2180:	00000013          	nop
-    2184:	02c12083          	lw	ra,44(sp)
-    2188:	02812403          	lw	s0,40(sp)
-    218c:	03010113          	addi	sp,sp,48
-    2190:	00008067          	ret
+00002140 <write_to_peripheral>:
+    2140:	fd010113          	addi	sp,sp,-48
+    2144:	02112623          	sw	ra,44(sp)
+    2148:	02812423          	sw	s0,40(sp)
+    214c:	03010413          	addi	s0,sp,48
+    2150:	fca42e23          	sw	a0,-36(s0)
+    2154:	fcb42c23          	sw	a1,-40(s0)
+    2158:	fdc42783          	lw	a5,-36(s0)
+    215c:	fef42623          	sw	a5,-20(s0)
+    2160:	fec42783          	lw	a5,-20(s0)
+    2164:	fd842703          	lw	a4,-40(s0)
+    2168:	00e7a023          	sw	a4,0(a5)
+    216c:	00000013          	nop
+    2170:	02c12083          	lw	ra,44(sp)
+    2174:	02812403          	lw	s0,40(sp)
+    2178:	03010113          	addi	sp,sp,48
+    217c:	00008067          	ret
 
-00002194 <fail>:
-    2194:	fe010113          	addi	sp,sp,-32
-    2198:	00112e23          	sw	ra,28(sp)
-    219c:	00812c23          	sw	s0,24(sp)
-    21a0:	02010413          	addi	s0,sp,32
-    21a4:	fea42623          	sw	a0,-20(s0)
-    21a8:	fec42783          	lw	a5,-20(s0)
-    21ac:	00078593          	mv	a1,a5
+00002180 <fail>:
+    2180:	fe010113          	addi	sp,sp,-32
+    2184:	00112e23          	sw	ra,28(sp)
+    2188:	00812c23          	sw	s0,24(sp)
+    218c:	02010413          	addi	s0,sp,32
+    2190:	fea42623          	sw	a0,-20(s0)
+    2194:	fec42783          	lw	a5,-20(s0)
+    2198:	00078593          	mv	a1,a5
+    219c:	000057b7          	lui	a5,0x5
+    21a0:	80878513          	addi	a0,a5,-2040 # 4808 <_etext+0x25a4>
+    21a4:	f5dff0ef          	jal	2100 <write_mmio>
+    21a8:	0badf7b7          	lui	a5,0xbadf
+    21ac:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbad600d>
     21b0:	000057b7          	lui	a5,0x5
-    21b4:	80878513          	addi	a0,a5,-2040 # 4808 <_etext+0x2590>
-    21b8:	f5dff0ef          	jal	2114 <write_mmio>
-    21bc:	0badf7b7          	lui	a5,0xbadf
-    21c0:	00d78593          	addi	a1,a5,13 # badf00d <_stack_start+0xbad600d>
-    21c4:	000057b7          	lui	a5,0x5
-    21c8:	80078513          	addi	a0,a5,-2048 # 4800 <_etext+0x2588>
-    21cc:	f49ff0ef          	jal	2114 <write_mmio>
-    21d0:	0000006f          	j	21d0 <fail+0x3c>
+    21b4:	80078513          	addi	a0,a5,-2048 # 4800 <_etext+0x259c>
+    21b8:	f49ff0ef          	jal	2100 <write_mmio>
+    21bc:	0000006f          	j	21bc <fail+0x3c>
 
-000021d4 <main>:
-    21d4:	fd010113          	addi	sp,sp,-48
-    21d8:	02112623          	sw	ra,44(sp)
-    21dc:	02812423          	sw	s0,40(sp)
-    21e0:	03010413          	addi	s0,sp,48
-    21e4:	c1800793          	li	a5,-1000
-    21e8:	fef42223          	sw	a5,-28(s0)
-    21ec:	00200793          	li	a5,2
-    21f0:	fef42023          	sw	a5,-32(s0)
-    21f4:	fe442703          	lw	a4,-28(s0)
-    21f8:	fe042783          	lw	a5,-32(s0)
-    21fc:	40f757b3          	sra	a5,a4,a5
-    2200:	fef42623          	sw	a5,-20(s0)
-    2204:	fec42703          	lw	a4,-20(s0)
-    2208:	f0600793          	li	a5,-250
-    220c:	00f70663          	beq	a4,a5,2218 <main+0x44>
-    2210:	00100513          	li	a0,1
-    2214:	f81ff0ef          	jal	2194 <fail>
-    2218:	f00007b7          	lui	a5,0xf0000
-    221c:	fcf42e23          	sw	a5,-36(s0)
-    2220:	00200793          	li	a5,2
-    2224:	fcf42c23          	sw	a5,-40(s0)
-    2228:	fdc42703          	lw	a4,-36(s0)
-    222c:	fd842783          	lw	a5,-40(s0)
-    2230:	00f757b3          	srl	a5,a4,a5
-    2234:	fef42423          	sw	a5,-24(s0)
-    2238:	fe842703          	lw	a4,-24(s0)
-    223c:	3c0007b7          	lui	a5,0x3c000
-    2240:	00f70663          	beq	a4,a5,224c <main+0x78>
-    2244:	00200513          	li	a0,2
-    2248:	f4dff0ef          	jal	2194 <fail>
-    224c:	deadc7b7          	lui	a5,0xdeadc
-    2250:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead2eef>
-    2254:	000057b7          	lui	a5,0x5
-    2258:	80878513          	addi	a0,a5,-2040 # 4808 <_etext+0x2590>
-    225c:	eb9ff0ef          	jal	2114 <write_mmio>
-    2260:	00000793          	li	a5,0
-    2264:	00078513          	mv	a0,a5
-    2268:	02c12083          	lw	ra,44(sp)
-    226c:	02812403          	lw	s0,40(sp)
-    2270:	03010113          	addi	sp,sp,48
-    2274:	00008067          	ret
+000021c0 <main>:
+    21c0:	fd010113          	addi	sp,sp,-48
+    21c4:	02112623          	sw	ra,44(sp)
+    21c8:	02812423          	sw	s0,40(sp)
+    21cc:	03010413          	addi	s0,sp,48
+    21d0:	c1800793          	li	a5,-1000
+    21d4:	fef42223          	sw	a5,-28(s0)
+    21d8:	00200793          	li	a5,2
+    21dc:	fef42023          	sw	a5,-32(s0)
+    21e0:	fe442703          	lw	a4,-28(s0)
+    21e4:	fe042783          	lw	a5,-32(s0)
+    21e8:	40f757b3          	sra	a5,a4,a5
+    21ec:	fef42623          	sw	a5,-20(s0)
+    21f0:	fec42703          	lw	a4,-20(s0)
+    21f4:	f0600793          	li	a5,-250
+    21f8:	00f70663          	beq	a4,a5,2204 <main+0x44>
+    21fc:	00100513          	li	a0,1
+    2200:	f81ff0ef          	jal	2180 <fail>
+    2204:	f00007b7          	lui	a5,0xf0000
+    2208:	fcf42e23          	sw	a5,-36(s0)
+    220c:	00200793          	li	a5,2
+    2210:	fcf42c23          	sw	a5,-40(s0)
+    2214:	fdc42703          	lw	a4,-36(s0)
+    2218:	fd842783          	lw	a5,-40(s0)
+    221c:	00f757b3          	srl	a5,a4,a5
+    2220:	fef42423          	sw	a5,-24(s0)
+    2224:	fe842703          	lw	a4,-24(s0)
+    2228:	3c0007b7          	lui	a5,0x3c000
+    222c:	00f70663          	beq	a4,a5,2238 <main+0x78>
+    2230:	00200513          	li	a0,2
+    2234:	f4dff0ef          	jal	2180 <fail>
+    2238:	deadc7b7          	lui	a5,0xdeadc
+    223c:	eef78593          	addi	a1,a5,-273 # deadbeef <_stack_start+0xdead2eef>
+    2240:	000057b7          	lui	a5,0x5
+    2244:	80878513          	addi	a0,a5,-2040 # 4808 <_etext+0x25a4>
+    2248:	eb9ff0ef          	jal	2100 <write_mmio>
+    224c:	00000793          	li	a5,0
+    2250:	00078513          	mv	a0,a5
+    2254:	02c12083          	lw	ra,44(sp)
+    2258:	02812403          	lw	s0,40(sp)
+    225c:	03010113          	addi	sp,sp,48
+    2260:	00008067          	ret
 
 Disassembly of section .riscv.attributes:
 

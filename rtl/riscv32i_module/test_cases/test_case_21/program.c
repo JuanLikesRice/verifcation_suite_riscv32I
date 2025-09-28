@@ -11,6 +11,8 @@ int main(void) {
     *p = f;
 
     unsigned int got = *((volatile unsigned int*)p);
+    write_mmio(PERIPHERAL_S2, got);
+    // if (got == pattern) {
     if (got != pattern) {
         fail(1);
     }
