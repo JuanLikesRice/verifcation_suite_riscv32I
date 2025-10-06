@@ -26,3 +26,9 @@ riscv32i_module/obj_dir/*
 */*/.pyc
 */*/.pyc
 */.pyc
+
+
+# in .git/info/exclude
+__pycache__/
+*.py[cod]
+*$py.class
