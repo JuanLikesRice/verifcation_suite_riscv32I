@@ -1,0 +1,253 @@
+$date
+	Sun Oct  5 18:27:38 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module FPU_ADDER_clk_stimTB $end
+$var wire 32 ! Out [31:0] $end
+$var parameter 32 " Exponent_size $end
+$var parameter 32 # Fp_size $end
+$var parameter 32 $ Mantissa_size $end
+$var reg 32 % A [31:0] $end
+$var reg 32 & B [31:0] $end
+$var reg 1 ' clk $end
+$var reg 3 ( rm [2:0] $end
+$scope module dut $end
+$var wire 32 ) A [31:0] $end
+$var wire 32 * B [31:0] $end
+$var wire 32 + Out [31:0] $end
+$var wire 1 , a_is_inf $end
+$var wire 1 - a_is_nan $end
+$var wire 1 . b_is_inf $end
+$var wire 1 / b_is_nan $end
+$var wire 1 0 result_zero $end
+$var wire 3 1 rm [2:0] $end
+$var wire 23 2 saved_mantissa [22:0] $end
+$var wire 23 3 leading_zero [22:0] $end
+$var wire 1 4 is_subnormal_B $end
+$var wire 1 5 is_subnormal_A $end
+$var wire 1 6 final_sign $end
+$var wire 32 7 final_result [31:0] $end
+$var wire 24 8 final_mantisa [23:0] $end
+$var wire 8 9 final_exponent [7:0] $end
+$var wire 1 : carry_out $end
+$var wire 1 ; a_GTEQ_b $end
+$var wire 1 < S_B $end
+$var wire 1 = S_A $end
+$var wire 25 > M_sum [24:0] $end
+$var wire 25 ? M_sub [24:0] $end
+$var wire 24 @ M_shifted_small [23:0] $end
+$var wire 24 A M_result_non_normal_MP1_size_shift_carry [23:0] $end
+$var wire 24 B M_result_non_normal_MP1_size_shift [23:0] $end
+$var wire 24 C M_result_non_normal_MP1_size [23:0] $end
+$var wire 25 D M_result_non_normal [24:0] $end
+$var wire 24 E M_num_1_big [23:0] $end
+$var wire 24 F M_num_0_small [23:0] $end
+$var wire 1 G M_all_zeros $end
+$var wire 24 H M_B_total [23:0] $end
+$var wire 23 I M_B [22:0] $end
+$var wire 24 J M_A_total [23:0] $end
+$var wire 23 K M_A [22:0] $end
+$var wire 8 L E_num_1_big [7:0] $end
+$var wire 8 M E_num_0_small [7:0] $end
+$var wire 24 N E_diff_big_small_mod [23:0] $end
+$var wire 24 O E_diff_big_small [23:0] $end
+$var wire 8 P E_B_eff [7:0] $end
+$var wire 8 Q E_B [7:0] $end
+$var wire 8 R E_A_eff [7:0] $end
+$var wire 8 S E_A [7:0] $end
+$var parameter 32 T Exponent_size $end
+$var parameter 32 U Fp_size $end
+$var parameter 32 V Mantissa_size $end
+$var parameter 32 W QNAN $end
+$scope module leading_zeroth_bit_add $end
+$var wire 1 G all_zeros $end
+$var wire 24 X in_wire [23:0] $end
+$var wire 24 Y leading_one_oh [23:0] $end
+$var wire 23 Z leading_zero [22:0] $end
+$var parameter 33 [ Bit_Length $end
+$var parameter 32 \ Bit_Length_O $end
+$var reg 24 ] leading_one_oh_r [23:0] $end
+$var reg 23 ^ leading_zero_r [22:0] $end
+$var reg 1 _ valid_r $end
+$var integer 32 ` i [31:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b10111 \
+b11000 [
+b1111111110000000000000000000000 W
+b10111 V
+b100000 U
+b1000 T
+b10111 $
+b100000 #
+b1000 "
+$end
+#0
+$dumpvars
+b11111111111111111111111111111111 `
+0_
+b0 ^
+b0 ]
+b0 Z
+b0 Y
+b0 X
+b0 S
+b1 R
+b0 Q
+b1 P
+b0 O
+b0 N
+b1 M
+b1 L
+b0 K
+b0 J
+b0 I
+b0 H
+1G
+b0 F
+b0 E
+b0 D
+b0 C
+b0 B
+b0 A
+b0 @
+b0 ?
+b0 >
+0=
+0<
+1;
+0:
+b1 9
+b0 8
+b0 7
+06
+15
+14
+b0 3
+b0 2
+b0 1
+10
+0/
+0.
+0-
+0,
+b0 +
+b0 *
+b0 )
+b0 (
+0'
+b0 &
+b0 %
+b0 !
+$end
+#5000
+b1000000001010000000000000000000 !
+b1000000001010000000000000000000 +
+b1000000001010000000000000000000 7
+00
+b1 3
+b1 Z
+b1 ^
+b1010000000000000000000 2
+0G
+1:
+b101010000000000000000000 8
+b10000000000000000000000 Y
+b10000000000000000000000 ]
+1_
+b11111111111111111111111111111111 `
+b10000000 9
+b101000000000000000000000 B
+b10100000000000000000000 C
+b101010000000000000000000 A
+b10100000000000000000000 X
+b1010100000000000000000000 D
+b101000000000000000000000 @
+b101000000000000000000000 F
+b1111111 L
+b0 N
+b0 O
+b1111111 M
+b1111111 P
+b1010100000000000000000000 >
+b100000000000000000000 ?
+b101100000000000000000000 E
+b1111111 R
+b101100000000000000000000 H
+0;
+b1100000000000000000000 I
+04
+b1111111 Q
+b101000000000000000000000 J
+b1000000000000000000000 K
+05
+b1111111 S
+b111111101100000000000000000000 &
+b111111101100000000000000000000 *
+b111111101000000000000000000000 %
+b111111101000000000000000000000 )
+1'
+#10000
+0'
+#15000
+b0 2
+b1111101 9
+b100000000000000000000000 8
+b11111111111111111111111111111111 `
+b10 3
+b10 Z
+b10 ^
+b1000000000000000000000 Y
+b1000000000000000000000 ]
+1_
+b100000000000000000000000 B
+b1000000000000000000000 C
+b100000000000000000000 A
+0:
+b1000000000000000000000 X
+b10111110100000000000000000000000 !
+b10111110100000000000000000000000 +
+b10111110100000000000000000000000 7
+b1000000000000000000000 D
+b1011000000000000000000000 >
+b1000000000000000000000 ?
+b110000000000000000000000 E
+16
+b110000000000000000000000 H
+b10000000000000000000000 I
+1<
+b10111111110000000000000000000000 &
+b10111111110000000000000000000000 *
+1'
+#20000
+0'
+#25000
+b110000000000000000000000 J
+b10000000000000000000000 K
+1=
+b101000000000000000000000 H
+1;
+b1000000000000000000000 I
+0<
+b10111111110000000000000000000000 %
+b10111111110000000000000000000000 )
+b111111101000000000000000000000 &
+b111111101000000000000000000000 *
+1'
+#30000
+0'
+#35000
+1'
+#40000
+0'
+#45000
+1'

@@ -1,0 +1,130 @@
+$date
+	Sat Oct  4 14:33:05 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module leading_zeroth_bit_stimTB $end
+$var wire 5 ! leading_one_oh [4:0] $end
+$var parameter 32 " N $end
+$var reg 5 # in_wire [4:0] $end
+$scope module dut $end
+$var wire 1 $ all_zeros $end
+$var wire 5 % in_wire [4:0] $end
+$var wire 5 & leading_one_oh [4:0] $end
+$var wire 6 ' leading_zero [5:0] $end
+$var parameter 32 ( Bit_Length $end
+$var parameter 32 ) Bit_Length_O $end
+$var reg 5 * leading_one_oh_r [4:0] $end
+$var reg 6 + leading_zero_r [5:0] $end
+$var reg 1 , valid_r $end
+$var integer 32 - i [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b110 )
+b101 (
+b101 "
+$end
+#0
+$dumpvars
+b11111111111111111111111111111111 -
+0,
+b111111 +
+b0 *
+b111111 '
+b0 &
+b0 %
+1$
+b0 #
+b0 !
+$end
+#10000
+0$
+b0 '
+b0 +
+b10000 !
+b10000 &
+b10000 *
+1,
+b11111111111111111111111111111111 -
+b10000 #
+b10000 %
+#20000
+b11111111111111111111111111111111 -
+b1 '
+b1 +
+b1000 !
+b1000 &
+b1000 *
+1,
+b1001 #
+b1001 %
+#30000
+b11111111111111111111111111111111 -
+b10 '
+b10 +
+b100 !
+b100 &
+b100 *
+1,
+b101 #
+b101 %
+#40000
+b11111111111111111111111111111111 -
+b100 '
+b100 +
+b1 !
+b1 &
+b1 *
+1,
+b1 #
+b1 %
+#50000
+b11111111111111111111111111111111 -
+b11 '
+b11 +
+b10 !
+b10 &
+b10 *
+1,
+b11 #
+b11 %
+#60000
+1$
+b11111111111111111111111111111111 -
+b111111 '
+b111111 +
+b0 !
+b0 &
+b0 *
+0,
+b0 #
+b0 %
+#70000
+0$
+b0 '
+b0 +
+b10000 !
+b10000 &
+b10000 *
+1,
+b11111111111111111111111111111111 -
+b10100 #
+b10100 %
+#80000
+b11111111111111111111111111111111 -
+b1 '
+b1 +
+b1000 !
+b1000 &
+b1000 *
+1,
+b1111 #
+b1111 %
+#110000

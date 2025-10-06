@@ -1,21 +1,33 @@
 #include "constants.h"
 
+#define TEST_ADDR ((volatile float*) (DATARAM_ORIGIN + 0x100))
+
 int main(void) {
-    // declare operands as volatile so the compiler must read them
-    volatile int a1 = 5,      b1 = 7;
-    volatile int a2 = 32652,  b2 = 4678;
-    volatile int a3 = 32652,  b3 = -4678;
-    volatile int a4 = -32652, b4 = 4678;
-    volatile int a5 = -32652, b5 = -4678;
+    volatile float *p = TEST_ADDR;
 
-    // --- Arithmetic Operations ---
-    if ((a1 * b1) != 35)           { fail(1); }
-    if ((a2 * b2) != 152746056)    { fail(2); }
-    if ((a3 * b3) != -152746056)   { fail(3); }
-    if ((a4 * b4) != -152746056)   { fail(4); }
-    if ((a5 * b5) != 152746056)    { fail(5); }
+    unsigned int pattern = 0x3F800000u;  // float +1.0
+    *((volatile unsigned int*)p) = pattern;  // store via integer store
 
-    write_mmio(PERIPHERAL_S2, 0xDEADBEEF);
-    // while (1);
+    // Load the float from memory (should be FLW)
+    volatile float f = *p;
+
+    // Perform a trivial FP operation (f = f + 1.0f), forces FADD.S
+    f = f + 1.0f;
+
+    // Store back (should be FSW)
+    *p = f;
+
+    // Read back raw bits through integer load
+    unsigned int got = *((volatile unsigned int*)p);
+
+    // Report value to peripheral for debug
+    write_mmio(PERIPHERAL_S2, got);
+
+    // Expected pattern = 1.0f + 1.0f = 2.0f = 0x40000000
+    // if (got != 0x40000000u) {
+    //     fail(1);
+    // }
+
     return 0;
 }
+

@@ -39,6 +39,8 @@
 `define size_Fp_op2_reg            `size_X_LEN      
 `define size_Fp_rd_data            `size_X_LEN     
 `define size_Fp_fmt                3    
+`define size_Fp_rm                 size_Fp_fmt    
+`define size_Fp_single             size_Fp_fmt    
 
 
 `define PC_reg_end          `size_PC_reg
@@ -214,81 +216,68 @@
 `define UNRECGONIZED           7'b0000000
 
 // Instructions
-`define inst_UNKNOWN    64'h0000_0000_0000_0000
-`define inst_ADD        64'h0000_0000_0000_0001
-`define inst_SUB        64'h0000_0000_0000_0002
-`define inst_XOR        64'h0000_0000_0000_0004
-`define inst_OR         64'h0000_0000_0000_0008
-
-`define inst_AND        64'h0000_0000_0000_0010
-`define inst_SLL        64'h0000_0000_0000_0020
-`define inst_SRL        64'h0000_0000_0000_0040
-`define inst_SRA        64'h0000_0000_0000_0080
-
-`define inst_SLT        64'h0000_0000_0000_0100
-`define inst_SLTU       64'h0000_0000_0000_0200
-`define inst_ADDI       64'h0000_0000_0000_0400
-`define inst_XORI       64'h0000_0000_0000_0800
-
-`define inst_ORI        64'h0000_0000_0000_1000
-`define inst_ANDI       64'h0000_0000_0000_2000
-`define inst_SLLI       64'h0000_0000_0000_4000
-`define inst_SRLI       64'h0000_0000_0000_8000
-
-`define inst_SRAI       64'h0000_0000_0001_0000
-`define inst_SLTI       64'h0000_0000_0002_0000
-`define inst_SLTIU      64'h0000_0000_0004_0000
-`define inst_LB         64'h0000_0000_0008_0000
-
-`define inst_LH         64'h0000_0000_0010_0000
-`define inst_LW         64'h0000_0000_0020_0000
-`define inst_LBU        64'h0000_0000_0040_0000
-`define inst_LHU        64'h0000_0000_0080_0000
-
-`define inst_SB         64'h0000_0000_0100_0000
-`define inst_SH         64'h0000_0000_0200_0000
-`define inst_SW         64'h0000_0000_0400_0000
-`define inst_BEQ        64'h0000_0000_0800_0000
-
-`define inst_BNE        64'h0000_0000_1000_0000
-`define inst_BLT        64'h0000_0000_2000_0000
-`define inst_BGE        64'h0000_0000_4000_0000
-`define inst_BLTU       64'h0000_0000_8000_0000
-
-`define inst_BGEU       64'h0000_0001_0000_0000
-`define inst_JAL        64'h0000_0002_0000_0000
-`define inst_JALR       64'h0000_0004_0000_0000
-`define inst_LUI        64'h0000_0008_0000_0000
-
-`define inst_AUIPC      64'h0000_0010_0000_0000
-`define inst_ECALL      64'h0000_0020_0000_0000
-`define inst_EBREAK     64'h0000_0040_0000_0000
-`define inst_FENCE      64'h0000_0080_0000_0000
-
-`define inst_FENCEI     64'h0000_0100_0000_0000
-`define inst_CSRRW      64'h0000_0200_0000_0000
-`define inst_CSRRS      64'h0000_0400_0000_0000
-`define inst_CSRRC      64'h0000_0800_0000_0000
-`define inst_CSRRWI     64'h0000_1000_0000_0000
-`define inst_CSRRSI     64'h0000_2000_0000_0000
-`define inst_CSRRCI     64'h0000_4000_0000_0000
-
-
-`define inst_MRET       64'h0000_8000_0000_0000
-`define inst_SRET       64'h0001_0000_0000_0000
-`define inst_WFI        64'h0002_0000_0000_0000
-
-
-`define inst_MUL        64'h0004_0000_0000_0000 //  mul  
-`define inst_MULH       64'h0008_0000_0000_0000 //  mulh 
-`define inst_MULSU      64'h0010_0000_0000_0000 //  mulsu
-`define inst_MULU       64'h0020_0000_0000_0000 //  mulu 
-`define inst_DIV        64'h0040_0000_0000_0000 //  div  
-`define inst_DIVU       64'h0080_0000_0000_0000 //  divu 
-`define inst_REM        64'h0100_0000_0000_0000 //  rem  
-`define inst_REMU       64'h0200_0000_0000_0000 //  remu 
-`define inst_FSW        64'h0400_0000_0000_0000 //  FP ST 
-`define inst_FLW        64'h0800_0000_0000_0000 //  FP LW
+`define inst_UNKNOWN    64'h00
+`define inst_ADD        64'h01
+`define inst_SUB        64'h02
+`define inst_XOR        64'h04
+`define inst_OR         64'h05
+`define inst_AND        64'h06
+`define inst_SLL        64'h07
+`define inst_SRL        64'h08
+`define inst_SRA        64'h09
+`define inst_SLT        64'h0A
+`define inst_SLTU       64'h0B
+`define inst_ADDI       64'h0C
+`define inst_XORI       64'h0D
+`define inst_ORI        64'h0E
+`define inst_ANDI       64'h0F
+`define inst_SLLI       64'h10
+`define inst_SRLI       64'h11
+`define inst_SRAI       64'h12
+`define inst_SLTI       64'h14
+`define inst_SLTIU      64'h15
+`define inst_LB         64'h16
+`define inst_LH         64'h17
+`define inst_LW         64'h18
+`define inst_LBU        64'h19
+`define inst_LHU        64'h1A
+`define inst_SB         64'h1B
+`define inst_SH         64'h1C
+`define inst_SW         64'h1D
+`define inst_BEQ        64'h1E
+`define inst_BNE        64'h1F
+`define inst_BLT        64'h20
+`define inst_BGE        64'h21
+`define inst_BLTU       64'h22
+`define inst_BGEU       64'h24
+`define inst_JAL        64'h25
+`define inst_JALR       64'h26
+`define inst_LUI        64'h27
+`define inst_AUIPC      64'h28
+`define inst_ECALL      64'h29
+`define inst_EBREAK     64'h2A
+`define inst_FENCE      64'h2B
+`define inst_FENCEI     64'h2C
+`define inst_CSRRW      64'h2D
+`define inst_CSRRS      64'h2E
+`define inst_CSRRC      64'h2F
+`define inst_CSRRWI     64'h30
+`define inst_CSRRSI     64'h31
+`define inst_CSRRCI     64'h32
+`define inst_MRET       64'h34
+`define inst_SRET       64'h35
+`define inst_WFI        64'h36
+`define inst_MUL        64'h37 //  mul  
+`define inst_MULH       64'h38 //  mulh 
+`define inst_MULSU      64'h39 //  mulsu
+`define inst_MULU       64'h3A //  mulu 
+`define inst_DIV        64'h3B //  div  
+`define inst_DIVU       64'h3C //  divu 
+`define inst_REM        64'h3D //  rem  
+`define inst_REMU       64'h3E //  remu 
+`define inst_FSW        64'h3F //  FP ST 
+`define inst_FLW        64'h40 //  FP LW
+`define inst_FADD_S     64'h41 //  FP LW
 
 
 

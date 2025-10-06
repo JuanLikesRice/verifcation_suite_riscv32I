@@ -293,6 +293,11 @@ module debug # (
 		 {`inst_FSW }:begin 
 		$write("inst_FSW     ");
 		end
+		 {`inst_FADD_S }:begin 
+		$write("inst_FADD_S  ");
+		end
+
+		
 
 
 

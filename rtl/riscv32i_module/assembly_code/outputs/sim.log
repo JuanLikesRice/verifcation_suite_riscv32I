@@ -1992,11 +1992,10 @@ DATA_MEM*:    D00000100: 1065353216,   D00003fc0: 1065353216,   D00003fc8: 10653
 Cycle_count    51,
         pc_o  00002210,
 PipeReg0  PC: 00000000: I:{00000013}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
-PipeReg1  PC: 00002208: I:{00f777d3}    inst_FADD_S  rd_i_a   47 rs1_a   46 rs2_a   47  rs1_d 3f800000 rs2_d 3f800000  result {zzzzzzzz} imm_i 00000000 branch_en     z,  reg_write     z,  operand_a     z,  alu_res2      z,  rd_data       z,  data_mem_     z, 
-EXEC      PC: 00002208: I:{00f777d3}    inst_FADD_S  rd_i_a   47 rs1_a   46 rs2_a   47  rs1_d 3f800000 rs2_d 00000000  result {000000000} imm_i 00000000
+PipeReg1  PC: 00002208: I:{00f777d3}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {zzzzzzzz} imm_i 00000000 branch_en     z,  reg_write     z,  operand_a     z,  alu_res2      z,  rd_data       z,  data_mem_     z, 
+EXEC      PC: 00002208: I:{00f777d3}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {000000000} imm_i 00000000
 PipeReg2  PC: 00002204: I:{0007a787}    inst_FLW     rd_i_a   47 rs1_a   15 rs2_a    0  rs1_d 00004000 rs2_d 00000000  result {00004000} imm_i 00000000 branch_en     0,  reg_write     1,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
 PipeReg3  PC: 00002200: I:{000047b7}    inst_LUI    rd_i_a   15 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00004000} imm_i 00004000 branch_en     0,  reg_write     1,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
- HAZARD: memFwd2, RS2 Stage2  to ALU    47, PC from stage 2: 00002204 forwarded to PC 00002208, Forwarded value 00000000
 
 REGFILE:      R   1:  000020e4,   R   2:  00008fc0,   R   8:  00008fe0,   R  14:  3f800000,   R  15:  00005100,
 REGFILE*:     R   1:      8420,   R   2:     36800,   R   8:     36832,   R  14: 1065353216,   R  15:     20736,
@@ -2018,11 +2017,10 @@ DATA_MEM*:    D00000100: 1065353216,   D00003fc0: 1065353216,   D00003fc8: 10653
 Cycle_count    52,
         pc_o  00002214,
 PipeReg0  PC: 0000220c: I:{fef42027}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
-PipeReg1  PC: 00002208: I:{00f777d3}    inst_FADD_S  rd_i_a   47 rs1_a   46 rs2_a   47  rs1_d 3f800000 rs2_d 00000000  result {zzzzzzzz} imm_i 00000000 branch_en     z,  reg_write     z,  operand_a     z,  alu_res2      z,  rd_data       z,  data_mem_     z, 
-EXEC      PC: 00002208: I:{00f777d3}    inst_FADD_S  rd_i_a   47 rs1_a   46 rs2_a   47  rs1_d 3f800000 rs2_d xxxxxxxx  result {000000000} imm_i 00000000
+PipeReg1  PC: 00002208: I:{00f777d3}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {zzzzzzzz} imm_i 00000000 branch_en     z,  reg_write     z,  operand_a     z,  alu_res2      z,  rd_data       z,  data_mem_     z, 
+EXEC      PC: 00002208: I:{00f777d3}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {000000000} imm_i 00000000
 PipeReg2  PC: 00002204: I:{0007a787}    inst_FLW     rd_i_a   47 rs1_a   15 rs2_a    0  rs1_d 00004000 rs2_d 00000000  result {00004000} imm_i 00000000 branch_en     0,  reg_write     1,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
 PipeReg3  PC: 00000000: I:{00000013}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
- HAZARD: memFwd2, RS2 Stage2  to ALU    47, PC from stage 2: 00002204 forwarded to PC 00002208, Forwarded value xxxxxxxx
 
 FP32 REGFILE:      R  14:  3f800000,   R  15:  3f800000,
 FP32 REGFILE*:     R  14: 1065353216,   R  15: 1065353216,
@@ -2049,7 +2047,7 @@ Cycle_count    53,
 PipeReg0  PC: 00002210: I:{fe042787}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
 PipeReg1  PC: 0000220c: I:{fef42027}    inst_FSW     rd_i_a    0 rs1_a    8 rs2_a   47  rs1_d 00008fe0 rs2_d 3f800000  result {zzzzzzzz} imm_i ffffffe0 branch_en     z,  reg_write     z,  operand_a     z,  alu_res2      z,  rd_data       z,  data_mem_     z, 
 EXEC      PC: 0000220c: I:{fef42027}    inst_FSW     rd_i_a    0 rs1_a    8 rs2_a   47  rs1_d 00008fe0 rs2_d xxxxxxxx  result {100008fc0} imm_i ffffffe0
-PipeReg2  PC: 00002208: I:{00f777d3}    inst_FADD_S  rd_i_a   47 rs1_a   46 rs2_a   47  rs1_d 3f800000 rs2_d xxxxxxxx  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
+PipeReg2  PC: 00002208: I:{00f777d3}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
 PipeReg3  PC: 00002204: I:{0007a787}    inst_FLW     rd_i_a   47 rs1_a   15 rs2_a    0  rs1_d 00004000 rs2_d 00000000  result {00004000} imm_i 00000000 branch_en     0,  reg_write     1,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     x, 
  HAZARD: wbFwd2,  RS2 Stage3  to ALU    47, PC from stage 3: 00002204 forwarded to PC 0000220c, Forwarded value xxxxxxxx
 
@@ -2076,7 +2074,7 @@ PipeReg0  PC: 00002214: I:{fec42783}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a
 PipeReg1  PC: 00002210: I:{fe042787}    inst_FLW     rd_i_a   47 rs1_a    8 rs2_a    0  rs1_d 00008fe0 rs2_d 00000000  result {zzzzzzzz} imm_i ffffffe0 branch_en     z,  reg_write     z,  operand_a     z,  alu_res2      z,  rd_data       z,  data_mem_     z, 
 EXEC      PC: 00002210: I:{fe042787}    inst_FLW     rd_i_a   47 rs1_a    8 rs2_a    0  rs1_d 00008fe0 rs2_d 00000000  result {100008fc0} imm_i ffffffe0
 PipeReg2  PC: 0000220c: I:{fef42027}    inst_FSW     rd_i_a    0 rs1_a    8 rs2_a   47  rs1_d 00008fe0 rs2_d xxxxxxxx  result {00008fc0} imm_i ffffffe0 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
-PipeReg3  PC: 00002208: I:{00f777d3}    inst_FADD_S  rd_i_a   47 rs1_a   46 rs2_a   47  rs1_d 3f800000 rs2_d xxxxxxxx  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
+PipeReg3  PC: 00002208: I:{00f777d3}    inst_UNKOWN rd_i_a    0 rs1_a    0 rs2_a    0  rs1_d 00000000 rs2_d 00000000  result {00000000} imm_i 00000000 branch_en     0,  reg_write     0,  operand_a     0,  alu_res2      0,  rd_data       0,  data_mem_     0, 
 
 FP32 REGFILE:      R  14:  3f800000,
 FP32 REGFILE*:     R  14: 1065353216,

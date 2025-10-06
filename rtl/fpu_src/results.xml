@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1759714291" />
+    <testcase name="check_fpu_adder_rne" classname="tests.test_fpu_adder" file="/mnt/c/Users/Turog/Documents/GitHub/verifcation_suite_riscv32I/rtl/fpu_src/tests/test_fpu_adder.py" lineno="54" time="0.005084991455078125" sim_time_ns="14.0" ratio_time="2753.2003000750187" />
+  </testsuite>
+</testsuites>

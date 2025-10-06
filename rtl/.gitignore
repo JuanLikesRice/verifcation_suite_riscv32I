@@ -19,3 +19,10 @@ XilinxUnisimLibrary/
 riscof/test/riscv-arch-test/*
 riscv32i_module/test_cases/*/outputs
 riscv32i_module/obj_dir/*
+*/.venv/*
+*/*/*/*/*.pyc
+*/*/*/*.pyc
+*/*/*.pyc
+*/*/.pyc
+*/*/.pyc
+*/.pyc

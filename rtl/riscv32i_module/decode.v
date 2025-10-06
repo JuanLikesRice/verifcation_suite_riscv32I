@@ -70,7 +70,7 @@ module decode
 
 
       case (opcode)
-        `R_Type: begin
+        `R_Type,`FP_TYPE: begin
            INST_typ <= `INST_typ_R;
            rd     <= instruction[11:7];
            fun3   <= instruction[14:12];
@@ -163,63 +163,67 @@ module decode
         end
       endcase
 
-      case (INST_typ)
+      casez  (INST_typ)
         `INST_typ_R: begin
-           case ({fun7,fun3})
-             {7'b0000000,3'b000}: begin  // ADD
+           casez ({fun7,fun3,opcode})
+             {7'b0000000,3'b000,`R_Type}: begin  // ADD
 		Single_Instruction <= `inst_ADD;
              end 
-             {7'b0100000,3'b000}: begin  // SUB
+             {7'b0100000,3'b000,`R_Type}: begin  // SUB
 		Single_Instruction <= `inst_SUB;
              end 
-             {7'b0000000,3'b001}: begin  // SLL
+             {7'b0000000,3'b001,`R_Type}: begin  // SLL
 		Single_Instruction <= `inst_SLL;
              end 
-             {7'b0000000,3'b010}: begin  // SLT
+             {7'b0000000,3'b010,`R_Type}: begin  // SLT
 		Single_Instruction <= `inst_SLT;
              end 
-             {7'b0000000,3'b011}: begin  //SLTU 
+             {7'b0000000,3'b011,`R_Type}: begin  //SLTU 
 		Single_Instruction <= `inst_SLTU;
              end 
-             {7'b0000000,3'b100}: begin  // XOR
+             {7'b0000000,3'b100,`R_Type}: begin  // XOR
 		Single_Instruction <= `inst_XOR;
              end 
-             {7'b0000000,3'b101}: begin  //SRL 
+             {7'b0000000,3'b101,`R_Type}: begin  //SRL 
 		Single_Instruction <= `inst_SRL;
              end 
-             {7'b0100000,3'b101}: begin  // SRA
+             {7'b0100000,3'b101,`R_Type}: begin  // SRA
 		Single_Instruction <= `inst_SRA;
              end 
-             {7'b0000000,3'b110}: begin  // OR 
+             {7'b0000000,3'b110,`R_Type}: begin  // OR 
 		Single_Instruction <= `inst_OR;
              end 
-             {7'b0000000,3'b111}: begin  //AND 
+             {7'b0000000,3'b111,`R_Type}: begin  //AND 
 		Single_Instruction <= `inst_AND;
              end 
-             {7'b0000001,3'b000}: begin  // MUL
+             {7'b0000001,3'b000,`R_Type}: begin  // MUL
 		Single_Instruction <= `inst_MUL  ;
       end
-             {7'b0000001,3'b001}: begin  // MULH
+             {7'b0000001,3'b001,`R_Type}: begin  // MULH
 		Single_Instruction <= `inst_MULH ;
       end
-             {7'b0000001,3'b010}: begin  // MULSU
+             {7'b0000001,3'b010,`R_Type}: begin  // MULSU
 		Single_Instruction <= `inst_MULSU;
       end
-             {7'b0000001,3'b011}: begin  // MULU
+             {7'b0000001,3'b011,`R_Type}: begin  // MULU
 		Single_Instruction <= `inst_MULU ;
       end
-             {7'b0000001,3'b100}: begin  // DIV
+             {7'b0000001,3'b100,`R_Type}: begin  // DIV
 		Single_Instruction <= `inst_DIV  ;
       end
-             {7'b0000001,3'b101}: begin  // DIVU
+             {7'b0000001,3'b101,`R_Type}: begin  // DIVU
 		Single_Instruction <= `inst_DIVU ;
       end
-             {7'b0000001,3'b110}: begin  // REM
+             {7'b0000001,3'b110,`R_Type}: begin  // REM
 		Single_Instruction <= `inst_REM  ;
       end
-             {7'b0000001,3'b111}: begin  // REMU
+             {7'b0000001,3'b111,`R_Type}: begin  // REMU
 		Single_Instruction <= `inst_REMU ;
       end
+            {7'b0000000,3'b???,`FP_TYPE}: begin  // REMU
+		Single_Instruction <= `inst_FADD_S ;
+      end
+      
              default: begin  //UNKNOWN 
 		Single_Instruction <= `inst_UNKNOWN;
              end 
@@ -471,11 +475,9 @@ module decode
 
 
 
-   assign rd_FP  =                                    (Single_Instruction == `inst_FLW);
-   assign rs1_FP =  0;
-   // assign rs1_FP =  (Single_Instruction == `inst_FSW)|(Single_Instruction == `inst_FLW);
-   assign rs2_FP =  (Single_Instruction == `inst_FSW)                                  ;
-
+   assign rd_FP  = (Single_Instruction == `inst_FLW) || (Single_Instruction == `inst_FADD_S);
+   assign rs1_FP =  0                                || (Single_Instruction == `inst_FADD_S);
+   assign rs2_FP = (Single_Instruction == `inst_FSW) || (Single_Instruction == `inst_FADD_S);
 
    assign fun3_o = fun3;
    assign fun7_o = fun7;
