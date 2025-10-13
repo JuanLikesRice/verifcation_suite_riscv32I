@@ -1,6 +1,21 @@
 import os, struct, csv, random, subprocess
-import numpy as np, cocotb
+import numpy as np
+import cocotb
 from cocotb.triggers import Timer
+
+# ---------- SoftFloat CLI path ----------
+_CLI = os.path.normpath(os.getenv(
+    "SOFTFLOAT_CLI",
+    os.path.join(os.path.dirname(__file__), "..", "build", "rv_softfloat_cli")
+))
+
+def softfloat_f32_add_bits(a_bits:int, b_bits:int, rm:int):
+    if not os.path.exists(_CLI):
+        raise RuntimeError(f"SoftFloat CLI not found at {_CLI}. Run: make oracle")
+    p = subprocess.run([_CLI, str(rm), f"0x{a_bits:08X}", f"0x{b_bits:08X}"],
+                       check=True, capture_output=True, text=True)
+    res, flags = p.stdout.strip().split()
+    return int(res,16), int(flags,16)  # flags: NV DZ OF UF NX in bits 4..0
 
 # ---------- helpers ----------
 def f32_from_bits(u: int) -> np.float32:
@@ -17,7 +32,12 @@ def same_fp32_bits(exp_bits: int, got_bits: int) -> bool:
     def is_nan(u): return (u & 0x7F800000) == 0x7F800000 and (u & 0x007FFFFF) != 0
     if is_nan(exp_bits) and is_nan(got_bits): return True
     return exp_bits == got_bits
-def f32_dec_str(x: float) -> str: return repr(float(np.float32(x)))
+
+# canonical NaN (already done in CLI; keep here for safety if another oracle used)
+def canon_nan_f32(u: int) -> int:
+    if (u & 0x7F800000) == 0x7F800000 and (u & 0x007FFFFF) != 0:
+        return 0x7FC00000
+    return u
 
 # ---------- vectors ----------
 VECTORS = [
@@ -70,8 +90,9 @@ def header_line():
        f"{'RESULT':>{W_RESULT}}")
     return h, "-"*len(h)
 def row_line(rm,a_hex,b_hex,out_bits,ref_hex_s,ref_dec_s,ref_fields_s,result):
-    a_dec=f32_dec_str(f32_from_hex(a_hex)); b_dec=f32_dec_str(f32_from_hex(b_hex))
-    out_dec=f32_dec_str(f32_from_bits(out_bits))
+    a_dec=repr(float(np.float32(f32_from_hex(a_hex))))
+    b_dec=repr(float(np.float32(f32_from_hex(b_hex))))
+    out_dec=repr(float(np.float32(f32_from_bits(out_bits))))
     a_fields=fmt_fields(int(a_hex,16)); b_fields=fmt_fields(int(b_hex,16)); out_fields=fmt_fields(out_bits)
     return (f"{rm:0{W_RM}b} | {a_hex:>{W_HEX}} | {a_dec:>{W_DEC}} | {a_fields:>{W_FIELDS}} || "
             f"{b_hex:>{W_HEX}} | {b_dec:>{W_DEC}} | {b_fields:>{W_FIELDS}} || "
@@ -79,22 +100,11 @@ def row_line(rm,a_hex,b_hex,out_bits,ref_hex_s,ref_dec_s,ref_fields_s,result):
             f"{ref_hex_s:>{W_HEX}} | {ref_dec_s:>{W_DEC}} | {ref_fields_s:>{W_FIELDS}} | "
             f"{result:>{W_RESULT}}")
 
-# ---------- oracle via CLI ----------
-# _CLI = os.path.join(os.path.dirname(__file__), "build", "rv_softfloat_cli")
-_CLI = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "build", "rv_softfloat_cli"))
-
-def softfloat_f32_add_bits(a_bits:int, b_bits:int, rm:int):
-    if not os.path.exists(_CLI):
-        raise RuntimeError(f"SoftFloat CLI not found at {_CLI}. Run: make cli")
-    p = subprocess.run([_CLI, str(rm), f"0x{a_bits:08X}", f"0x{b_bits:08X}"],
-                       check=True, capture_output=True, text=True)
-    res, flags = p.stdout.strip().split()
-    return int(res,16), int(flags,16)
-
-# ---------- cocotb test ----------
+# ---------- main cocotb test ----------
 @cocotb.test()
 async def check_fpu_adder_riscv(dut):
-    N_RANDOM, SEED = 300, 2025
+    # N_RANDOM, SEED = 300, 2025
+    N_RANDOM, SEED = 345, 2025
     ALL_VECTORS = VECTORS + gen_random_vectors(N_RANDOM, seed=SEED)
 
     table_path, csv_path = "results_table.log", "results.csv"
@@ -109,6 +119,7 @@ async def check_fpu_adder_riscv(dut):
         "Ref_hex","Ref_dec","Ref_sign","Ref_exp","Ref_man",
         "IEEE_Flags","Result"])
 
+    have_flags = hasattr(dut, "fflags")
     failures=[]
     for rm,a_hex,b_hex in ALL_VECTORS:
         a_bits=int(a_hex,16); b_bits=int(b_hex,16)
@@ -116,37 +127,44 @@ async def check_fpu_adder_riscv(dut):
         dut.rm.value=rm; dut.A.value=a_bits; dut.B.value=b_bits
         await Timer(1, unit="ns")
 
-        out_bits=int(dut.Out.value)
+        out_bits=int(dut.Out.value) & 0xFFFFFFFF
+        ref_bits, flags = softfloat_f32_add_bits(a_bits,b_bits,rm)
+        ref_bits = canon_nan_f32(ref_bits)
 
-        if rm in (0,1,2,3,4):
-            ref_bits, flags = softfloat_f32_add_bits(a_bits,b_bits,rm)
-            ok = same_fp32_bits(ref_bits, out_bits)
-            result = "PASS" if ok else "FAIL"
-            if not ok:
-                failures.append(f"rm={rm:03b} A={a_hex} B={b_hex} Expected={hex_from_bits(ref_bits)} Got={hex_from_bits(out_bits)}")
-            ref_hex_s=hex_from_bits(ref_bits)
-            ref_dec_s=f32_dec_str(f32_from_bits(ref_bits))
-            ref_fields_s=fmt_fields(ref_bits)
-            Ref_s,Ref_e,Ref_m = split_fields(ref_bits)
-            flags_hex=f"0x{flags:02X}"
-        else:
-            ref_hex_s=ref_dec_s=ref_fields_s="N/A"; Ref_s=Ref_e=Ref_M=0
-            flags_hex="N/A"; result="SKIP"
+        ok = same_fp32_bits(ref_bits, out_bits)
+        result = "PASS" if ok else "FAIL"
+        if not ok:
+            failures.append(f"rm={rm:03b} A={a_hex} B={b_hex} Expected={hex_from_bits(ref_bits)} Got={hex_from_bits(out_bits)}")
 
-        tf.write(row_line(rm,a_hex,b_hex,out_bits,ref_hex_s,ref_dec_s,ref_fields_s,result)+"\n")
+        # Optional flag check if DUT exposes fflags (bits [4:0] NV,DZ,OF,UF,NX)
+        if have_flags:
+            print("NO FLAGS")
+            got_flags = int(dut.fflags.value) & 0x1F
+            exp_flags = flags & 0x1F
+            if got_flags != exp_flags:
+                failures.append(f"fflags mismatch rm={rm:03b} A={a_hex} B={b_hex} exp=0x{exp_flags:02X} got=0x{got_flags:02X}")
 
+        # write human-friendly line
+        tf.write(row_line(rm,a_hex,b_hex,out_bits,
+                          hex_from_bits(ref_bits),
+                          repr(float(np.float32(f32_from_bits(ref_bits)))),
+                          fmt_fields(ref_bits),
+                          result)+"\n")
+
+        # csv
         A_s,A_e,A_m=split_fields(a_bits); B_s,B_e,B_m=split_fields(b_bits); O_s,O_e,O_m=split_fields(out_bits)
+        Ref_s,Ref_e,Ref_m=split_fields(ref_bits)
         cw.writerow([f"{rm:03b}",
-            a_hex,f32_dec_str(f32_from_bits(a_bits)),f"0x{A_s:X}",f"0x{A_e:02X}",f"0x{A_m:06X}",
-            b_hex,f32_dec_str(f32_from_bits(b_bits)),f"0x{B_s:X}",f"0x{B_e:02X}",f"0x{B_m:06X}",
-            hex_from_bits(out_bits),f32_dec_str(f32_from_bits(out_bits)),f"0x{O_s:X}",f"0x{O_e:02X}",f"0x{O_m:06X}",
-            ref_hex_s,ref_dec_s,f"0x{Ref_s:X}" if result!="SKIP" else "N/A",
-            f"0x{Ref_e:02X}" if result!="SKIP" else "N/A",
-            f"0x{Ref_m:06X}" if result!="SKIP" else "N/A",
-            flags_hex,result])
+            a_hex, repr(float(np.float32(f32_from_bits(a_bits)))), f"0x{A_s:X}", f"0x{A_e:02X}", f"0x{A_m:06X}",
+            b_hex, repr(float(np.float32(f32_from_bits(b_bits)))), f"0x{B_s:X}", f"0x{B_e:02X}", f"0x{B_m:06X}",
+            hex_from_bits(out_bits), repr(float(np.float32(f32_from_bits(out_bits)))), f"0x{O_s:X}", f"0x{O_e:02X}", f"0x{O_m:06X}",
+            hex_from_bits(ref_bits), repr(float(np.float32(f32_from_bits(ref_bits)))), f"0x{Ref_s:X}", f"0x{Ref_e:02X}", f"0x{Ref_m:06X}",
+            f"0x{flags & 0x1F:02X}", result])
 
     tf.close(); cf.close()
     dut._log.info(f"Wrote human-readable log: {table_path}")
     dut._log.info(f"Wrote CSV: {csv_path}")
+    dut._log.info("Waveform: waves.vcd")
+
     if failures:
         raise AssertionError("Mismatches:\n  " + "\n  ".join(failures))
