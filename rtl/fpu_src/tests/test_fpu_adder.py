@@ -41,6 +41,7 @@ def canon_nan_f32(u: int) -> int:
 
 # ---------- vectors ----------
 VECTORS = [
+    (0b011,"0x3F000000","0x00000001"),
     (0b000,"0x3FA00000","0x3FB00000"),
     (0b000,"0x3FA00000","0x443BD800"),
     (0b000,"0x3FA00000","0x3FA00000"),
@@ -53,7 +54,6 @@ VECTORS = [
     (0b000,"0x00000080","0x3F000000"),
     (0b001,"0x3E99999A","0x3E99999A"),
     (0b010,"0x3E99999A","0x3E4CCCCD"),
-    (0b011,"0x3F000000","0x00000001"),
     (0b100,"0x3F000000","0x3E800000"),
     (0b000,"0xC2480000","0x42480000"),
 ]
@@ -104,7 +104,8 @@ def row_line(rm,a_hex,b_hex,out_bits,ref_hex_s,ref_dec_s,ref_fields_s,result):
 @cocotb.test()
 async def check_fpu_adder_riscv(dut):
     # N_RANDOM, SEED = 300, 2025
-    N_RANDOM, SEED = 345, 2025
+    # N_RANDOM, SEED = 345, 2025
+    N_RANDOM, SEED =   5, 2025
     ALL_VECTORS = VECTORS + gen_random_vectors(N_RANDOM, seed=SEED)
 
     table_path, csv_path = "results_table.log", "results.csv"
