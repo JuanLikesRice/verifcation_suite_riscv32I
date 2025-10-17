@@ -16,6 +16,7 @@ module FPU_ADDER_I #(
     input  [PARAM_Fp_size-1:0] B  , 
     output [PARAM_Fp_size-1:0] Out
 );
+
 localparam PARAM_Mantissa_PI_size = PARAM_Mantissa_size   +1;
 parameter offset_bits = 7;
 wire [PARAM_Mantissa_size-1   :0] M_B,M_A; 
@@ -40,7 +41,6 @@ wire carry_out;
 wire a_GTEQ_b;
 
 
-
 localparam [31:0] QNAN = 32'h7FC0_0000;
 leading_zeroth_bit #(
     .Bit_Length(   PARAM_Mantissa_PI_size+offset_bits+1),
@@ -49,8 +49,6 @@ leading_zeroth_bit #(
     .leading_zero(leading_zero),
     .all_zeros(M_all_zeros)
     );
-
-
 
 // initial assignments
 assign M_A[PARAM_Mantissa_size-1:0]=A[PARAM_Mantissa_size-1:0];

@@ -1,0 +1,28 @@
+./berkeley-softfloat-3/*
+./build/*
+
+berkeley-softfloat-3/
+riscv-gnu-toolchain/
+riscv-isa-sim/
+riscv-pk/
+../fpu_src_spike/
+# builds
+build/
+sim_build/
+*.o
+*.a
+*.so
+*.vvp
+
+# sim artifacts
+*.vcd
+*.fst
+results.xml
+results.csv
+results_table.log
+sim.log
+
+# python
+__pycache__/
+*.py[cod]
+.venv/

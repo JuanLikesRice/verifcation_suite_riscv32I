@@ -193,11 +193,26 @@
 
 
 # ---------- cocotb + Icarus ----------
-SIM                 ?= icarus
-TOPLEVEL_LANG       ?= verilog
-TOPLEVEL            ?= FPU_ADDER_I
-COCOTB_TEST_MODULES ?= tests.test_fpu_adder
-VERILOG_SOURCES     := rtl/fpu_adder.v
+SIM               ?= icarus
+TOPLEVEL_LANG     ?= verilog
+TOPLEVEL          ?= FPU_ADDER_I
+VERILOG_SOURCES   := rtl/fpu_adder.v
+
+# test discovery for cocotb 1.x
+export MODULE = tests.test_fpu_adder
+export PYTHONPATH := $(PWD):$(PYTHONPATH)
+
+# use your venv’s cocotb tools
+PYTHON       ?= $(PWD)/.venv/bin/python
+COCOTB_MK    := $(shell $(PYTHON) -m cocotb.config --makefiles)/Makefile.sim
+
+
+# # ---------- cocotb + Icarus ----------
+# SIM                 ?= icarus
+# TOPLEVEL_LANG       ?= verilog
+# TOPLEVEL            ?= FPU_ADDER_I
+# COCOTB_TEST_MODULES ?= tests.test_fpu_adder
+# VERILOG_SOURCES     := rtl/fpu_adder.v
 
 # Icarus options
 export IVERILOG_COMPILE_ARGS += -g2005 +define+size_Fp_fmt=3

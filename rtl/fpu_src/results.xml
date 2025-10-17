@@ -1,8 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1760502195" />
-    <testcase name="check_fpu_adder_riscv" classname="tests.test_fpu_adder" file="/mnt/c/Users/Turog/Documents/GitHub/verifcation_suite_riscv32I/rtl/fpu_src/tests/test_fpu_adder.py" lineno="104" time="0.5386741161346436" sim_time_ns="21.0" ratio_time="38.98460937883819">
-      <failure error_type="AssertionError" error_msg="Mismatches:&#10;  rm=000 A=0x7F800000 B=0xFF800000 Expected=0x7FC00000 Got=0x00000000&#10;  rm=000 A=0x7F7FFFFF B=0x7F7FFFFF Expected=0x7F800000 Got=0x007FFFFF" />
-    </testcase>
-  </testsuite>
-</testsuites>
