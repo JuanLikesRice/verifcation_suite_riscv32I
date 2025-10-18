@@ -9,15 +9,38 @@ module FPU_MULT_I #(
     parameter PARAM_Mantissa_size = 23,
     parameter PARAM_Exponent_size = 8
 )(
-    input  [2:0] rm, 
-    input  clk, 
-    input  reset,
-    input  mult_on,
-    input  [PARAM_Fp_size-1:0] A,
-    input  [PARAM_Fp_size-1:0] B,
-    output valid,
-    output [PARAM_Fp_size-1:0] Out
+    input clk, 
+    input rst,
+    input req_in ,
+    input  [2:0]  rm ,    
+    input  [PARAM_Fp_size-1:0] A  ,
+    input  [PARAM_Fp_size-1:0] B  , 
+    output [PARAM_Fp_size-1:0] Out,
+    output valid_out 
 );
+
+
+reg [PARAM_Fp_size-1:0]  Out_r;
+wire [PARAM_Fp_size-1:0] Out_w;
+reg valid_out_r;
+assign valid_out = valid_out_r;
+assign Out = Out_r;
+
+always @(posedge clk) begin 
+  if (rst) begin 
+    Out_r       <= 0;
+    valid_out_r <= 0;
+  end else begin  
+    if (req_in) begin 
+      valid_out_r <= req_in;
+      Out_r       <= Out_w;
+    end else begin 
+    valid_out_r <= 1'b0;
+    end 
+  end
+end 
+
+
     localparam BIAS = 127;
 
     // unpack
@@ -189,5 +212,5 @@ module FPU_MULT_I #(
         end
     end
 
-    assign Out = out_main;
+    assign Out_w = out_main;
 endmodule
