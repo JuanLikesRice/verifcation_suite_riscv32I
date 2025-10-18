@@ -139,12 +139,12 @@ async def check_fpu_mul_riscv(dut):
             exp_flags = flags & 0x1F
             if got_flags != exp_flags:
                 failures.append(f"fflags mismatch rm={rm:03b} A={a_hex} B={b_hex} exp=0x{exp_flags:02X} got=0x{got_flags:02X}")
-
-        tf.write(row_line(rm,a_hex,b_hex,out_bits,
-                          hex_from_bits(ref_bits),
-                          f32_dec_str(f32_from_bits(ref_bits)),
-                          fmt_fields(ref_bits),
-                          result)+"\n")
+        if result == "FAIL":
+            tf.write(row_line(rm,a_hex,b_hex,out_bits,
+                                hex_from_bits(ref_bits),
+                                f32_dec_str(f32_from_bits(ref_bits)),
+                                fmt_fields(ref_bits),
+                                result)+"\n")
 
         A_s,A_e,A_m=split_fields(a_bits); B_s,B_e,B_m=split_fields(b_bits); O_s,O_e,O_m=split_fields(out_bits)
         Ref_s,Ref_e,Ref_m=split_fields(ref_bits)
