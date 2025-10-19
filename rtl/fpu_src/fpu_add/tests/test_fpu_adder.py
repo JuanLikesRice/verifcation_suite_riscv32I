@@ -115,7 +115,8 @@ async def check_fpu_adder_riscv(dut):
     dut.rst.value = 0
     await RisingEdge(dut.clk)
 
-    N_RANDOM, SEED = 300, 2025
+    # N_RANDOM, SEED = 30000, 2026
+    N_RANDOM, SEED = 30, 2026
     ALL_VECTORS = VECTORS + gen_random_vectors(N_RANDOM, seed=SEED)
 
     table_path, csv_path = "results_table.log", "results.csv"

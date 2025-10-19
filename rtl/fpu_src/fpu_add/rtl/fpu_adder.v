@@ -1,5 +1,3 @@
-// define    `size_Fp_fmt 3
-// FPU_ADDER_clk_stimTB.v
 `timescale 1ns/1ps
 
 `ifndef size_Fp_fmt
@@ -18,11 +16,12 @@ module FPU_ADDER_I #(
     input  [PARAM_Fp_size-1:0] A  ,
     input  [PARAM_Fp_size-1:0] B  , 
     output [PARAM_Fp_size-1:0] Out,
-    output valid_out 
+    output                valid_out,
+    output [2:0]          exception 
 );
 
 
-    
+    wire signal_inexact;
     wire a_is_zero = (E_A==8'h00) && (M_A==23'd0);
     wire b_is_zero = (E_B==8'h00) && (M_B==23'd0);
     wire a_is_inf  = (E_A==8'hFF) && (M_A==23'd0);
@@ -30,26 +29,48 @@ module FPU_ADDER_I #(
     wire a_is_nan  = (E_A==8'hFF) && (M_A!=23'd0);
     wire b_is_nan  = (E_B==8'hFF) && (M_B!=23'd0);
     localparam [31:0] QNAN = 32'h7FC0_0000;
-// wire result_sign;
-  // assign final_sign = a_GTEQ_b ? S_A : S_B;
 
     // specials
     reg [31:0] special_out;
+    reg  [2:0] special_FLAG;
     reg        take_special;
-    // assign QNAN_out = a_is_nan||a_is_nan;
-    // assign INF_out  = a_is_nan||a_is_nan;
-  
-    //a_is_zero|b_is_zero|a_is_inf |b_is_inf |a_is_nan |b_is_nan ;
-    
+
     always @* begin
         take_special = 1'b1;
         special_out  = 32'h0000_0000;
-        if (a_is_nan || b_is_nan)                                     special_out = QNAN;
-        else if ((a_is_inf && ~b_is_inf) || (~a_is_inf &&  b_is_inf) || (complete_overdlow&~(a_is_inf && b_is_inf))) special_out =           {final_sign,8'hFF,23'd0};
-        else if (a_is_inf && b_is_inf)                                special_out = SAeqSB ?  {final_sign,8'hFF,23'd0} : QNAN;
-        else if (a_is_zero || b_is_zero)                              special_out =           {final_sign,8'h00,23'd0};
-        else                                                          take_special = 1'b0;
+        special_FLAG = 3'b111;        
+        if (a_is_nan || b_is_nan) begin 
+          special_out  = QNAN;
+          special_FLAG = 3'b100; //NV Invalid Operation
+        end else if ((a_is_inf && ~b_is_inf) || (~a_is_inf &&  b_is_inf) ) begin 
+          special_out =           {final_sign,8'hFF,23'd0};
+          special_FLAG = 3'b010; //3'b010 OF Overflow
+        end else if (a_is_inf && b_is_inf) begin 
+          special_out  = SAeqSB ?  {final_sign,8'hFF,23'd0} :   QNAN;
+          special_FLAG = SAeqSB ?  3'b010                   : 3'b100;  //3'b010 OF Overflow
+        end else if (complete_overdlow) begin 
+          special_out =           {final_sign,8'hFF,23'd0};
+          special_FLAG = 3'b010; //3'b010 OF Overflow
+        end else if (a_is_zero || b_is_zero) begin 
+          special_out =           {final_sign,8'h00,23'd0};
+          special_FLAG = 3'b111;
+        end else begin 
+          if (signal_inexact) begin 
+          special_FLAG = 3'b000;
+          end else begin 
+          special_FLAG = 3'b111;  
+          end
+          take_special = 1'b0;
+        end
     end
+
+// Flag Mnemonic Flag Meaning
+// 3'b100 NV Invalid Operation
+// 3'b011 DZ Divide by Zero
+// 3'b010 OF Overflow
+// 3'b001 UF Underflow
+// 3'b000 NX Inexact
+
 
 
 wire complete_overdlow;
@@ -76,7 +97,6 @@ always @(posedge clk) begin
   end
 end 
 
-// module FPU_ADDER_I #( parameter PARAM_Fp_size = 32, parameter PARAM_Mantissa_size = 23, parameter PARAM_Exponent_size = 8 ) ( input clk, input rst, input [size_Fp_fmt-1:0] rm , input req_in , input [PARAM_Fp_size-1:0] A , input [PARAM_Fp_size-1:0] B , output [PARAM_Fp_size-1:0] Out, output valid_out );
 
 
 localparam PARAM_Mantissa_PI_size = PARAM_Mantissa_size   +1;
@@ -122,13 +142,6 @@ assign E_B[PARAM_Exponent_size-1:0]=B[PARAM_Exponent_size-1+PARAM_Mantissa_PI_si
 assign S_A                         =A[PARAM_Fp_size-1];
 assign S_B                         =B[PARAM_Fp_size-1];
 
-//special cases
-// assign a_is_nan  = (E_A==8'hFF) && (M_A!=23'b0);
-// assign b_is_nan  = (E_B==8'hFF) && (M_B!=23'b0);
-// assign a_is_inf  = (E_A==8'hFF) && (M_A==23'b0);
-// assign b_is_inf  = (E_B==8'hFF) && (M_B==23'b0);
-
-
 //detect subnormal
 assign is_subnormal_A = (E_A == {PARAM_Exponent_size{1'b0}});
 assign is_subnormal_B = (E_B == {PARAM_Exponent_size{1'b0}});
@@ -138,7 +151,7 @@ assign E_B_eff   = is_subnormal_B ? 8'd1 : E_B;
 assign M_A_total = {~is_subnormal_A,M_A};
 assign M_B_total = {~is_subnormal_B,M_B};
 
-assign a_GTEQ_b = ( {E_A,M_A} >= {E_B,M_B} );
+assign a_GTEQ_b =       ({E_A,M_A} >= {E_B,M_B} );
 assign M_num_1_big      = a_GTEQ_b ?  M_A_total : M_B_total; 
 assign M_num_0_small    = a_GTEQ_b ?  M_B_total : M_A_total; 
 assign E_num_1_big      = a_GTEQ_b ?  E_A_eff   : E_B_eff  ; 
@@ -149,13 +162,12 @@ assign E_diff_big_small         =  E_num_1_big - E_num_0_small;
 assign E_diff_big_small_too_big =  E_diff_big_small > PARAM_Mantissa_PI_size+offset_bits+1;
 
 always @(*) begin 
-  if (E_diff_big_small_too_big) begin 
-      M_shifted_small_pre_selection = {{PARAM_Mantissa_PI_size{1'b0}},{PARAM_Mantissa_size{1'b0}},|M_num_0_small};
-  end else begin 
-      M_shifted_small_pre_selection =  {M_num_0_small,{PARAM_Mantissa_PI_size{1'b0}}} >> E_diff_big_small;
+    if (E_diff_big_small_too_big) begin 
+        M_shifted_small_pre_selection = {{PARAM_Mantissa_PI_size{1'b0}},{PARAM_Mantissa_size{1'b0}},|M_num_0_small};
+    end else begin 
+        M_shifted_small_pre_selection =  {M_num_0_small,{PARAM_Mantissa_PI_size{1'b0}}} >> E_diff_big_small;
+    end
   end
-  end
-
 
 assign M_shifted_small          =  M_shifted_small_pre_selection[2*PARAM_Mantissa_PI_size-1:PARAM_Mantissa_PI_size];// 47:24|23:0
 assign M_shifted_small_roudning =  M_shifted_small_pre_selection[PARAM_Mantissa_PI_size-1  :                      0];// 23:0
@@ -172,7 +184,6 @@ assign M_result_non_normal  = SAeqSB ? M_sum : M_sub;
 
 assign M_result_non_normal_MP1_size_shift       = M_result_non_normal << leading_zero;
 assign carry_out                                = M_result_non_normal[PARAM_Mantissa_PI_size+offset_bits];
-// assign M_final_mantisa                          = M_result_non_normal_MP1_size_shift[PARAM_Mantissa_PI_size+offset_bits:offset_bits+1];//27:3//#PARAM_Mantissa_PI_size+offset_bits:offset_bits];
 wire overflow_round;
 FPU_rounder #(
     .PARAM_Fp_size(PARAM_Fp_size),
@@ -184,11 +195,9 @@ FPU_rounder (
 .result_sign      (final_sign),
 .M_in_non_rounded (M_result_non_normal_MP1_size_shift),
 .M_final          (M_final_mantisa),
-.overflow_round   (overflow_round)
+.overflow_round   (overflow_round),
+.signal_inexact   (signal_inexact)
 );
-
-
-
 
 assign saved_mantissa = M_final_mantisa[PARAM_Mantissa_size-1:0];
 assign final_exponent = carry_out  ? (E_num_1_big + carry_out+ overflow_round):  (E_num_1_big - leading_zero+1 + overflow_round)  ;
@@ -197,6 +206,7 @@ assign final_sign = a_GTEQ_b ? S_A : S_B;
 
 assign final_result   = result_zero ? ({PARAM_Fp_size{1'b0}}) : {final_sign,final_exponent[PARAM_Exponent_size-1:0],saved_mantissa};
 assign Out_w = take_special ? special_out : final_result;
+
 
 endmodule
 
@@ -248,7 +258,8 @@ module FPU_rounder #(
     input  wire                                         result_sign      ,    
     input  wire [PARAM_Mantissa_size+1+offset_bits:0]  M_in_non_rounded ,
     output wire [PARAM_Mantissa_size:0]                 M_final          ,
-    output wire                                         overflow_round          
+    output wire                                         overflow_round,
+    output wire                                         signal_inexact          
 );
 wire [`size_Fp_fmt-1:0] actual_RM;
 reg [PARAM_Mantissa_size:0]  M_final_reg;
@@ -263,6 +274,7 @@ wire sticky,gurard,round;
 assign guard                    = left_over_bits[offset_bits    ];
 assign round                    = left_over_bits[offset_bits-1  ];
 assign sticky                   = |left_over_bits[offset_bits-2:0];
+assign signal_inexact           = sticky|guard|round;
 
 wire   middle_rounding, round_up, round_down;
 assign middle_rounding = ({guard,round,sticky} == 3'b100);
