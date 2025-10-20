@@ -4,46 +4,75 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer
 
+# ---------- utils ----------
+def try_to_int(sig):
+    try:
+        return int(sig)
+    except Exception:
+        return None
+
 # ---------- SoftFloat CLI path ----------
 _CLI = os.path.normpath(os.getenv(
     "SOFTFLOAT_CLI",
     os.path.join(os.path.dirname(__file__), "..", "build", "rv_softfloat_cli")
 ))
 
-def softfloat_f32_add_bits(a_bits:int, b_bits:int, rm:int):
+def softfloat_f32_add_bits(a_bits: int, b_bits: int, rm: int):
     if not os.path.exists(_CLI):
         raise RuntimeError(f"SoftFloat CLI not found at {_CLI}. Run: make oracle")
     p = subprocess.run([_CLI, str(rm), f"0x{a_bits:08X}", f"0x{b_bits:08X}"],
                        check=True, capture_output=True, text=True)
     res, flags = p.stdout.strip().split()
-    return int(res,16), int(flags,16)
+    return int(res, 16), int(flags, 16)
 
 # ---------- helpers ----------
 def f32_from_bits(u: int) -> np.float32:
     return np.float32(struct.unpack(">f", (u & 0xFFFFFFFF).to_bytes(4, "big", signed=False))[0])
+
 def bits_from_f32(x: float) -> int:
-    b = struct.pack(">f", float(np.float32(x))); return int.from_bytes(b, "big", signed=False)
-def f32_from_hex(h: str) -> np.float32: return f32_from_bits(int(h, 16))
-def hex_from_bits(u: int) -> str: return f"0x{u & 0xFFFFFFFF:08X}"
-def split_fields(u: int): return (u>>31)&1, (u>>23)&0xFF, u & 0x7FFFFF
+    b = struct.pack(">f", float(np.float32(x)))
+    return int.from_bytes(b, "big", signed=False)
+
+def f32_from_hex(h: str) -> np.float32:
+    return f32_from_bits(int(h, 16))
+
+def hex_from_bits(u: int) -> str:
+    return f"0x{u & 0xFFFFFFFF:08X}"
+
+def split_fields(u: int):
+    return (u >> 31) & 1, (u >> 23) & 0xFF, u & 0x7FFFFF
+
 def fmt_fields(u: int) -> str:
-    s,e,m = split_fields(u); return f"s=0x{s:X} e=0x{e:02X} m=0x{m:06X}"
+    s, e, m = split_fields(u)
+    return f"s=0x{s:X} e=0x{e:02X} m=0x{m:06X}"
+
 def same_fp32_bits(exp_bits: int, got_bits: int) -> bool:
-    if (exp_bits & 0x7FFFFFFF) == 0 and (got_bits & 0x7FFFFFFF) == 0: return True
+    if (exp_bits & 0x7FFFFFFF) == 0 and (got_bits & 0x7FFFFFFF) == 0:
+        return True
     def is_nan(u): return (u & 0x7F800000) == 0x7F800000 and (u & 0x007FFFFF) != 0
-    if is_nan(exp_bits) and is_nan(got_bits): return True
+    if is_nan(exp_bits) and is_nan(got_bits):
+        return True
     return exp_bits == got_bits
+
 def canon_nan_f32(u: int) -> int:
-    if (u & 0x7F800000) == 0x7F800000 and (u & 0x007FFFFF) != 0: return 0x7FC00000
+    if (u & 0x7F800000) == 0x7F800000 and (u & 0x007FFFFF) != 0:
+        return 0x7FC00000
     return u
 
 # ---------- vectors ----------
 VECTORS = [
+    (0b000,"0x3FA00000","0x3FB00000"),
+    (0b000,"0x5F1B3E64","0x5F1B3E64"),
+
+    (0b000,"0x3FA00000","0x3FA00000"),
+    (0b000,"0x3FA00000","0x3FB00000"),
+    (0b000,"0x3FA00000","0x3FA00000"),
+    (0b000,"0x3FA00000","0x3FA00000"),
+
     (0b000,"0x7F800000","0xFF800000"),
-    (0b000,"0x7F7FFFFF","0x7F7FFFFF"), 
+    (0b000,"0x7F7FFFFF","0x7F7FFFFF"),
     (0b000,"0x3FA00000","0x3FB00000"),
     (0b000,"0x3FA00000","0x443BD800"),
-    (0b000,"0x3FA00000","0x3FA00000"),
     (0b000,"0xBFC00000","0x3FA00000"),
     (0b000,"0x00000000","0x80000000"),
     (0b000,"0x3F800000","0x2F000000"),
@@ -89,6 +118,7 @@ def header_line():
        f"{'Ref_hex':>{W_HEX}} | {'Ref_dec':>{W_DEC}} | {'Ref_fields':>{W_FIELDS}} | "
        f"{'RESULT':>{W_RESULT}}")
     return h, "-"*len(h)
+
 def row_line(rm,a_hex,b_hex,out_bits,ref_hex_s,ref_dec_s,ref_fields_s,result):
     a_dec=repr(float(np.float32(f32_from_hex(a_hex))))
     b_dec=repr(float(np.float32(f32_from_hex(b_hex))))
@@ -100,11 +130,11 @@ def row_line(rm,a_hex,b_hex,out_bits,ref_hex_s,ref_dec_s,ref_fields_s,result):
             f"{ref_hex_s:>{W_HEX}} | {ref_dec_s:>{W_DEC}} | {ref_fields_s:>{W_FIELDS}} | "
             f"{result:>{W_RESULT}}")
 
-# ---------- main cocotb test (pipelined) ----------
+# ---------- main cocotb test (pipelined + X/Z-safe) ----------
 @cocotb.test()
 async def check_fpu_adder_riscv(dut):
     # clock + reset
-    cocotb.start_soon(Clock(dut.clk, 5, units="ns").start())  # 100 MHz
+    cocotb.start_soon(Clock(dut.clk, 5, units="ns").start())
     dut.rst.value = 1
     dut.req_in.value = 0
     dut.rm.value = 0
@@ -115,9 +145,11 @@ async def check_fpu_adder_riscv(dut):
     dut.rst.value = 0
     await RisingEdge(dut.clk)
 
-    # N_RANDOM, SEED = 30000, 2026
-    N_RANDOM, SEED = 30, 2026
+    N_RANDOM, SEED = 300, 2029
+    # N_RANDOM, SEED = 30, 2026
+    # N_RANDOM, SEED =   0, 2026
     ALL_VECTORS = VECTORS + gen_random_vectors(N_RANDOM, seed=SEED)
+    # ALL_VECTORS = VECTORS 
 
     table_path, csv_path = "results_table.log", "results.csv"
     tf = open(table_path, "w", encoding="utf-8")
@@ -131,43 +163,49 @@ async def check_fpu_adder_riscv(dut):
         "IEEE_Flags","Result"])
 
     have_flags = hasattr(dut, "fflags")
-    q = collections.deque()   # queue of expected results in issue-order
+    q = collections.deque()
     failures = []
 
-    # Issue one op per cycle while collecting outputs
     i = 0
     total = len(ALL_VECTORS)
     drain = 0
-    MAX_DRAIN = 1024  # safety
+    MAX_DRAIN = 1024
 
-    while (i < total) or (q and drain < MAX_DRAIN):
+    while (i < total) or (q and drain < MAX_DRAIN) :
         await RisingEdge(dut.clk)
 
-        # 1) If more vectors, drive next and enqueue reference
+        # Drive a request
         if i < total:
             rm, a_hex, b_hex = ALL_VECTORS[i]
-            a_bits = int(a_hex,16); b_bits = int(b_hex,16)
+            a_bits = int(a_hex, 16); b_bits = int(b_hex, 16)
 
-            # Drive request this cycle
             dut.rm.value = rm
             dut.A.value  = a_bits
             dut.B.value  = b_bits
             dut.req_in.value = 1
 
-            # Compute oracle now and enqueue
             ref_bits, flags = softfloat_f32_add_bits(a_bits, b_bits, rm)
             ref_bits = canon_nan_f32(ref_bits)
             q.append((rm, a_hex, b_hex, ref_bits, flags))
             i += 1
         else:
-            # no more inputs
             dut.req_in.value = 0
 
-        # 2) Sample output when valid
-        await FallingEdge(dut.clk)  # allow combinational settle to next phase
+        # Capture on valid
+        await FallingEdge(dut.clk)
         if int(dut.valid_out.value) and q:
             rm, a_hex, b_hex, ref_bits, flags = q.popleft()
-            out_bits = int(dut.Out.value) & 0xFFFFFFFF
+
+            # settle and resolve X/Z safely
+            await Timer(1, units="ps")
+            tmp = try_to_int(dut.Out.value)
+            if tmp is None:
+                await RisingEdge(dut.clk)
+                await Timer(1, units="ps")
+                tmp = try_to_int(dut.Out.value)
+                if tmp is None:
+                    raise AssertionError("valid_out=1 but Out is X/Z")
+            out_bits = tmp & 0xFFFFFFFF
 
             ok = same_fp32_bits(ref_bits, out_bits)
             result = "PASS" if ok else "FAIL"
@@ -176,7 +214,6 @@ async def check_fpu_adder_riscv(dut):
                     f"rm={rm:03b} A={a_hex} B={b_hex} Expected={hex_from_bits(ref_bits)} Got={hex_from_bits(out_bits)}"
                 )
 
-            # optional flag check
             if have_flags:
                 got_flags = int(dut.fflags.value) & 0x1F
                 exp_flags = flags & 0x1F
@@ -185,7 +222,6 @@ async def check_fpu_adder_riscv(dut):
                         f"fflags mismatch rm={rm:03b} A={a_hex} B={b_hex} exp=0x{exp_flags:02X} got=0x{got_flags:02X}"
                     )
 
-            # human-readable line
             tf.write(row_line(
                 rm, a_hex, b_hex, out_bits,
                 hex_from_bits(ref_bits),
@@ -194,7 +230,6 @@ async def check_fpu_adder_riscv(dut):
                 result
             ) + "\n")
 
-            # CSV row
             A_s,A_e,A_m=split_fields(int(a_hex,16))
             B_s,B_e,B_m=split_fields(int(b_hex,16))
             O_s,O_e,O_m=split_fields(out_bits)
