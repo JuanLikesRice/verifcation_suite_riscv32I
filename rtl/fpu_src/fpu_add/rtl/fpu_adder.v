@@ -4,6 +4,8 @@
 `define size_Fp_fmt 3
 `endif
 
+
+
 module FPU_ADDER_I #(    
     parameter PARAM_Fp_size       = 32,
     parameter PARAM_Mantissa_size = 23,
@@ -16,8 +18,8 @@ module FPU_ADDER_I #(
     input  [PARAM_Fp_size-1:0] A  ,
     input  [PARAM_Fp_size-1:0] B  , 
     output [PARAM_Fp_size-1:0] Out,
-    output                valid_out,
-    output [2:0]          exception 
+    output                     valid_out,
+    output [2:0]               exception 
 );
 
     wire signal_inexact;
