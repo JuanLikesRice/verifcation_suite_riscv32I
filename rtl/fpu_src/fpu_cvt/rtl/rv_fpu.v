@@ -35,12 +35,15 @@ wire [PARAM_Fp_size-1:0]  result_s1_w, result_s2;
 wire [3:0]                exception_w;
 wire                      valid_out_ov_w;
 
-wire                      ADD_req_in_w, ADD_rm_w;
+wire                      ADD_req_in_w;
+wire [2:0]                ADD_rm_w;
 wire [PARAM_Fp_size-1:0]  ADD_Out_w;
 wire                      ADD_valid_out_w;
 wire [4:0]                ADD_exception_w;
 
-wire                      MULT_req_in_w, MULT_rm_w;
+
+wire                      MULT_req_in_w;
+wire [2:0]                MULT_rm_w;
 wire [PARAM_Fp_size-1:0]  MULT_Out_w;
 wire                      MULT_valid_out_w;
 wire [4:0]                MULT_exception_w;
@@ -153,17 +156,17 @@ module rv_FPU_ctrl #(
     output                [PARAM_Fp_size-1:0]  C_rs2  , 
 // ADD
     output                                 ADD_req_in,
-    output                                 ADD_rm,
+    output             [2:0]               ADD_rm,
     input              [PARAM_Fp_size-1:0] ADD_Out,
     input                                  ADD_valid_out,
-    input               [3:0]              ADD_exception, 
+    input               [4:0]              ADD_exception, 
 
  // ADD
     output                                 MULT_req_in,
-    output                                 MULT_rm,
+    output             [2:0]               MULT_rm,
     input              [PARAM_Fp_size-1:0] MULT_Out,
     input                                  MULT_valid_out,
-    input               [3:0]              MULT_exception 
+    input               [4:0]              MULT_exception 
 );
 
 localparam S_IDLE    = 2'b01;
@@ -746,6 +749,7 @@ module FPU_MULT_I #(
     input      [PARAM_Fp_size-1:0]  A,
     input      [PARAM_Fp_size-1:0]  B,
     output     [PARAM_Fp_size-1:0]  Out,
+    output     [4:0]                exception,
     output                          valid_out
 );
     // constants

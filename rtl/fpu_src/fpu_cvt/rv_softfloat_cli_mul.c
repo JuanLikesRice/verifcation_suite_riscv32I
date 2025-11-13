@@ -1,4 +1,4 @@
-// CLI: rv_softfloat_cli <rm> <hex_a> <hex_b>
+// CLI: rv_softfloat_cli_mul <rm> <hex_a> <hex_b>
 // Prints: "<hex_result> <flags>"
 #include <stdio.h>
 #include <stdint.h>
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
     float32_t a; a.v = a_bits;
     float32_t b; b.v = b_bits;
-    float32_t r = f32_add(a, b);
+    float32_t r = f32_mul(a, b);
 
     printf("%08X %02X\n", r.v, (unsigned)(softfloat_exceptionFlags & 0x1F));
     return 0;
