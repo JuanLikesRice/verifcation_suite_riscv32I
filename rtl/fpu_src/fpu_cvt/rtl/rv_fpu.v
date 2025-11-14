@@ -215,7 +215,7 @@ always @(*) begin
                 next_state = S_PROCESS;
             end else begin 
                 req_taken  =  1'b0;
-                next_state = S_PROCESS;        
+                next_state = S_IDLE;        
             end
         end
 

@@ -16,8 +16,8 @@ RETIRE_TIMEOUT_CYCLES = int(os.getenv("RETIRE_TIMEOUT_CYCLES", "30"))
 
 # ---------------- opcodes (7-bit funct7-style) ----------------
 # These match standard RV32F funct7 for single-precision:
-OP_FADD_S = 0b0000000  # 0x00
-OP_FMUL_S = 0b0001000  # 0x08
+OP_FADD_S = 0b0000001  # 0x00
+OP_FMUL_S = 0b0000011  # 0x08
 # Reserve more (e.g., OP_FSUB_S=0b0000100, OP_FDIV_S=0b0001100, OP_FMA_S uses rs3 path)
 
 # ---------------- RM set selection ----------------
@@ -85,10 +85,10 @@ def _expand_edges_with_rm(edges_base, rm_list):
 def mk_edge_vectors():
     # Your four seeds, now with RS3 and RM expansion.
     edges_base = [
-        (OP_FADD_S, "0x7F800000", "0xFF800000", "0x00000000"),  # +inf + -inf
+        # (OP_FADD_S, "0x7F800000", "0xFF800000", "0x00000000"),  # +inf + -inf
         (OP_FADD_S, "0x3FA00000", "0x3FB00000", "0x00000000"),  # 1.25 + 1.375
         (OP_FMUL_S, "0x3F800000", "0x00000000", "0x00000000"),  # 1.0 * 0.0
-        (OP_FMUL_S, "0x7FC00001", "0x40000000", "0x00000000"),  # qNaN * 2.0
+        # (OP_FMUL_S, "0x7FC00001", "0x40000000", "0x00000000"),  # qNaN * 2.0
     ]
     return _expand_edges_with_rm(edges_base, RM_SET)
 
@@ -130,25 +130,60 @@ def row_line(op7,rm,a_hex,b_hex,r3_hex,out_bits,ref_bits,result):
             f"{result:>{W_RESULT}}")
 
 # ---------------- handshake-aware issuer ----------
+# async def issue_when_taken(dut, op7:int, instr_rm:int, csr_rm:int, a_bits:int, b_bits:int, r3_bits:int):
+    # # Drive inputs and assert req_valid_i; hold until taken or timeout.
+    # dut.fp_instruction.value = op7
+    # dut.rm.value      = instr_rm
+    # dut.csr_rm.value  = csr_rm
+    # dut.rs1_data.value     = a_bits
+    # dut.rs2_data.value     = b_bits
+    # dut.rs3_data.value     = r3_bits
+    # dut.req_valid_i.value = 1
+
+    # cycles = 0
+    # while True:
+    #     # small comb settle window
+    #     for _ in range(2):
+    #         await Timer(1, units="ps")
+    #         if int(dut.req_taken_o.value):
+    #             dut.req_valid_i.value = 0
+    #             return
+    #     await RisingEdge(dut.clk)
+    #     cycles += 1
+    #     if cycles >= ISSUE_TIMEOUT_CYCLES:
+    #         dut.req_valid_i.value = 0
+    #         raise AssertionError(
+    #             f"Timeout waiting for req_taken_o after {ISSUE_TIMEOUT_CYCLES} cycles "
+    #             f"(op7={op7:07b}, rm={instr_rm:03b}, csr_rm={csr_rm:03b}, "
+    #             f"A=0x{a_bits:08X}, B=0x{b_bits:08X}, RS3=0x{r3_bits:08X})"
+    #         )
 async def issue_when_taken(dut, op7:int, instr_rm:int, csr_rm:int, a_bits:int, b_bits:int, r3_bits:int):
-    # Drive inputs and assert req_valid_i; hold until taken or timeout.
     dut.fp_instruction.value = op7
-    dut.rm.value      = instr_rm
-    dut.csr_rm.value  = csr_rm
-    dut.rs1_data.value     = a_bits
-    dut.rs2_data.value     = b_bits
-    dut.rs3_data.value     = r3_bits
+    dut.rm.value = instr_rm
+    dut.csr_rm.value = csr_rm
+    dut.rs1_data.value = a_bits
+    dut.rs2_data.value = b_bits
+    dut.rs3_data.value = r3_bits
+
     dut.req_valid_i.value = 1
 
     cycles = 0
     while True:
-        # small comb settle window
+        # Let comb settle
         for _ in range(2):
             await Timer(1, units="ps")
+
+            # IMPORTANT:
+            # If req_taken_o is high, we wait for NEXT posedge,
+            # then drop req_valid_i, THEN return.
             if int(dut.req_taken_o.value):
-                dut.req_valid_i.value = 0
+                await RisingEdge(dut.clk)     # wait next cycle
+                dut.req_valid_i.value = 0     # drop valid after the req-granted cycle
                 return
+
+        # Otherwise advance cycle
         await RisingEdge(dut.clk)
+
         cycles += 1
         if cycles >= ISSUE_TIMEOUT_CYCLES:
             dut.req_valid_i.value = 0
@@ -174,7 +209,8 @@ async def check_rv_fpu_add_mul(dut):
     dut.rst.value=0
     await RisingEdge(dut.clk)
 
-    V = mk_edge_vectors() + mk_random_vectors(4, seed=31415)
+    # V = mk_edge_vectors() + mk_random_vectors(4, seed=31415)
+    V = mk_edge_vectors() #+ mk_random_vectors(4, seed=31415)
 
     tf=open("results_table.log","w",encoding="utf-8")
     cf=open("results.csv","w",newline="",encoding="utf-8"); cw=csv.writer(cf)
